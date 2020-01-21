@@ -1,2 +1,2 @@
 # CeeBi
-![CeeBi Title](./title)
+![CeeBi Title](./title.png)
