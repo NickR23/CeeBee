@@ -1,9 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "common.h"
+#include "lib/common.h"
+//Provides codes to set term colors.
+//example:
+//  printf(RED "red text" RESET);
+#include "lib/termColors.h"
 
 void usage() {
-  printf("Usage: gba \"CART_PATH\"\n");
+  printf(RED "Usage: gba \"CART_PATH\"\n" RESET);
   exit(EXIT_FAILURE);
 }
 
@@ -12,7 +16,7 @@ void printTitle() {
   FILE* fp = fopen(TITLEPATH, "r");
   char cursor = fgetc(fp);
   while (cursor != EOF){
-    printf("%c", cursor);
+    printf(CYN "%c" RESET, cursor);
     cursor = fgetc(fp);
   } 
 }
