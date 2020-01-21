@@ -20,7 +20,8 @@ void printTitle() {
 int main(int argc, char** argv) {
   if (argc < 2)
     usage();
-
+  char* cartPath = argv[1];
+  printf("Reading cart: %s\n", cartPath);
   printTitle();
 
   return 0;
