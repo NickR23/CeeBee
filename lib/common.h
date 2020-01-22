@@ -1,2 +1,2 @@
 #define TITLEPATH "assets/title"
-typedef char u8;
+#define EXITPATH "assets/exit"

@@ -13,32 +13,32 @@ void usage() {
   exit(EXIT_FAILURE);
 }
 
-//Reads the title
-void printTitle() {
-  FILE* fp = fopen(TITLEPATH, "r");
+//Prints one of my cool title cards
+void printCard(char* messagePath) {
+  FILE* fp = fopen(messagePath, "r");
   if (fp == NULL) {
     printf("Couldn't load my cool title graphic :(\n");
     return;
   }
 
-  printf("GOT %p\n", fp);
   char cursor = fgetc(fp);
   while (cursor != EOF){
     printf(CYN "%c" RESET, cursor);
     cursor = fgetc(fp);
-  } 
+  }
+  fclose(fp);
 }
 
 int main(int argc, char** argv) {
   if (argc < 2)
     usage();
   char* cartPath = argv[1];
-  printTitle();
-
+  printCard(TITLEPATH);
   //Load cart
   const unsigned char *cart = loadCart(cartPath);
   run_cycle(cart);
 
   free((char *) cart);
+  printCard(EXITPATH);
   return 0;
 }
