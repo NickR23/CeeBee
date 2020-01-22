@@ -35,8 +35,10 @@ int main(int argc, char** argv) {
   char* cartPath = argv[1];
   printCard(TITLEPATH);
   //Load cart
-  const unsigned char *cart = loadCart(cartPath);
-  run_cycle(cart);
+  unsigned int cartSize = 0;
+  const unsigned char *cart = loadCart(cartPath, &cartSize);
+  printf(CYN "Cart size:\n\t%d\n" RESET, cartSize);
+  run_cycle(cart, cartSize);
 
   free((char *) cart);
   printCard(EXITPATH);

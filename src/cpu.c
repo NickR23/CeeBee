@@ -4,7 +4,7 @@
 #include "../lib/common.h"
 #include "../lib/termColors.h"
 
-unsigned char* loadCart(char const *cartPath) {
+unsigned char* loadCart(char const *cartPath, unsigned int* cartSize) {
   FILE *fp;
   unsigned char *buffer;
   long cartLength;
@@ -12,6 +12,7 @@ unsigned char* loadCart(char const *cartPath) {
   fp = fopen(cartPath, "rb");
   fseek(fp, 0, SEEK_END);
   cartLength = ftell(fp);
+  *cartSize = cartLength;
   rewind(fp);
 
   buffer = (unsigned char*)malloc(cartLength * sizeof(unsigned char));
@@ -22,12 +23,17 @@ unsigned char* loadCart(char const *cartPath) {
 
 void printCart(int start, unsigned char const *cart) {
   unsigned char const *ptr = &cart[start];
-  for (int i = 0; i < 10; i++) {
+  for (int i = 0; i < 20; i++) {
     printf(GRN "%02x " RESET, cart[i]);
   }
   printf("\n");
 }
 
-void run_cycle(unsigned char const *cart) {
+
+unsigned char getByte(unsigned char const *cart) {
+  return cart[0];
+}
+
+void run_cycle(unsigned char const *cart, unsigned int const cartSize) {
   printCart(0 ,cart);
 }
