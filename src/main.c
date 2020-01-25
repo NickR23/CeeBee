@@ -45,6 +45,7 @@ int main(int argc, char** argv) {
   printCpu(cpu);
 
   run_cycle(&cpu, cart, cartSize);
+  printCpu(cpu);
 
   free((char *) cart);
   printCard(EXITPATH);

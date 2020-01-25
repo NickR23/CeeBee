@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "operations.h"
 #include "../lib/termColors.h"
+#include "../lib/common.h"
 const char r[] = {B, C, D, E, H, L, HL, A};
 const char rp[] = {BC, DE, HL, SP};
 const char rp2[] = {BC, DE, HL, AF};
@@ -25,10 +26,18 @@ void exec(Opcode op, CPU *cpu,  unsigned char const *cart) {
   printOp(op);
   if (op.x == 0){
     if (op.z == 0) {
-      if (op.y == 0) NOP();
+      if (op.y == 0) {
+        NOP();
+        return;
+      }
     }
     if (op.z == 1) {
-      if (op.q == 0) printf(CYN "Loading addr: %x into sp\n"RESET, getNN(cart, cpu->pc + 1)); 
+      if (op.q == 0){
+         printf(CYN "Loading addr: %x into sp\n"RESET, getNN(cart, cpu->pc + 1)); 
+         cpu->pc += 3;
+         return;
+      }
     }
   }
+  panic("I don't know that opcode yet :(");
 }
