@@ -2,6 +2,7 @@
 #include "operations.h"
 #include "../lib/termColors.h"
 #include "../lib/common.h"
+
 const char r[] = {B, C, D, E, H, L, HL, A};
 const char rp[] = {BC, DE, HL, SP};
 const char rp2[] = {BC, DE, HL, AF};
@@ -16,6 +17,11 @@ void printOp(Opcode op){
 
 void NOP() {
   printf("\tOperation: NOP");
+}
+
+//CPL. Basically clears the a reg by xor-ing it with itself.
+void CPL(CPU *cpu) {
+  cpu->a = cpu->a ^ cpu->a;
 }
 
 void ld(unsigned char reg, int16_t value) {
@@ -39,5 +45,5 @@ void exec(Opcode op, CPU *cpu,  unsigned char const *cart) {
       }
     }
   }
-  panic("I don't know that opcode yet :(");
+  printf("I don't know that opcode yet :(\n");
 }

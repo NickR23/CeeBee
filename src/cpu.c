@@ -38,9 +38,11 @@ unsigned char getByte(unsigned char const *cart, int16_t addr) {
 }
 
 void printCpu(CPU cpu) {
+  printf(MAG "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n" RESET);
   printf(YEL "I am a cpu!\nThis is how I feel\n" RESET);
   printf(MAG "\tStack pointer: 0x%04x\n" RESET, cpu.sp);
   printf(GRN "\tProgram counter: 0x%04x\n" RESET, cpu.pc);
+  printf(MAG "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n" RESET);
 }
 
 unsigned char* loadCart(char const *cartPath, unsigned int* cartSize) {

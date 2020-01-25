@@ -4,8 +4,6 @@
 #include "../lib/common.h"
 
 //Provides codes to set term colors.
-//example:
-//  printf(RED "red text" RESET);
 #include "../lib/termColors.h"
 
 void usage() {
@@ -43,10 +41,10 @@ int main(int argc, char** argv) {
   cpu.pc = 0x0000; 
   printf(CYN "Cart size:\n\t%d\n" RESET, cartSize);
   printCpu(cpu);
-
   run_cycle(&cpu, cart, cartSize);
   printCpu(cpu);
-
+  run_cycle(&cpu, cart, cartSize);
+  printCpu(cpu);
   free((char *) cart);
   printCard(EXITPATH);
   return EXIT_SUCCESS;
