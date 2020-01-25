@@ -1,3 +1,9 @@
+#ifndef CPU_H 
+  #include "cpu.h"
+#endif
+
+#define OPERATIONS_H
+
 //Register byte abstractions
 #define A (char)0x00000000
 #define B (char)0x00000001
@@ -21,3 +27,5 @@ typedef struct Opcode {
 } Opcode;
 
 extern const char r[];
+
+void exec(Opcode op, CPU *cpu, unsigned char const *cart);

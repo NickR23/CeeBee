@@ -1,3 +1,4 @@
+#define CPU_H
 typedef struct CPU {
   //Regular registers
   //These are sometimes combined into 16-bit registers
@@ -15,6 +16,8 @@ typedef struct CPU {
   int16_t sp;
 } CPU;
 
+int getNN(unsigned char const *cart, int16_t addr);
+unsigned char getByte(unsigned char const *cart, int16_t addr);
 void printCpu(CPU cpu);
 void run_cycle(CPU *cpu, unsigned char const *cart, unsigned int const cartSize);
 unsigned char* loadCart(char const *cartPath, unsigned int* cartSize);

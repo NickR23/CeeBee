@@ -6,8 +6,35 @@
 #include "../lib/common.h"
 #include "../lib/termColors.h"
 
-unsigned char getByte(unsigned char const *cart) {
-  return cart[0];
+//Gets the next 16 bits in little endian from addr
+//addr should be a pointer to the end of your op code.
+int getNN(unsigned char const* cart, int16_t addr) {
+  printf(GRN "Addr: %04x", addr);
+  int16_t byte_2_addr = addr + 1;
+  //Get first nibble
+  char x2 = cart[byte_2_addr] & 0x0f;
+  //Get second nibble
+  char x1 = cart[byte_2_addr] >> 4;
+  //Get third nibble
+  char x4 = cart[addr] & 0x0f;
+  //Get fourth nibble
+  char x3 = cart[addr] >> 4;
+  
+  printf(RED "\t\tFirst nibble: %02x\n", x1);
+  printf(RED "\t\tSecond nibble: %02x\n",x2); 
+  printf(RED "\t\tThird nibble: %02x\n", x3);
+  printf(RED "\t\tFourth nibble: %02x\n", x4);
+  int nn = x1 << 12;
+  nn = nn | (x2 << 8);
+  nn = nn | (x3 << 4);
+  nn = nn | x4;
+  printf(GRN "NN: %x\n" RESET, nn); 
+
+  return nn;
+} 
+
+unsigned char getByte(unsigned char const *cart, int16_t addr) {
+  return cart[addr];
 }
 
 void printCpu(CPU cpu) {
@@ -55,15 +82,9 @@ void decodeOpCode(CPU *cpu, unsigned char const *cart) {
   op.q = op.y & 0x1;
   mask = 0x07;
   op.z = (code & mask);
-  
-  printf("\t\tx: %02x\n", op.x);
-  printf("\t\ty: %02x\n", op.y);
-  printf("\t\tz: %02x\n", op.z);
-  printf("\t\tp: %02x\n", op.p);
-  printf("\t\tq: %02x\n", op.q);
+  exec(op, cpu, cart);
 }
 
 void run_cycle(CPU *cpu, unsigned char const *cart, unsigned int const cartSize) {
   decodeOpCode(cpu, cart);
-  cpu->pc++;
 }

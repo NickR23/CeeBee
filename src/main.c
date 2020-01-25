@@ -33,7 +33,7 @@ int main(int argc, char** argv) {
   if (argc < 2)
     usage();
   char* cartPath = argv[1];
-  //printCard(TITLEPATH);
+  printCard(TITLEPATH);
   //Load cart
   unsigned int cartSize = 0;
   const unsigned char *cart = loadCart(cartPath, &cartSize);
@@ -45,11 +45,8 @@ int main(int argc, char** argv) {
   printCpu(cpu);
 
   run_cycle(&cpu, cart, cartSize);
-  run_cycle(&cpu, cart, cartSize);
-  run_cycle(&cpu, cart, cartSize);
-  run_cycle(&cpu, cart, cartSize);
 
   free((char *) cart);
-  //printCard(EXITPATH);
+  printCard(EXITPATH);
   return EXIT_SUCCESS;
 }
