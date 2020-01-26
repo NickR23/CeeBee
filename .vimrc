@@ -1,3 +1,4 @@
+set number
 set tabstop=2
 set softtabstop=2
 set shiftwidth=2
@@ -15,7 +16,5 @@ augroup project
   autocmd BufRead,BufNewFile *.h,*.c set filetype=c.doxygen
 augroup END
 
-" My makefile is over here dummy
-set makeprg=make\ -C\ ../
-nnoremap <C-M> :make!<cr>
-
+set autochdir
+set tags=../tags

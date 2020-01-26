@@ -46,6 +46,9 @@ unsigned char* loadCart(char const *cartPath, unsigned int* cartSize) {
   long cartLength;
   
   fp = fopen(cartPath, "rb");
+  if (fp == NULL) {
+    panic(RED "Could not load cart" RESET);
+  }
   fseek(fp, 0, SEEK_END);
   cartLength = ftell(fp);
   *cartSize = cartLength;

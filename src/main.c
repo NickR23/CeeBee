@@ -33,11 +33,13 @@ int main(int argc, char** argv) {
     usage();
   char* cartPath = argv[1];
   #ifndef DEBUG
-  printCard(TITLEPATH);
+    printCard(TITLEPATH);
   #endif
+
   //Load cart
   unsigned int cartSize = 0;
   const unsigned char *cart = loadCart(cartPath, &cartSize);
+
   //Make CPU
   CPU cpu;
   cpu.sp = 0x0000;
@@ -48,13 +50,13 @@ int main(int argc, char** argv) {
   for (int i = 0; i < 3; i++) {
     run_cycle(&cpu, cart, cartSize);
     #ifdef DEBUG
-    printCpu(cpu);
+      printCpu(cpu);
     #endif
   }
   
   free((char *) cart);
   #ifndef DEBUG
-  printCard(EXITPATH);
+    printCard(EXITPATH);
   #endif
   return EXIT_SUCCESS;
 }
