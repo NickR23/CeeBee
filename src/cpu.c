@@ -67,7 +67,9 @@ void printCart(int start, unsigned char const *cart) {
 
 void decodeOpCode(CPU *cpu, unsigned char const *cart) {
   unsigned char code = cart[cpu->pc];
-  printf(RED "\tI found this: 0x%x\n" RESET, code);
+  #ifdef DEBUG
+    printf(RED "\tI found this: 0x%x\n" RESET, code);
+  #endif
   //See my notes for decoding explanation
   Opcode op;
   unsigned char x, y, z, p, q;

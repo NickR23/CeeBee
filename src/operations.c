@@ -32,7 +32,9 @@ void ld(unsigned char reg, int16_t value) {
 }
 
 void exec(Opcode op, CPU *cpu,  unsigned char const *cart) {
-  printOp(op);
+  #ifdef DEBUG
+    printOp(op);
+  #endif
   if (op.x == 0){
     
     if (op.z == 0) {
@@ -43,7 +45,9 @@ void exec(Opcode op, CPU *cpu,  unsigned char const *cart) {
     }
     if (op.z == 1) {
       if (op.q == 0) {
-         printf(CYN "Loading addr: %x into sp\n"RESET, getNN(cart, cpu->pc + 1)); 
+         #ifdef DEBUG
+           printf(CYN "Loading addr: %x into sp\n"RESET, getNN(cart, cpu->pc + 1)); 
+         #endif
          cpu->pc += 3;
          return;
       }

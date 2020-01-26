@@ -42,7 +42,9 @@ int main(int argc, char** argv) {
   CPU cpu;
   cpu.sp = 0x0000;
   cpu.pc = 0x0000; 
-  printf(CYN "Cart size:\n\t%d\n" RESET, cartSize);
+  #ifdef DEBUG
+    printf(CYN "Cart size:\n\t%d\n" RESET, cartSize);
+  #endif
   for (int i = 0; i < 3; i++) {
     run_cycle(&cpu, cart, cartSize);
     #ifdef DEBUG
