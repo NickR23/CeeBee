@@ -19,7 +19,10 @@ void NOP() {
   printf("\tOperation: NOP");
 }
 
-//CPL. Basically clears the a reg by xor-ing it with itself.
+void RXOR(CPU *cpu, char reg) {
+  if (reg == 0) cpu->a = cpu->a ^ cpu ->a;
+}
+
 void CPL(CPU *cpu) {
   cpu->a = cpu->a ^ cpu->a;
 }
@@ -31,6 +34,7 @@ void ld(unsigned char reg, int16_t value) {
 void exec(Opcode op, CPU *cpu,  unsigned char const *cart) {
   printOp(op);
   if (op.x == 0){
+    
     if (op.z == 0) {
       if (op.y == 0) {
         NOP();
@@ -38,12 +42,24 @@ void exec(Opcode op, CPU *cpu,  unsigned char const *cart) {
       }
     }
     if (op.z == 1) {
-      if (op.q == 0){
+      if (op.q == 0) {
          printf(CYN "Loading addr: %x into sp\n"RESET, getNN(cart, cpu->pc + 1)); 
          cpu->pc += 3;
          return;
       }
     }
+    else if (op.z == 7) { 
+      if (op.y == 5) {
+        CPL(cpu);
+        return;
+      }
+    }
+
+  }
+  else if (op.x == 2) {
+    RXOR(cpu, r[op.z]);
+    cpu->pc += 1;
+    return;
   }
   printf("I don't know that opcode yet :(\n");
 }

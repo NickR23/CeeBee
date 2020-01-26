@@ -20,15 +20,10 @@ int getNN(unsigned char const* cart, int16_t addr) {
   //Get fourth nibble
   char x3 = cart[addr] >> 4;
   
-  printf(RED "\t\tFirst nibble: %02x\n", x1);
-  printf(RED "\t\tSecond nibble: %02x\n",x2); 
-  printf(RED "\t\tThird nibble: %02x\n", x3);
-  printf(RED "\t\tFourth nibble: %02x\n", x4);
   int nn = x1 << 12;
   nn = nn | (x2 << 8);
   nn = nn | (x3 << 4);
   nn = nn | x4;
-  printf(GRN "NN: %x\n" RESET, nn); 
 
   return nn;
 } 
@@ -71,13 +66,12 @@ void printCart(int start, unsigned char const *cart) {
 }
 
 void decodeOpCode(CPU *cpu, unsigned char const *cart) {
-  printf(CYN "\n\nI am here: 0x%04x\n" RESET , cpu->pc);  
   unsigned char code = cart[cpu->pc];
   printf(RED "\tI found this: 0x%x\n" RESET, code);
   //See my notes for decoding explanation
   Opcode op;
   unsigned char x, y, z, p, q;
-  op.x = x >> 5;
+  op.x = code >> 6;
   unsigned char mask = 0x38;
   op.y = (code & mask) >> 3;
   op.p = op.y >> 1;

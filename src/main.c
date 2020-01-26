@@ -28,10 +28,13 @@ void printCard(char* messagePath) {
 }
 
 int main(int argc, char** argv) {
+
   if (argc < 2)
     usage();
   char* cartPath = argv[1];
+  #ifndef DEBUG
   printCard(TITLEPATH);
+  #endif
   //Load cart
   unsigned int cartSize = 0;
   const unsigned char *cart = loadCart(cartPath, &cartSize);
@@ -40,12 +43,16 @@ int main(int argc, char** argv) {
   cpu.sp = 0x0000;
   cpu.pc = 0x0000; 
   printf(CYN "Cart size:\n\t%d\n" RESET, cartSize);
-  printCpu(cpu);
-  run_cycle(&cpu, cart, cartSize);
-  printCpu(cpu);
-  run_cycle(&cpu, cart, cartSize);
-  printCpu(cpu);
+  for (int i = 0; i < 3; i++) {
+    run_cycle(&cpu, cart, cartSize);
+    #ifdef DEBUG
+    printCpu(cpu);
+    #endif
+  }
+  
   free((char *) cart);
+  #ifndef DEBUG
   printCard(EXITPATH);
+  #endif
   return EXIT_SUCCESS;
 }
