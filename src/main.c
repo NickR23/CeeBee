@@ -49,8 +49,12 @@ int main(int argc, char** argv) {
     printf(CYN "Cart size:\n\t%d\n" RESET, cartSize);
   #endif
 
-	LD(getRegister(&cpu, 0), 0xcb);
-  LD16(getRPRegister(&cpu, 3), 0xFFFF);
+	LD16(getRPRegister(&cpu, 3), 0xc1);
+  LD(getRegister(&cpu, 7), 0xab);
+  printCpu(cpu);
+  run_cycle(&cpu, cart);
+  printCpu(cpu);
+  run_cycle(&cpu, cart);
   printCpu(cpu);
   
   free((char *) cart);

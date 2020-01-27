@@ -25,24 +25,29 @@ void RALU(CPU *cpu, int index, unsigned char* rptr) {
   switch(index) {
     case 0:
 			printf("Adding *0x%04x to into A\n", *rptr);
+      cpu->a += *rptr; 
       break;
     case 1:
-			printf("Adding with carry *0x%04x to into A\n", *rptr);
+			printf("/tNOT IMPLEMENTED\nAdding with carry *0x%04x to into A\n", *rptr);
       break;
     case 2:
 			printf("Subtracting *0x%04x to into A\n", *rptr);
+      cpu->a -= *rptr;
       break;
     case 3:
 			printf("Subtracting with carry *0x%04x to into A\n", *rptr);
       break;
 		case 4:
 			printf("And-ing *0x%04x and A\n", *rptr);
+      cpu->a &= *rptr;
       break;
     case 5:
 			printf("XOR-ing *0x%04x and A\n", *rptr);
+      cpu->a ^= *rptr;
       break;
     case 6:
 			printf("OR-ing *0x%04x and A\n", *rptr);
+      cpu->a |= *rptr;
       break;
     case 7:
       printf("CP-ing *0x%04x into A\n", *rptr);

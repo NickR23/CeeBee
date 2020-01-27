@@ -6,13 +6,35 @@
 #include "../lib/common.h"
 #include "../lib/termColors.h"
 
-unsigned short* getRPRegister(CPU *cpu, int index) {
+unsigned short* getRP2Register(CPU *cpu, int index) {
   switch(index) {
+    //For combo registers, I'm just returning the addr for the first register
 		case 0:
+      return (unsigned short*) &cpu->b;
 			break;
 		case 1:
+      return (unsigned short*) &cpu->d;
 			break;
 		case 2:
+			return (unsigned short*) &cpu->h;
+			break;
+		case 3:
+			return (unsigned short*) &cpu->a;
+		}
+	return NULL;
+}
+
+unsigned short* getRPRegister(CPU *cpu, int index) {
+  switch(index) {
+    //For combo registers, I'm just returning the addr for the first register
+		case 0:
+      return (unsigned short*) &cpu->b;
+			break;
+		case 1:
+      return (unsigned short*) &cpu->d;
+			break;
+		case 2:
+			return (unsigned short*) &cpu->h;
 			break;
 		case 3:
 			return &cpu->sp;
@@ -70,11 +92,11 @@ unsigned char getByte(unsigned char const *cart, int16_t addr) {
 void printCpu(CPU cpu) {
   printf(MAG "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n" RESET);
   printf(YEL "I am a cpu!\nThis is how I feel\n" RESET);
-  printf(GRN "\t\ta: 0x%02x\n", cpu.a);
   printf(GRN "\t\tb: 0x%02x\n", cpu.b);
   printf(GRN "\t\tc: 0x%02x\n", cpu.c);
   printf(GRN "\t\td: 0x%02x\n", cpu.d);
   printf(GRN "\t\te: 0x%02x\n", cpu.e);
+  printf(GRN "\t\ta: 0x%02x\n", cpu.a);
   printf(GRN "\t\tf: 0x%02x\n", cpu.f);
   printf(GRN "\t\th: 0x%02x\n", cpu.h);
   printf(GRN "\t\tl: 0x%02x\n", cpu.l);
@@ -129,6 +151,6 @@ void decodeOpCode(CPU *cpu, unsigned char const *cart) {
   exec(op, cpu, cart);
 }
 
-void run_cycle(CPU *cpu, unsigned char const *cart, unsigned int const cartSize) {
+void run_cycle(CPU *cpu, unsigned char const *cart) {
   decodeOpCode(cpu, cart);
 }
