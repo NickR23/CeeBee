@@ -3,10 +3,6 @@
 #include "../lib/termColors.h"
 #include "../lib/common.h"
 
-const char r[] = {B, C, D, E, H, L, HL, A};
-const char rp[] = {BC, DE, HL, SP};
-const char rp2[] = {BC, DE, HL, AF};
-
 void printOp(Opcode op){
   printf("\t\tx: %02x\n", op.x);
   printf("\t\ty: %02x\n", op.y);
@@ -55,12 +51,12 @@ void RALU(CPU *cpu, int index, unsigned char* rptr) {
   }
 }
   
-void LD16(unsigned short* rptr, short data) {
-  printf("Loading %04x into %04x\n", (int)data, (int)(rptr));
+void LD16(unsigned short* rptr, unsigned short data) {
+  printf("Loading %04x into %04hx\n", data, (unsigned short) rptr);
   *rptr = data;
 }
 
-void LD(unsigned char* rptr, char data) {
+void LD(unsigned char* rptr, unsigned char data) {
 	*rptr = data;
 } 
 
@@ -128,7 +124,6 @@ void exec(Opcode op, CPU *cpu,  unsigned char const *cart) {
       return;
     }
     else {
-      printf(CYN "Loading 0x%04x into 0x%04x\n", r[op.z], r[op.y]);
       cpu->pc += 1;
 			return;
     }

@@ -26,9 +26,8 @@ typedef struct Opcode {
   unsigned char q;
 } Opcode;
 
-extern const char r[];
 // For debugging ops
 void RALU(CPU *cpu, int index, unsigned char* rptr);
-void LD16(unsigned short* rptr, short data);
-void LD(unsigned char* rptr, char data);
+void LD16(unsigned short* rptr, unsigned short data);
+void LD(unsigned char* rptr, unsigned char data);
 void exec(Opcode op, CPU *cpu, unsigned char const *cart);

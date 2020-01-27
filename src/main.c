@@ -56,7 +56,9 @@ int main(int argc, char** argv) {
   printCpu(cpu);
   run_cycle(&cpu, cart);
   printCpu(cpu);
-  
+  run_cycle(&cpu, cart);
+  printCpu(cpu);
+
   free((char *) cart);
   #ifndef DEBUG
     printCard(EXITPATH);
