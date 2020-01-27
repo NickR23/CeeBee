@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "cpu.h"
+#include "operations.h"
 #include "../lib/common.h"
 
 //Provides codes to set term colors.
@@ -47,12 +48,10 @@ int main(int argc, char** argv) {
   #ifdef DEBUG
     printf(CYN "Cart size:\n\t%d\n" RESET, cartSize);
   #endif
-  for (int i = 0; i < 1; i++) {
-    run_cycle(&cpu, cart, cartSize);
-    #ifdef DEBUG
-      printCpu(cpu);
-    #endif
-  }
+
+	LD(getRegister(&cpu, 0), 0xcb);
+  LD16(getRPRegister(&cpu, 3), 0xFFFF);
+  printCpu(cpu);
   
   free((char *) cart);
   #ifndef DEBUG

@@ -21,7 +21,7 @@ void NOP() {
 
 // The indexing comes from the alu table here
 // https://gb-archive.github.io/salvage/decoding_gbz80_opcodes/Decoding%20Gamboy%20Z80%20Opcodes.html
-void RALU(CPU *cpu, int index, char* rptr) {
+void RALU(CPU *cpu, int index, unsigned char* rptr) {
   switch(index) {
     case 0:
 			printf("Adding *0x%04x to into A\n", *rptr);
@@ -50,10 +50,14 @@ void RALU(CPU *cpu, int index, char* rptr) {
   }
 }
   
-void LD16(int16_t* rptr, int dptr) {
-  printf("Loading %04x into %04x\n", (int)dptr, (int)(rptr));
-  *rptr = dptr;
+void LD16(unsigned short* rptr, short data) {
+  printf("Loading %04x into %04x\n", (int)data, (int)(rptr));
+  *rptr = data;
 }
+
+void LD(unsigned char* rptr, char data) {
+	*rptr = data;
+} 
 
 void exec(Opcode op, CPU *cpu,  unsigned char const *cart) {
 
@@ -101,7 +105,7 @@ void exec(Opcode op, CPU *cpu,  unsigned char const *cart) {
     if (op.z == 1) {
       if (op.q == 0) {
          #ifdef DEBUG
-           LD16((int16_t*)getRPRegister(cpu, op.p), getNN(cart, cpu->pc + 1));
+           LD16(getRPRegister(cpu, op.p), getNN(cart, cpu->pc + 1));
          #endif
          cpu->pc += 3;
          return;

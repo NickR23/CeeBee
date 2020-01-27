@@ -6,7 +6,7 @@
 #include "../lib/common.h"
 #include "../lib/termColors.h"
 
-char* getRPRegister(CPU *cpu, int index) {
+unsigned short* getRPRegister(CPU *cpu, int index) {
   switch(index) {
 		case 0:
 			break;
@@ -15,12 +15,12 @@ char* getRPRegister(CPU *cpu, int index) {
 		case 2:
 			break;
 		case 3:
-			return (char*) &cpu->sp;
+			return &cpu->sp;
 		}
 	return NULL;
 }
 
-char* getRegister(CPU *cpu, int index) {
+unsigned char* getRegister(CPU *cpu, int index) {
   switch(index){
     case 0:
 			return &cpu->b;
