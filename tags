@@ -11,7 +11,9 @@ BC	src/operations.h	/^#define BC /;"	d
 BLU	lib/termColors.h	/^#define BLU /;"	d
 C	Makefile	/^C=gcc$/;"	m
 C	src/operations.h	/^#define C /;"	d
+CCFLAGS	Makefile	/^CCFLAGS=-c$/;"	m
 CFLAGS	Makefile	/^CFLAGS=-Wall -std=c99$/;"	m
+CPL	src/operations.c	/^void CPL(CPU *cpu) {$/;"	f
 CPU	src/cpu.h	/^typedef struct CPU {$/;"	s
 CPU	src/cpu.h	/^} CPU;$/;"	t	typeref:struct:CPU
 CPU_H	src/cpu.h	/^#define CPU_H$/;"	d
@@ -30,6 +32,7 @@ OBJECTS	Makefile	/^OBJECTS=main.o cpu.o operations.o common.o$/;"	m
 OPERATIONS_H	src/operations.h	/^#define OPERATIONS_H$/;"	d
 Opcode	src/operations.h	/^typedef struct Opcode {$/;"	s
 Opcode	src/operations.h	/^} Opcode;$/;"	t	typeref:struct:Opcode
+RALU	src/operations.c	/^void RALU(CPU *cpu, int index, int16_t* rptr) {$/;"	f
 RED	lib/termColors.h	/^#define RED /;"	d
 RESET	lib/termColors.h	/^#define RESET /;"	d
 SP	src/operations.h	/^#define SP /;"	d
@@ -47,6 +50,7 @@ exec	src/operations.c	/^void exec(Opcode op, CPU *cpu,  unsigned char const *car
 f	src/cpu.h	/^  int16_t f; $/;"	m	struct:CPU
 getByte	src/cpu.c	/^unsigned char getByte(unsigned char const *cart, int16_t addr) {$/;"	f
 getNN	src/cpu.c	/^int getNN(unsigned char const* cart, int16_t addr) {$/;"	f
+getRegister	src/cpu.c	/^int16_t* getRegister(CPU *cpu, int index) {$/;"	f
 h	src/cpu.h	/^  int16_t h;$/;"	m	struct:CPU
 l	src/cpu.h	/^  int16_t l;$/;"	m	struct:CPU
 ld	src/operations.c	/^void ld(unsigned char reg, int16_t value) {$/;"	f

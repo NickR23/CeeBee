@@ -2,20 +2,21 @@
 typedef struct CPU {
   //Regular registers
   //These are sometimes combined into 16-bit registers
-  int16_t a;
-  int16_t b;
-  int16_t c;
-  int16_t d;
-  int16_t e;
-  int16_t f; 
-  int16_t h;
-  int16_t l;
+  char a;
+  char b;
+  char c;
+  char d;
+  char e;
+  char f; 
+  char h;
+  char l;
   //Program counter
-  int16_t pc;
+  unsigned short pc;
   //Stack pointer
-  int16_t sp;
+  unsigned short sp;
 } CPU;
-
+char* getRPRegister(CPU *cpu, int index);
+char* getRegister(CPU *cpu, int index);
 int getNN(unsigned char const *cart, int16_t addr);
 unsigned char getByte(unsigned char const *cart, int16_t addr);
 void printCpu(CPU cpu);

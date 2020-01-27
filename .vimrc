@@ -18,4 +18,4 @@ augroup project
 augroup END
 
 set autochdir
-set tags=../tags
+:set tags=../tags

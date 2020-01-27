@@ -1,0 +1,1204 @@
+[36mCart size:
+	256
+[0m[31m	I found this: 0x31
+[0m		x: 00
+		y: 06
+		z: 01
+		p: 03
+		q: 00
+[32mAddr: 0001[36mLoading addr: fffe into sp
+[0m[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[33mI am a cpu!
+This is how I feel
+[0m[35m	Stack pointer: 0x0000
+[0m[32m	Program counter: 0x0003
+[0m[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[31m	I found this: 0xaf
+[0m		x: 02
+		y: 05
+		z: 07
+		p: 02
+		q: 01
+[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[33mI am a cpu!
+This is how I feel
+[0m[35m	Stack pointer: 0x0000
+[0m[32m	Program counter: 0x0003
+[0m[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[31m	I found this: 0xaf
+[0m		x: 02
+		y: 05
+		z: 07
+		p: 02
+		q: 01
+[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[33mI am a cpu!
+This is how I feel
+[0m[35m	Stack pointer: 0x0000
+[0m[32m	Program counter: 0x0003
+[0m[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[31m	I found this: 0xaf
+[0m		x: 02
+		y: 05
+		z: 07
+		p: 02
+		q: 01
+[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[33mI am a cpu!
+This is how I feel
+[0m[35m	Stack pointer: 0x0000
+[0m[32m	Program counter: 0x0003
+[0m[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[31m	I found this: 0xaf
+[0m		x: 02
+		y: 05
+		z: 07
+		p: 02
+		q: 01
+[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[33mI am a cpu!
+This is how I feel
+[0m[35m	Stack pointer: 0x0000
+[0m[32m	Program counter: 0x0003
+[0m[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[31m	I found this: 0xaf
+[0m		x: 02
+		y: 05
+		z: 07
+		p: 02
+		q: 01
+[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[33mI am a cpu!
+This is how I feel
+[0m[35m	Stack pointer: 0x0000
+[0m[32m	Program counter: 0x0003
+[0m[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[31m	I found this: 0xaf
+[0m		x: 02
+		y: 05
+		z: 07
+		p: 02
+		q: 01
+[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[33mI am a cpu!
+This is how I feel
+[0m[35m	Stack pointer: 0x0000
+[0m[32m	Program counter: 0x0003
+[0m[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[31m	I found this: 0xaf
+[0m		x: 02
+		y: 05
+		z: 07
+		p: 02
+		q: 01
+[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[33mI am a cpu!
+This is how I feel
+[0m[35m	Stack pointer: 0x0000
+[0m[32m	Program counter: 0x0003
+[0m[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[31m	I found this: 0xaf
+[0m		x: 02
+		y: 05
+		z: 07
+		p: 02
+		q: 01
+[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[33mI am a cpu!
+This is how I feel
+[0m[35m	Stack pointer: 0x0000
+[0m[32m	Program counter: 0x0003
+[0m[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[31m	I found this: 0xaf
+[0m		x: 02
+		y: 05
+		z: 07
+		p: 02
+		q: 01
+[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[33mI am a cpu!
+This is how I feel
+[0m[35m	Stack pointer: 0x0000
+[0m[32m	Program counter: 0x0003
+[0m[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[31m	I found this: 0xaf
+[0m		x: 02
+		y: 05
+		z: 07
+		p: 02
+		q: 01
+[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[33mI am a cpu!
+This is how I feel
+[0m[35m	Stack pointer: 0x0000
+[0m[32m	Program counter: 0x0003
+[0m[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[31m	I found this: 0xaf
+[0m		x: 02
+		y: 05
+		z: 07
+		p: 02
+		q: 01
+[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[33mI am a cpu!
+This is how I feel
+[0m[35m	Stack pointer: 0x0000
+[0m[32m	Program counter: 0x0003
+[0m[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[31m	I found this: 0xaf
+[0m		x: 02
+		y: 05
+		z: 07
+		p: 02
+		q: 01
+[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[33mI am a cpu!
+This is how I feel
+[0m[35m	Stack pointer: 0x0000
+[0m[32m	Program counter: 0x0003
+[0m[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[31m	I found this: 0xaf
+[0m		x: 02
+		y: 05
+		z: 07
+		p: 02
+		q: 01
+[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[33mI am a cpu!
+This is how I feel
+[0m[35m	Stack pointer: 0x0000
+[0m[32m	Program counter: 0x0003
+[0m[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[31m	I found this: 0xaf
+[0m		x: 02
+		y: 05
+		z: 07
+		p: 02
+		q: 01
+[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[33mI am a cpu!
+This is how I feel
+[0m[35m	Stack pointer: 0x0000
+[0m[32m	Program counter: 0x0003
+[0m[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[31m	I found this: 0xaf
+[0m		x: 02
+		y: 05
+		z: 07
+		p: 02
+		q: 01
+[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[33mI am a cpu!
+This is how I feel
+[0m[35m	Stack pointer: 0x0000
+[0m[32m	Program counter: 0x0003
+[0m[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[31m	I found this: 0xaf
+[0m		x: 02
+		y: 05
+		z: 07
+		p: 02
+		q: 01
+[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[33mI am a cpu!
+This is how I feel
+[0m[35m	Stack pointer: 0x0000
+[0m[32m	Program counter: 0x0003
+[0m[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[31m	I found this: 0xaf
+[0m		x: 02
+		y: 05
+		z: 07
+		p: 02
+		q: 01
+[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[33mI am a cpu!
+This is how I feel
+[0m[35m	Stack pointer: 0x0000
+[0m[32m	Program counter: 0x0003
+[0m[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[31m	I found this: 0xaf
+[0m		x: 02
+		y: 05
+		z: 07
+		p: 02
+		q: 01
+[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[33mI am a cpu!
+This is how I feel
+[0m[35m	Stack pointer: 0x0000
+[0m[32m	Program counter: 0x0003
+[0m[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[31m	I found this: 0xaf
+[0m		x: 02
+		y: 05
+		z: 07
+		p: 02
+		q: 01
+[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[33mI am a cpu!
+This is how I feel
+[0m[35m	Stack pointer: 0x0000
+[0m[32m	Program counter: 0x0003
+[0m[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[31m	I found this: 0xaf
+[0m		x: 02
+		y: 05
+		z: 07
+		p: 02
+		q: 01
+[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[33mI am a cpu!
+This is how I feel
+[0m[35m	Stack pointer: 0x0000
+[0m[32m	Program counter: 0x0003
+[0m[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[31m	I found this: 0xaf
+[0m		x: 02
+		y: 05
+		z: 07
+		p: 02
+		q: 01
+[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[33mI am a cpu!
+This is how I feel
+[0m[35m	Stack pointer: 0x0000
+[0m[32m	Program counter: 0x0003
+[0m[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[31m	I found this: 0xaf
+[0m		x: 02
+		y: 05
+		z: 07
+		p: 02
+		q: 01
+[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[33mI am a cpu!
+This is how I feel
+[0m[35m	Stack pointer: 0x0000
+[0m[32m	Program counter: 0x0003
+[0m[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[31m	I found this: 0xaf
+[0m		x: 02
+		y: 05
+		z: 07
+		p: 02
+		q: 01
+[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[33mI am a cpu!
+This is how I feel
+[0m[35m	Stack pointer: 0x0000
+[0m[32m	Program counter: 0x0003
+[0m[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[31m	I found this: 0xaf
+[0m		x: 02
+		y: 05
+		z: 07
+		p: 02
+		q: 01
+[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[33mI am a cpu!
+This is how I feel
+[0m[35m	Stack pointer: 0x0000
+[0m[32m	Program counter: 0x0003
+[0m[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[31m	I found this: 0xaf
+[0m		x: 02
+		y: 05
+		z: 07
+		p: 02
+		q: 01
+[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[33mI am a cpu!
+This is how I feel
+[0m[35m	Stack pointer: 0x0000
+[0m[32m	Program counter: 0x0003
+[0m[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[31m	I found this: 0xaf
+[0m		x: 02
+		y: 05
+		z: 07
+		p: 02
+		q: 01
+[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[33mI am a cpu!
+This is how I feel
+[0m[35m	Stack pointer: 0x0000
+[0m[32m	Program counter: 0x0003
+[0m[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[31m	I found this: 0xaf
+[0m		x: 02
+		y: 05
+		z: 07
+		p: 02
+		q: 01
+[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[33mI am a cpu!
+This is how I feel
+[0m[35m	Stack pointer: 0x0000
+[0m[32m	Program counter: 0x0003
+[0m[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[31m	I found this: 0xaf
+[0m		x: 02
+		y: 05
+		z: 07
+		p: 02
+		q: 01
+[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[33mI am a cpu!
+This is how I feel
+[0m[35m	Stack pointer: 0x0000
+[0m[32m	Program counter: 0x0003
+[0m[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[31m	I found this: 0xaf
+[0m		x: 02
+		y: 05
+		z: 07
+		p: 02
+		q: 01
+[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[33mI am a cpu!
+This is how I feel
+[0m[35m	Stack pointer: 0x0000
+[0m[32m	Program counter: 0x0003
+[0m[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[31m	I found this: 0xaf
+[0m		x: 02
+		y: 05
+		z: 07
+		p: 02
+		q: 01
+[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[33mI am a cpu!
+This is how I feel
+[0m[35m	Stack pointer: 0x0000
+[0m[32m	Program counter: 0x0003
+[0m[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[31m	I found this: 0xaf
+[0m		x: 02
+		y: 05
+		z: 07
+		p: 02
+		q: 01
+[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[33mI am a cpu!
+This is how I feel
+[0m[35m	Stack pointer: 0x0000
+[0m[32m	Program counter: 0x0003
+[0m[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[31m	I found this: 0xaf
+[0m		x: 02
+		y: 05
+		z: 07
+		p: 02
+		q: 01
+[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[33mI am a cpu!
+This is how I feel
+[0m[35m	Stack pointer: 0x0000
+[0m[32m	Program counter: 0x0003
+[0m[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[31m	I found this: 0xaf
+[0m		x: 02
+		y: 05
+		z: 07
+		p: 02
+		q: 01
+[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[33mI am a cpu!
+This is how I feel
+[0m[35m	Stack pointer: 0x0000
+[0m[32m	Program counter: 0x0003
+[0m[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[31m	I found this: 0xaf
+[0m		x: 02
+		y: 05
+		z: 07
+		p: 02
+		q: 01
+[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[33mI am a cpu!
+This is how I feel
+[0m[35m	Stack pointer: 0x0000
+[0m[32m	Program counter: 0x0003
+[0m[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[31m	I found this: 0xaf
+[0m		x: 02
+		y: 05
+		z: 07
+		p: 02
+		q: 01
+[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[33mI am a cpu!
+This is how I feel
+[0m[35m	Stack pointer: 0x0000
+[0m[32m	Program counter: 0x0003
+[0m[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[31m	I found this: 0xaf
+[0m		x: 02
+		y: 05
+		z: 07
+		p: 02
+		q: 01
+[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[33mI am a cpu!
+This is how I feel
+[0m[35m	Stack pointer: 0x0000
+[0m[32m	Program counter: 0x0003
+[0m[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[31m	I found this: 0xaf
+[0m		x: 02
+		y: 05
+		z: 07
+		p: 02
+		q: 01
+[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[33mI am a cpu!
+This is how I feel
+[0m[35m	Stack pointer: 0x0000
+[0m[32m	Program counter: 0x0003
+[0m[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[31m	I found this: 0xaf
+[0m		x: 02
+		y: 05
+		z: 07
+		p: 02
+		q: 01
+[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[33mI am a cpu!
+This is how I feel
+[0m[35m	Stack pointer: 0x0000
+[0m[32m	Program counter: 0x0003
+[0m[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[31m	I found this: 0xaf
+[0m		x: 02
+		y: 05
+		z: 07
+		p: 02
+		q: 01
+[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[33mI am a cpu!
+This is how I feel
+[0m[35m	Stack pointer: 0x0000
+[0m[32m	Program counter: 0x0003
+[0m[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[31m	I found this: 0xaf
+[0m		x: 02
+		y: 05
+		z: 07
+		p: 02
+		q: 01
+[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[33mI am a cpu!
+This is how I feel
+[0m[35m	Stack pointer: 0x0000
+[0m[32m	Program counter: 0x0003
+[0m[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[31m	I found this: 0xaf
+[0m		x: 02
+		y: 05
+		z: 07
+		p: 02
+		q: 01
+[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[33mI am a cpu!
+This is how I feel
+[0m[35m	Stack pointer: 0x0000
+[0m[32m	Program counter: 0x0003
+[0m[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[31m	I found this: 0xaf
+[0m		x: 02
+		y: 05
+		z: 07
+		p: 02
+		q: 01
+[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[33mI am a cpu!
+This is how I feel
+[0m[35m	Stack pointer: 0x0000
+[0m[32m	Program counter: 0x0003
+[0m[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[31m	I found this: 0xaf
+[0m		x: 02
+		y: 05
+		z: 07
+		p: 02
+		q: 01
+[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[33mI am a cpu!
+This is how I feel
+[0m[35m	Stack pointer: 0x0000
+[0m[32m	Program counter: 0x0003
+[0m[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[31m	I found this: 0xaf
+[0m		x: 02
+		y: 05
+		z: 07
+		p: 02
+		q: 01
+[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[33mI am a cpu!
+This is how I feel
+[0m[35m	Stack pointer: 0x0000
+[0m[32m	Program counter: 0x0003
+[0m[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[31m	I found this: 0xaf
+[0m		x: 02
+		y: 05
+		z: 07
+		p: 02
+		q: 01
+[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[33mI am a cpu!
+This is how I feel
+[0m[35m	Stack pointer: 0x0000
+[0m[32m	Program counter: 0x0003
+[0m[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[31m	I found this: 0xaf
+[0m		x: 02
+		y: 05
+		z: 07
+		p: 02
+		q: 01
+[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[33mI am a cpu!
+This is how I feel
+[0m[35m	Stack pointer: 0x0000
+[0m[32m	Program counter: 0x0003
+[0m[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[31m	I found this: 0xaf
+[0m		x: 02
+		y: 05
+		z: 07
+		p: 02
+		q: 01
+[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[33mI am a cpu!
+This is how I feel
+[0m[35m	Stack pointer: 0x0000
+[0m[32m	Program counter: 0x0003
+[0m[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[31m	I found this: 0xaf
+[0m		x: 02
+		y: 05
+		z: 07
+		p: 02
+		q: 01
+[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[33mI am a cpu!
+This is how I feel
+[0m[35m	Stack pointer: 0x0000
+[0m[32m	Program counter: 0x0003
+[0m[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[31m	I found this: 0xaf
+[0m		x: 02
+		y: 05
+		z: 07
+		p: 02
+		q: 01
+[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[33mI am a cpu!
+This is how I feel
+[0m[35m	Stack pointer: 0x0000
+[0m[32m	Program counter: 0x0003
+[0m[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[31m	I found this: 0xaf
+[0m		x: 02
+		y: 05
+		z: 07
+		p: 02
+		q: 01
+[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[33mI am a cpu!
+This is how I feel
+[0m[35m	Stack pointer: 0x0000
+[0m[32m	Program counter: 0x0003
+[0m[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[31m	I found this: 0xaf
+[0m		x: 02
+		y: 05
+		z: 07
+		p: 02
+		q: 01
+[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[33mI am a cpu!
+This is how I feel
+[0m[35m	Stack pointer: 0x0000
+[0m[32m	Program counter: 0x0003
+[0m[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[31m	I found this: 0xaf
+[0m		x: 02
+		y: 05
+		z: 07
+		p: 02
+		q: 01
+[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[33mI am a cpu!
+This is how I feel
+[0m[35m	Stack pointer: 0x0000
+[0m[32m	Program counter: 0x0003
+[0m[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[31m	I found this: 0xaf
+[0m		x: 02
+		y: 05
+		z: 07
+		p: 02
+		q: 01
+[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[33mI am a cpu!
+This is how I feel
+[0m[35m	Stack pointer: 0x0000
+[0m[32m	Program counter: 0x0003
+[0m[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[31m	I found this: 0xaf
+[0m		x: 02
+		y: 05
+		z: 07
+		p: 02
+		q: 01
+[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[33mI am a cpu!
+This is how I feel
+[0m[35m	Stack pointer: 0x0000
+[0m[32m	Program counter: 0x0003
+[0m[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[31m	I found this: 0xaf
+[0m		x: 02
+		y: 05
+		z: 07
+		p: 02
+		q: 01
+[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[33mI am a cpu!
+This is how I feel
+[0m[35m	Stack pointer: 0x0000
+[0m[32m	Program counter: 0x0003
+[0m[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[31m	I found this: 0xaf
+[0m		x: 02
+		y: 05
+		z: 07
+		p: 02
+		q: 01
+[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[33mI am a cpu!
+This is how I feel
+[0m[35m	Stack pointer: 0x0000
+[0m[32m	Program counter: 0x0003
+[0m[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[31m	I found this: 0xaf
+[0m		x: 02
+		y: 05
+		z: 07
+		p: 02
+		q: 01
+[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[33mI am a cpu!
+This is how I feel
+[0m[35m	Stack pointer: 0x0000
+[0m[32m	Program counter: 0x0003
+[0m[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[31m	I found this: 0xaf
+[0m		x: 02
+		y: 05
+		z: 07
+		p: 02
+		q: 01
+[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[33mI am a cpu!
+This is how I feel
+[0m[35m	Stack pointer: 0x0000
+[0m[32m	Program counter: 0x0003
+[0m[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[31m	I found this: 0xaf
+[0m		x: 02
+		y: 05
+		z: 07
+		p: 02
+		q: 01
+[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[33mI am a cpu!
+This is how I feel
+[0m[35m	Stack pointer: 0x0000
+[0m[32m	Program counter: 0x0003
+[0m[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[31m	I found this: 0xaf
+[0m		x: 02
+		y: 05
+		z: 07
+		p: 02
+		q: 01
+[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[33mI am a cpu!
+This is how I feel
+[0m[35m	Stack pointer: 0x0000
+[0m[32m	Program counter: 0x0003
+[0m[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[31m	I found this: 0xaf
+[0m		x: 02
+		y: 05
+		z: 07
+		p: 02
+		q: 01
+[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[33mI am a cpu!
+This is how I feel
+[0m[35m	Stack pointer: 0x0000
+[0m[32m	Program counter: 0x0003
+[0m[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[31m	I found this: 0xaf
+[0m		x: 02
+		y: 05
+		z: 07
+		p: 02
+		q: 01
+[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[33mI am a cpu!
+This is how I feel
+[0m[35m	Stack pointer: 0x0000
+[0m[32m	Program counter: 0x0003
+[0m[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[31m	I found this: 0xaf
+[0m		x: 02
+		y: 05
+		z: 07
+		p: 02
+		q: 01
+[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[33mI am a cpu!
+This is how I feel
+[0m[35m	Stack pointer: 0x0000
+[0m[32m	Program counter: 0x0003
+[0m[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[31m	I found this: 0xaf
+[0m		x: 02
+		y: 05
+		z: 07
+		p: 02
+		q: 01
+[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[33mI am a cpu!
+This is how I feel
+[0m[35m	Stack pointer: 0x0000
+[0m[32m	Program counter: 0x0003
+[0m[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[31m	I found this: 0xaf
+[0m		x: 02
+		y: 05
+		z: 07
+		p: 02
+		q: 01
+[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[33mI am a cpu!
+This is how I feel
+[0m[35m	Stack pointer: 0x0000
+[0m[32m	Program counter: 0x0003
+[0m[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[31m	I found this: 0xaf
+[0m		x: 02
+		y: 05
+		z: 07
+		p: 02
+		q: 01
+[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[33mI am a cpu!
+This is how I feel
+[0m[35m	Stack pointer: 0x0000
+[0m[32m	Program counter: 0x0003
+[0m[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[31m	I found this: 0xaf
+[0m		x: 02
+		y: 05
+		z: 07
+		p: 02
+		q: 01
+[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[33mI am a cpu!
+This is how I feel
+[0m[35m	Stack pointer: 0x0000
+[0m[32m	Program counter: 0x0003
+[0m[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[31m	I found this: 0xaf
+[0m		x: 02
+		y: 05
+		z: 07
+		p: 02
+		q: 01
+[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[33mI am a cpu!
+This is how I feel
+[0m[35m	Stack pointer: 0x0000
+[0m[32m	Program counter: 0x0003
+[0m[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[31m	I found this: 0xaf
+[0m		x: 02
+		y: 05
+		z: 07
+		p: 02
+		q: 01
+[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[33mI am a cpu!
+This is how I feel
+[0m[35m	Stack pointer: 0x0000
+[0m[32m	Program counter: 0x0003
+[0m[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[31m	I found this: 0xaf
+[0m		x: 02
+		y: 05
+		z: 07
+		p: 02
+		q: 01
+[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[33mI am a cpu!
+This is how I feel
+[0m[35m	Stack pointer: 0x0000
+[0m[32m	Program counter: 0x0003
+[0m[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[31m	I found this: 0xaf
+[0m		x: 02
+		y: 05
+		z: 07
+		p: 02
+		q: 01
+[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[33mI am a cpu!
+This is how I feel
+[0m[35m	Stack pointer: 0x0000
+[0m[32m	Program counter: 0x0003
+[0m[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[31m	I found this: 0xaf
+[0m		x: 02
+		y: 05
+		z: 07
+		p: 02
+		q: 01
+[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[33mI am a cpu!
+This is how I feel
+[0m[35m	Stack pointer: 0x0000
+[0m[32m	Program counter: 0x0003
+[0m[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[31m	I found this: 0xaf
+[0m		x: 02
+		y: 05
+		z: 07
+		p: 02
+		q: 01
+[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[33mI am a cpu!
+This is how I feel
+[0m[35m	Stack pointer: 0x0000
+[0m[32m	Program counter: 0x0003
+[0m[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[31m	I found this: 0xaf
+[0m		x: 02
+		y: 05
+		z: 07
+		p: 02
+		q: 01
+[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[33mI am a cpu!
+This is how I feel
+[0m[35m	Stack pointer: 0x0000
+[0m[32m	Program counter: 0x0003
+[0m[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[31m	I found this: 0xaf
+[0m		x: 02
+		y: 05
+		z: 07
+		p: 02
+		q: 01
+[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[33mI am a cpu!
+This is how I feel
+[0m[35m	Stack pointer: 0x0000
+[0m[32m	Program counter: 0x0003
+[0m[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[31m	I found this: 0xaf
+[0m		x: 02
+		y: 05
+		z: 07
+		p: 02
+		q: 01
+[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[33mI am a cpu!
+This is how I feel
+[0m[35m	Stack pointer: 0x0000
+[0m[32m	Program counter: 0x0003
+[0m[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[31m	I found this: 0xaf
+[0m		x: 02
+		y: 05
+		z: 07
+		p: 02
+		q: 01
+[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[33mI am a cpu!
+This is how I feel
+[0m[35m	Stack pointer: 0x0000
+[0m[32m	Program counter: 0x0003
+[0m[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[31m	I found this: 0xaf
+[0m		x: 02
+		y: 05
+		z: 07
+		p: 02
+		q: 01
+[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[33mI am a cpu!
+This is how I feel
+[0m[35m	Stack pointer: 0x0000
+[0m[32m	Program counter: 0x0003
+[0m[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[31m	I found this: 0xaf
+[0m		x: 02
+		y: 05
+		z: 07
+		p: 02
+		q: 01
+[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[33mI am a cpu!
+This is how I feel
+[0m[35m	Stack pointer: 0x0000
+[0m[32m	Program counter: 0x0003
+[0m[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[31m	I found this: 0xaf
+[0m		x: 02
+		y: 05
+		z: 07
+		p: 02
+		q: 01
+[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[33mI am a cpu!
+This is how I feel
+[0m[35m	Stack pointer: 0x0000
+[0m[32m	Program counter: 0x0003
+[0m[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[31m	I found this: 0xaf
+[0m		x: 02
+		y: 05
+		z: 07
+		p: 02
+		q: 01
+[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[33mI am a cpu!
+This is how I feel
+[0m[35m	Stack pointer: 0x0000
+[0m[32m	Program counter: 0x0003
+[0m[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[31m	I found this: 0xaf
+[0m		x: 02
+		y: 05
+		z: 07
+		p: 02
+		q: 01
+[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[33mI am a cpu!
+This is how I feel
+[0m[35m	Stack pointer: 0x0000
+[0m[32m	Program counter: 0x0003
+[0m[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[31m	I found this: 0xaf
+[0m		x: 02
+		y: 05
+		z: 07
+		p: 02
+		q: 01
+[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[33mI am a cpu!
+This is how I feel
+[0m[35m	Stack pointer: 0x0000
+[0m[32m	Program counter: 0x0003
+[0m[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[31m	I found this: 0xaf
+[0m		x: 02
+		y: 05
+		z: 07
+		p: 02
+		q: 01
+[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[33mI am a cpu!
+This is how I feel
+[0m[35m	Stack pointer: 0x0000
+[0m[32m	Program counter: 0x0003
+[0m[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[31m	I found this: 0xaf
+[0m		x: 02
+		y: 05
+		z: 07
+		p: 02
+		q: 01
+[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[33mI am a cpu!
+This is how I feel
+[0m[35m	Stack pointer: 0x0000
+[0m[32m	Program counter: 0x0003
+[0m[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[31m	I found this: 0xaf
+[0m		x: 02
+		y: 05
+		z: 07
+		p: 02
+		q: 01
+[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[33mI am a cpu!
+This is how I feel
+[0m[35m	Stack pointer: 0x0000
+[0m[32m	Program counter: 0x0003
+[0m[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[31m	I found this: 0xaf
+[0m		x: 02
+		y: 05
+		z: 07
+		p: 02
+		q: 01
+[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[33mI am a cpu!
+This is how I feel
+[0m[35m	Stack pointer: 0x0000
+[0m[32m	Program counter: 0x0003
+[0m[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[31m	I found this: 0xaf
+[0m		x: 02
+		y: 05
+		z: 07
+		p: 02
+		q: 01
+[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[33mI am a cpu!
+This is how I feel
+[0m[35m	Stack pointer: 0x0000
+[0m[32m	Program counter: 0x0003
+[0m[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[31m	I found this: 0xaf
+[0m		x: 02
+		y: 05
+		z: 07
+		p: 02
+		q: 01
+[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[33mI am a cpu!
+This is how I feel
+[0m[35m	Stack pointer: 0x0000
+[0m[32m	Program counter: 0x0003
+[0m[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[31m	I found this: 0xaf
+[0m		x: 02
+		y: 05
+		z: 07
+		p: 02
+		q: 01
+[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[33mI am a cpu!
+This is how I feel
+[0m[35m	Stack pointer: 0x0000
+[0m[32m	Program counter: 0x0003
+[0m[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[31m	I found this: 0xaf
+[0m		x: 02
+		y: 05
+		z: 07
+		p: 02
+		q: 01
+[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[33mI am a cpu!
+This is how I feel
+[0m[35m	Stack pointer: 0x0000
+[0m[32m	Program counter: 0x0003
+[0m[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[31m	I found this: 0xaf
+[0m		x: 02
+		y: 05
+		z: 07
+		p: 02
+		q: 01
+[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[33mI am a cpu!
+This is how I feel
+[0m[35m	Stack pointer: 0x0000
+[0m[32m	Program counter: 0x0003
+[0m[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[31m	I found this: 0xaf
+[0m		x: 02
+		y: 05
+		z: 07
+		p: 02
+		q: 01
+[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[33mI am a cpu!
+This is how I feel
+[0m[35m	Stack pointer: 0x0000
+[0m[32m	Program counter: 0x0003
+[0m[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[31m	I found this: 0xaf
+[0m		x: 02
+		y: 05
+		z: 07
+		p: 02
+		q: 01
+[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[33mI am a cpu!
+This is how I feel
+[0m[35m	Stack pointer: 0x0000
+[0m[32m	Program counter: 0x0003
+[0m[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[31m	I found this: 0xaf
+[0m		x: 02
+		y: 05
+		z: 07
+		p: 02
+		q: 01
+[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[33mI am a cpu!
+This is how I feel
+[0m[35m	Stack pointer: 0x0000
+[0m[32m	Program counter: 0x0003
+[0m[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[31m	I found this: 0xaf
+[0m		x: 02
+		y: 05
+		z: 07
+		p: 02
+		q: 01
+[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[33mI am a cpu!
+This is how I feel
+[0m[35m	Stack pointer: 0x0000
+[0m[32m	Program counter: 0x0003
+[0m[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[31m	I found this: 0xaf
+[0m		x: 02
+		y: 05
+		z: 07
+		p: 02
+		q: 01
+[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[33mI am a cpu!
+This is how I feel
+[0m[35m	Stack pointer: 0x0000
+[0m[32m	Program counter: 0x0003
+[0m[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[31m	I found this: 0xaf
+[0m		x: 02
+		y: 05
+		z: 07
+		p: 02
+		q: 01
+[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[33mI am a cpu!
+This is how I feel
+[0m[35m	Stack pointer: 0x0000
+[0m[32m	Program counter: 0x0003
+[0m[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[31m	I found this: 0xaf
+[0m		x: 02
+		y: 05
+		z: 07
+		p: 02
+		q: 01
+[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m[33mI am a cpu!
+This is how I feel
+[0m[35m	Stack pointer: 0x0000
+[0m[32m	Program counter: 0x0003
+[0m[35m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[0m

@@ -19,16 +19,40 @@ void NOP() {
   printf("\tOperation: NOP");
 }
 
-void RXOR(CPU *cpu, char reg) {
-  if (reg == 0) cpu->a = cpu->a ^ cpu ->a;
+// The indexing comes from the alu table here
+// https://gb-archive.github.io/salvage/decoding_gbz80_opcodes/Decoding%20Gamboy%20Z80%20Opcodes.html
+void RALU(CPU *cpu, int index, char* rptr) {
+  switch(index) {
+    case 0:
+			printf("Adding *0x%04x to into A\n", *rptr);
+      break;
+    case 1:
+			printf("Adding with carry *0x%04x to into A\n", *rptr);
+      break;
+    case 2:
+			printf("Subtracting *0x%04x to into A\n", *rptr);
+      break;
+    case 3:
+			printf("Subtracting with carry *0x%04x to into A\n", *rptr);
+      break;
+		case 4:
+			printf("And-ing *0x%04x and A\n", *rptr);
+      break;
+    case 5:
+			printf("XOR-ing *0x%04x and A\n", *rptr);
+      break;
+    case 6:
+			printf("OR-ing *0x%04x and A\n", *rptr);
+      break;
+    case 7:
+      printf("CP-ing *0x%04x into A\n", *rptr);
+			break;
+  }
 }
-
-void CPL(CPU *cpu) {
-  cpu->a = cpu->a ^ cpu->a;
-}
-
-void ld(unsigned char reg, int16_t value) {
-  printf("Loading %04x into %04x\n", value, reg);
+  
+void LD16(int16_t* rptr, int dptr) {
+  printf("Loading %04x into %04x\n", (int)dptr, (int)(rptr));
+  *rptr = dptr;
 }
 
 void exec(Opcode op, CPU *cpu,  unsigned char const *cart) {
@@ -42,6 +66,7 @@ void exec(Opcode op, CPU *cpu,  unsigned char const *cart) {
     if (op.z == 0) {
       if (op.y == 0) {
         NOP();
+        cpu->pc += 1;
         return;
       }
       else if (op.y == 1) {
@@ -76,17 +101,13 @@ void exec(Opcode op, CPU *cpu,  unsigned char const *cart) {
     if (op.z == 1) {
       if (op.q == 0) {
          #ifdef DEBUG
-           printf(CYN "Loading addr: %x into sp\n"RESET, getNN(cart, cpu->pc + 1)); 
+           LD16((int16_t*)getRPRegister(cpu, op.p), getNN(cart, cpu->pc + 1));
          #endif
          cpu->pc += 3;
          return;
       }
     }
     else if (op.z == 7) { 
-      if (op.y == 5) {
-        CPL(cpu);
-        return;
-      }
     }
 
   }
@@ -99,11 +120,13 @@ void exec(Opcode op, CPU *cpu,  unsigned char const *cart) {
     }
     else {
       printf(CYN "Loading 0x%04x into 0x%04x\n", r[op.z], r[op.y]);
+      cpu->pc += 1;
 			return;
     }
   }
   else if (op.x == 2) {
-    RXOR(cpu, r[op.z]);
+		// RALU
+	  RALU(cpu, op.y, getRegister(cpu, op.z)); 
     cpu->pc += 1;
     return;
   }

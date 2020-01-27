@@ -6,10 +6,45 @@
 #include "../lib/common.h"
 #include "../lib/termColors.h"
 
+char* getRPRegister(CPU *cpu, int index) {
+  switch(index) {
+		case 0:
+			break;
+		case 1:
+			break;
+		case 2:
+			break;
+		case 3:
+			return (char*) &cpu->sp;
+		}
+	return NULL;
+}
+
+char* getRegister(CPU *cpu, int index) {
+  switch(index){
+    case 0:
+			return &cpu->b;
+    case 1:
+			return &cpu->c;
+    case 2:
+			return &cpu->d;
+    case 3:
+			return &cpu->e;
+    case 4:
+			return &cpu->h;
+    case 5:
+			return &cpu->l;
+    case 6:
+			panic(RED "CPU doesn't have HL yet :(\n" RESET);
+    case 7:
+      return &cpu->a;
+    default:
+      return NULL;
+	}
+}
 //Gets the next 16 bits in little endian from addr
 //addr should be a pointer to the end of your op code.
 int getNN(unsigned char const* cart, int16_t addr) {
-  printf(GRN "Addr: %04x", addr);
   int16_t byte_2_addr = addr + 1;
   //Get first nibble
   char x2 = cart[byte_2_addr] & 0x0f;
@@ -35,8 +70,16 @@ unsigned char getByte(unsigned char const *cart, int16_t addr) {
 void printCpu(CPU cpu) {
   printf(MAG "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n" RESET);
   printf(YEL "I am a cpu!\nThis is how I feel\n" RESET);
-  printf(MAG "\tStack pointer: 0x%04x\n" RESET, cpu.sp);
-  printf(GRN "\tProgram counter: 0x%04x\n" RESET, cpu.pc);
+  printf(GRN "\t\ta: 0x%02x\n", cpu.a);
+  printf(GRN "\t\tb: 0x%02x\n", cpu.b);
+  printf(GRN "\t\tc: 0x%02x\n", cpu.c);
+  printf(GRN "\t\td: 0x%02x\n", cpu.d);
+  printf(GRN "\t\te: 0x%02x\n", cpu.e);
+  printf(GRN "\t\tf: 0x%02x\n", cpu.f);
+  printf(GRN "\t\th: 0x%02x\n", cpu.h);
+  printf(GRN "\t\tl: 0x%02x\n", cpu.l);
+  printf(GRN "\t\tpc: 0x%04x\n", cpu.pc);
+  printf(GRN "\t\tsp: 0x%04x\n", cpu.sp);
   printf(MAG "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n" RESET);
 }
 
