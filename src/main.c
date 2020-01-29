@@ -51,13 +51,13 @@ int main(int argc, char** argv) {
 
 	LD16(getRPRegister(&cpu, 3), 0xc1);
   LD(getRegister(&cpu, 7), 0xab);
-  printCpu(cpu);
-  run_cycle(&cpu, cart);
-  printCpu(cpu);
-  run_cycle(&cpu, cart);
-  printCpu(cpu);
-  run_cycle(&cpu, cart);
-  printCpu(cpu);
+	
+	for (int i = 0; i < 3; i++)	{
+		#ifndef DEBUG
+			printDebug(cpu);
+		#endif
+		run_cycle(&cpu, cart);
+	}
 
   free((char *) cart);
   #ifndef DEBUG
