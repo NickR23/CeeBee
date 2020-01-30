@@ -14,7 +14,11 @@ typedef struct CPU {
   unsigned short pc;
   //Stack pointer
   unsigned short sp;
+	//Memory
+	unsigned char* ram;
 } CPU;
+CPU initCPU();
+void freeCPU(CPU *cpu);
 unsigned short* getRP2Register(CPU *cpu, int index);
 unsigned short* getRPRegister(CPU *cpu, int index);
 unsigned char* getRegister(CPU *cpu, int index);

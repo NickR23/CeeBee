@@ -15,6 +15,14 @@ void NOP() {
   printf("\tOperation: NOP");
 }
 
+void indir16LD(unsigned short* dst, unsigned short* src)	{
+	*dst = *src;
+}
+
+void indirLD(unsigned char* dst, unsigned char* src)	{
+	*dst = *src;
+}
+
 // The indexing comes from the alu table here
 // https://gb-archive.github.io/salvage/decoding_gbz80_opcodes/Decoding%20Gamboy%20Z80%20Opcodes.html
 void RALU(CPU *cpu, int index, unsigned char* rptr) {
@@ -112,6 +120,22 @@ void exec(Opcode op, CPU *cpu,  unsigned char const *cart) {
          return;
       }
     }
+    else if (op.z == 2) {
+			if (op.q == 0)	{
+				if (op.p == 3) {
+					// LD (HL-),A
+					//Load A with memory at HL
+					unsigned short* hl = getRPRegister(cpu, 2);
+					unsigned short A16 = (unsigned short) *getRegister(cpu, 7);
+					printf(RED "/t/tA16: %04hx\n\n" RESET, A16);
+					indir16LD(hl, &A16);
+					//Decrement HL
+					*hl = *hl - 1;
+					cpu->pc += 1;
+					return;
+				}
+			}
+		}
     else if (op.z == 7) { 
     }
 
@@ -134,5 +158,12 @@ void exec(Opcode op, CPU *cpu,  unsigned char const *cart) {
     cpu->pc += 1;
     return;
   }
+	else if (op.x == 3) {
+		if (op.z == 3)	{
+			if (op.y == 1)	{
+				//CB Prefix
+			}
+		}
+	}
   printf("I don't know that opcode yet :(\n");
 }

@@ -6,6 +6,16 @@
 #include "../lib/common.h"
 #include "../lib/termColors.h"
 
+CPU initCPU()	{
+	CPU cpu;
+	cpu.ram = (unsigned char*) malloc(sizeof(unsigned char) * (65536));
+	return cpu;
+}
+
+void freeCPU(CPU *cpu)	{
+	free(cpu->ram);
+}
+
 unsigned short* getRP2Register(CPU *cpu, int index) {
   switch(index) {
     //For combo registers, I'm just returning the addr for the first register
@@ -133,11 +143,9 @@ void printCart(int start, unsigned char const *cart) {
   printf("\n");
 }
 
-void decodeOpCode(CPU *cpu, unsigned char const *cart) {
+Opcode decodeOpCode(CPU *cpu, unsigned char const *cart) {
   unsigned char code = cart[cpu->pc];
-  #ifdef DEBUG
-    printf(RED "\tI found this: 0x%x\n" RESET, code);
-  #endif
+  printf(RED "\tI found this: 0x%x\n" RESET, code);
   //See my notes for decoding explanation
   Opcode op;
   unsigned char x, y, z, p, q;
@@ -148,9 +156,14 @@ void decodeOpCode(CPU *cpu, unsigned char const *cart) {
   op.q = op.y & 0x1;
   mask = 0x07;
   op.z = (code & mask);
-  exec(op, cpu, cart);
+	return op;
 }
 
 void run_cycle(CPU *cpu, unsigned char const *cart) {
-  decodeOpCode(cpu, cart);
+	#ifdef DEBUG
+		printf(YEL "PC: 0x%04hx\n" RESET, cpu->pc);
+    printCpu(*cpu);
+  #endif
+  Opcode op = decodeOpCode(cpu, cart);
+  exec(op, cpu, cart);
 }

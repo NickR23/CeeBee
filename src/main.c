@@ -42,7 +42,7 @@ int main(int argc, char** argv) {
   const unsigned char *cart = loadCart(cartPath, &cartSize);
 
   //Make CPU
-  CPU cpu;
+  CPU cpu = initCPU();
   cpu.sp = 0x0000;
   cpu.pc = 0x0000; 
   #ifdef DEBUG
@@ -52,7 +52,7 @@ int main(int argc, char** argv) {
 	LD16(getRPRegister(&cpu, 3), 0xc1);
   LD(getRegister(&cpu, 7), 0xab);
 	
-	for (int i = 0; i < 3; i++)	{
+	for (int i = 0; i < 5; i++)	{
 		#ifndef DEBUG
 			printDebug(cpu);
 		#endif
@@ -60,6 +60,7 @@ int main(int argc, char** argv) {
 	}
 
   free((char *) cart);
+	freeCPU(&cpu);
   #ifndef DEBUG
     printCard(EXITPATH);
   #endif
