@@ -14,16 +14,16 @@ typedef struct CPU {
   unsigned short pc;
   //Stack pointer
   unsigned short sp;
-	//Memory
-	unsigned char* ram;
+  //Memory
+  unsigned char* ram;
 } CPU;
 CPU initCPU();
 void freeCPU(CPU *cpu);
 unsigned short* getRP2Register(CPU *cpu, int index);
 unsigned short* getRPRegister(CPU *cpu, int index);
 unsigned char* getRegister(CPU *cpu, int index);
-int getNN(unsigned char const *cart, int16_t addr);
-unsigned char getByte(unsigned char const *cart, int16_t addr);
+int getNN(unsigned char const *cart, unsigned short addr);
+unsigned char getByte(unsigned char const *cart, unsigned short addr);
 void printCpu(CPU cpu);
 void run_cycle(CPU *cpu, unsigned char const *cart);
 unsigned char* loadCart(char const *cartPath, unsigned int* cartSize);

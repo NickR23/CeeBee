@@ -55,28 +55,28 @@ unsigned short* getRPRegister(CPU *cpu, int index) {
 unsigned char* getRegister(CPU *cpu, int index) {
   switch(index){
     case 0:
-			return &cpu->b;
+	return &cpu->b;
     case 1:
-			return &cpu->c;
+	return &cpu->c;
     case 2:
-			return &cpu->d;
+	return &cpu->d;
     case 3:
-			return &cpu->e;
+	return &cpu->e;
     case 4:
-			return &cpu->h;
+	return &cpu->h;
     case 5:
-			return &cpu->l;
+	return &cpu->l;
     case 6:
-			panic(RED "CPU doesn't have HL yet :(\n" RESET);
+	panic(RED "CPU doesn't have HL yet :(\n" RESET);
     case 7:
       return &cpu->a;
     default:
       return NULL;
-	}
+    }
 }
 //Gets the next 16 bits in little endian from addr
 //addr should be a pointer to the end of your op code.
-int getNN(unsigned char const* cart, int16_t addr) {
+int getNN(unsigned char const* cart, unsigned short addr) {
   int16_t byte_2_addr = addr + 1;
   //Get first nibble
   char x2 = cart[byte_2_addr] & 0x0f;
@@ -95,7 +95,7 @@ int getNN(unsigned char const* cart, int16_t addr) {
   return nn;
 } 
 
-unsigned char getByte(unsigned char const *cart, int16_t addr) {
+unsigned char getByte(unsigned char const *cart, unsigned short addr) {
   return cart[addr];
 }
 
