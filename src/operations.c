@@ -28,34 +28,34 @@ void indirLD(unsigned char* dst, unsigned char* src)	{
 void RALU(CPU *cpu, int index, unsigned char* rptr) {
   switch(index) {
     case 0:
-			printf("Adding *0x%04x to into A\n", *rptr);
+      printf("Adding *0x%04x to into A\n", *rptr);
       cpu->a += *rptr; 
       break;
     case 1:
-			printf("/tNOT IMPLEMENTED\nAdding with carry *0x%04x to into A\n", *rptr);
+      printf("/tNOT IMPLEMENTED\nAdding with carry *0x%04x to into A\n", *rptr);
       break;
     case 2:
-			printf("Subtracting *0x%04x to into A\n", *rptr);
+      printf("Subtracting *0x%04x to into A\n", *rptr);
       cpu->a -= *rptr;
       break;
     case 3:
-			printf("Subtracting with carry *0x%04x to into A\n", *rptr);
+      printf("Subtracting with carry *0x%04x to into A\n", *rptr);
       break;
-		case 4:
-			printf("And-ing *0x%04x and A\n", *rptr);
+     case 4:
+      printf("And-ing *0x%04x and A\n", *rptr);
       cpu->a &= *rptr;
       break;
     case 5:
-			printf("XOR-ing *0x%04x and A\n", *rptr);
+      printf("XOR-ing *0x%04x and A\n", *rptr);
       cpu->a ^= *rptr;
       break;
     case 6:
-			printf("OR-ing *0x%04x and A\n", *rptr);
+      printf("OR-ing *0x%04x and A\n", *rptr);
       cpu->a |= *rptr;
       break;
     case 7:
       printf("CP-ing *0x%04x into A\n", *rptr);
-			break;
+      break;
   }
 }
   
@@ -65,7 +65,7 @@ void LD16(unsigned short* rptr, unsigned short data) {
 }
 
 void LD(unsigned char* rptr, unsigned char data) {
-	*rptr = data;
+  *rptr = data;
 } 
 
 void exec(Opcode op, CPU *cpu,  unsigned char const *cart) {
@@ -87,28 +87,28 @@ void exec(Opcode op, CPU *cpu,  unsigned char const *cart) {
            printf(CYN "Loading sp into addr: %x\n"RESET, getNN(cart, cpu->pc + 1)); 
         #endif
         cpu->pc += 3;
-				return;
+	return;
       }
       else if (op.y == 2) {
         #ifdef DEBUG
            printf(CYN "STOPPING\n" RESET); 
         #endif
         cpu->pc += 1;
-				return;
+	return;
       }
       else if (op.y == 3) {
 				#ifdef DEBUG
           printf(CYN "Conditional jump by displacement byte\n" RESET);
         #endif
         cpu->pc  += 2;
-				return;
+	return;
       }
       else if (op.y >= 4 && op.y <= 7) {
         #ifdef DEBUG
           printf(CYN "Conditional jump based on condition\n" RESET);
         #endif 
         cpu->pc += 2;
-				return;
+	return;
       }
     }
     if (op.z == 1) {
@@ -121,20 +121,20 @@ void exec(Opcode op, CPU *cpu,  unsigned char const *cart) {
       }
     }
     else if (op.z == 2) {
-			if (op.q == 0)	{
-				if (op.p == 3) {
-					// LD (HL-),A
-					//Load A with memory at HL
-					unsigned short* hl = getRPRegister(cpu, 2);
-					unsigned short A16 = (unsigned short) *getRegister(cpu, 7);
-					printf(RED "/t/tA16: %04hx\n\n" RESET, A16);
-					indir16LD(hl, &A16);
-					//Decrement HL
-					*hl = *hl - 1;
-					cpu->pc += 1;
-					return;
-				}
-			}
+      if (op.q == 0) {
+        if (op.p == 3) {
+          // LD (HL-),A
+          //Load A with memory at HL
+          unsigned short* hl = getRPRegister(cpu, 2);
+          unsigned short A16 = (unsigned short) *getRegister(cpu, 7);
+          printf(RED "/t/tA16: %04hx\n\n" RESET, A16);
+          indir16LD(hl, &A16);
+          //Decrement HL
+          *hl = *hl - 1;
+          cpu->pc += 1;
+          return;
+	}
+      }
 		}
     else if (op.z == 7) { 
     }
@@ -149,21 +149,21 @@ void exec(Opcode op, CPU *cpu,  unsigned char const *cart) {
     }
     else {
       cpu->pc += 1;
-			return;
+      return;
     }
   }
   else if (op.x == 2) {
-		// RALU
-	  RALU(cpu, op.y, getRegister(cpu, op.z)); 
+    // RALU
+    RALU(cpu, op.y, getRegister(cpu, op.z)); 
     cpu->pc += 1;
     return;
   }
-	else if (op.x == 3) {
-		if (op.z == 3)	{
-			if (op.y == 1)	{
-				//CB Prefix
-			}
-		}
-	}
+  else if (op.x == 3) {
+    if (op.z == 3) {
+      if (op.y == 1) {
+        //CB Prefix
+      }
+    }
+  }
   printf("I don't know that opcode yet :(\n");
 }
