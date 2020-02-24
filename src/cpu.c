@@ -7,67 +7,67 @@
 #include "../lib/termColors.h"
 
 CPU initCPU()	{
-	CPU cpu;
-	cpu.ram = (unsigned char*) malloc(sizeof(unsigned char) * (65536));
-	return cpu;
+  CPU cpu;
+  cpu.ram = (unsigned char*) malloc(sizeof(unsigned char) * (65536));
+  return cpu;
 }
 
 void freeCPU(CPU *cpu)	{
-	free(cpu->ram);
+  free(cpu->ram);
 }
 
 unsigned short* getRP2Register(CPU *cpu, int index) {
   switch(index) {
     //For combo registers, I'm just returning the addr for the first register
-		case 0:
+    case 0:
       return (unsigned short*) &cpu->b;
-			break;
-		case 1:
+      break;
+    case 1:
       return (unsigned short*) &cpu->d;
-			break;
-		case 2:
-			return (unsigned short*) &cpu->h;
-			break;
-		case 3:
-			return (unsigned short*) &cpu->a;
-		}
-	return NULL;
+      break;
+    case 2:
+      return (unsigned short*) &cpu->h;
+      break;
+    case 3:
+      return (unsigned short*) &cpu->a;
+  }
+  return NULL;
 }
 
 unsigned short* getRPRegister(CPU *cpu, int index) {
   switch(index) {
     //For combo registers, I'm just returning the addr for the first register
-		case 0:
+    case 0:
       return (unsigned short*) &cpu->b;
-			break;
-		case 1:
+      break;
+    case 1:
       return (unsigned short*) &cpu->d;
-			break;
-		case 2:
-			return (unsigned short*) &cpu->h;
-			break;
-		case 3:
-			return &cpu->sp;
-		}
-	return NULL;
+      break;
+    case 2:
+      return (unsigned short*) &cpu->h;
+      break;
+    case 3:
+      return &cpu->sp;
+    }
+  return NULL;
 }
 
 unsigned char* getRegister(CPU *cpu, int index) {
   switch(index){
     case 0:
-	return &cpu->b;
+      return &cpu->b;
     case 1:
-	return &cpu->c;
+      return &cpu->c;
     case 2:
-	return &cpu->d;
+      return &cpu->d;
     case 3:
-	return &cpu->e;
+      return &cpu->e;
     case 4:
-	return &cpu->h;
+      return &cpu->h;
     case 5:
-	return &cpu->l;
+      return &cpu->l;
     case 6:
-	panic(RED "CPU doesn't have HL yet :(\n" RESET);
+      panic(RED "CPU doesn't have HL yet :(\n" RESET);
     case 7:
       return &cpu->a;
     default:
@@ -160,8 +160,8 @@ Opcode decodeOpCode(CPU *cpu, unsigned char const *cart) {
 }
 
 void run_cycle(CPU *cpu, unsigned char const *cart) {
-	#ifdef DEBUG
-		printf(YEL "PC: 0x%04hx\n" RESET, cpu->pc);
+  #ifdef DEBUG
+    printf(YEL "PC: 0x%04hx\n" RESET, cpu->pc);
     printCpu(*cpu);
   #endif
   Opcode op = decodeOpCode(cpu, cart);
