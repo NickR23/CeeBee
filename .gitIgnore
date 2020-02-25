@@ -1,9 +1,0 @@
-*.swp
-*.dSYM
-*.o
-*.gb
-.DS_Store
-.gitIgnore
-*.gb
-*.o
-tags
