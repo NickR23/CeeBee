@@ -30,4 +30,4 @@ include_directories("${PROJECT_SOURCE_DIR}/include")
 file(GLOB sources "${PROJECT_SOURCE_DIR}/src/*.c")
 
 add_executable(ceebee ${sources})
-
+set_property(TARGET ceebee PROPERTY C_STANDARD 99)
