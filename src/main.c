@@ -1,11 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "cpu.h"
-#include "operations.h"
-#include "../lib/common.h"
+#include "ceebee/cpu.h"
+#include "ceebee/operations.h"
+#include "lib/common.h"
 
 //Provides codes to set term colors.
-#include "../lib/termColors.h"
+#include "lib/termColors.h"
 
 void usage() {
   printf(RED "Usage: gba \"CART_PATH\"\n" RESET);

@@ -1,5 +1,5 @@
 #ifndef CPU_H
-	#include "../src/cpu.h"
+	#include "ceebee/cpu.h"
 #endif
 
 #define TITLEPATH "assets/title"

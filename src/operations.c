@@ -1,7 +1,7 @@
 #include <stdio.h>
-#include "operations.h"
-#include "../lib/termColors.h"
-#include "../lib/common.h"
+#include "ceebee/operations.h"
+#include "lib/termColors.h"
+#include "lib/common.h"
 
 void printOp(Opcode op){
   printf("\t\tx: %02x\n", op.x);

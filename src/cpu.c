@@ -1,12 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
-#include "cpu.h"
-#include "operations.h"
-#include "../lib/common.h"
-#include "../lib/termColors.h"
+#include "ceebee/cpu.h"
+#include "ceebee/operations.h"
+#include "lib/common.h"
+#include "lib/termColors.h"
 
-CPU initCPU()	{
+CPU initCPU() {
   CPU cpu;
   cpu.ram = (unsigned char*) malloc(sizeof(unsigned char) * (65536));
   return cpu;
