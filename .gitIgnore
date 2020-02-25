@@ -1,0 +1,9 @@
+*.swp
+*.dSYM
+*.o
+*.gb
+.gitIgnore
+.DS_Store
+.vimrc
+tags
+/gba
