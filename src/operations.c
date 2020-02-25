@@ -15,11 +15,11 @@ void NOP() {
   printf("\tOperation: NOP");
 }
 
-void indir16LD(unsigned short* dst, unsigned short* src)	{
+void indir16LD(unsigned short* dst, unsigned short* src) {
 	*dst = *src;
 }
 
-void indirLD(unsigned char* dst, unsigned char* src)	{
+void indirLD(unsigned char* dst, unsigned char* src) {
 	*dst = *src;
 }
 
