@@ -17,8 +17,8 @@ cpu.o: $(SRCPATH)cpu.c
 operations.o: $(SRCPATH)operations.c
 	$(C) $(INC) $(CCFLAGS) $(SRCPATH)operations.c
 
-common.o: include/lib/common.c
-	$(C) $(INC) $(CCFLAGS) include/lib/common.c
+common.o: $(SRCPATH)common.c
+	$(C) $(INC) $(CCFLAGS) $(SRCPATH)common.c
 
 debug: CFLAGS += -DDEBUG
 debug: CCFLAGS += -DDEBUG

@@ -26,6 +26,8 @@ typedef struct Opcode {
   unsigned char q;
 } Opcode;
 
+int add(int a, int b);
+
 // For debugging ops
 void RALU(CPU *cpu, int index, unsigned char* rptr);
 void LD16(unsigned short* rptr, unsigned short data);

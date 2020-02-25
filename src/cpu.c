@@ -3,8 +3,8 @@
 #include <stdint.h>
 #include "ceebee/cpu.h"
 #include "ceebee/operations.h"
-#include "lib/common.h"
-#include "lib/termColors.h"
+#include "ceebee/common.h"
+#include "ceebee/termColors.h"
 
 CPU initCPU() {
   CPU cpu;
