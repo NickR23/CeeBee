@@ -60,7 +60,6 @@ void RALU(CPU *cpu, int index, unsigned char* rptr) {
 }
   
 void LD16(unsigned short* rptr, unsigned short data) {
-  printf("Loading %04x into %04hx\n", data, (unsigned short) rptr);
   *rptr = data;
 }
 
