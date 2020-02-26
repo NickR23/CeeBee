@@ -51,7 +51,7 @@ EQUALS = =
 CMAKE_SOURCE_DIR = /home/nr/code/CeeBee
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/nr/code/CeeBee
+CMAKE_BINARY_DIR = /home/nr/code/CeeBee/test
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -91,17 +91,6 @@ test/fast: test
 
 .PHONY : test/fast
 
-# Special rule for the target edit_cache
-edit_cache:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake cache editor..."
-	/usr/bin/ccmake -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
-.PHONY : edit_cache
-
-# Special rule for the target edit_cache
-edit_cache/fast: edit_cache
-
-.PHONY : edit_cache/fast
-
 # Special rule for the target rebuild_cache
 rebuild_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
@@ -112,6 +101,17 @@ rebuild_cache:
 rebuild_cache/fast: rebuild_cache
 
 .PHONY : rebuild_cache/fast
+
+# Special rule for the target edit_cache
+edit_cache:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake cache editor..."
+	/usr/bin/ccmake -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+.PHONY : edit_cache
+
+# Special rule for the target edit_cache
+edit_cache/fast: edit_cache
+
+.PHONY : edit_cache/fast
 
 # Special rule for the target install
 install: preinstall
@@ -137,14 +137,14 @@ list_install_components/fast: list_install_components
 
 # The main all target
 all: cmake_check_build_system
-	cd /home/nr/code/CeeBee && $(CMAKE_COMMAND) -E cmake_progress_start /home/nr/code/CeeBee/CMakeFiles /home/nr/code/CeeBee/test/CMakeFiles/progress.marks
-	cd /home/nr/code/CeeBee && $(MAKE) -f CMakeFiles/Makefile2 test/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/nr/code/CeeBee/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/nr/code/CeeBee/test/CMakeFiles /home/nr/code/CeeBee/test/CMakeFiles/progress.marks
+	$(MAKE) -f CMakeFiles/Makefile2 all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/nr/code/CeeBee/test/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
 clean:
-	cd /home/nr/code/CeeBee && $(MAKE) -f CMakeFiles/Makefile2 test/clean
+	$(MAKE) -f CMakeFiles/Makefile2 clean
 .PHONY : clean
 
 # The main clean target
@@ -154,168 +154,204 @@ clean/fast: clean
 
 # Prepare targets for installation.
 preinstall: all
-	cd /home/nr/code/CeeBee && $(MAKE) -f CMakeFiles/Makefile2 test/preinstall
+	$(MAKE) -f CMakeFiles/Makefile2 preinstall
 .PHONY : preinstall
 
 # Prepare targets for installation.
 preinstall/fast:
-	cd /home/nr/code/CeeBee && $(MAKE) -f CMakeFiles/Makefile2 test/preinstall
+	$(MAKE) -f CMakeFiles/Makefile2 preinstall
 .PHONY : preinstall/fast
 
 # clear depends
 depend:
-	cd /home/nr/code/CeeBee && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
+	$(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
 
-# Convenience name for target.
-test/CMakeFiles/operations_tests.dir/rule:
-	cd /home/nr/code/CeeBee && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/operations_tests.dir/rule
-.PHONY : test/CMakeFiles/operations_tests.dir/rule
+#=============================================================================
+# Target rules for targets named ceebee
 
-# Convenience name for target.
-operations_tests: test/CMakeFiles/operations_tests.dir/rule
+# Build rule for target.
+ceebee: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 ceebee
+.PHONY : ceebee
 
+# fast build rule for target.
+ceebee/fast:
+	$(MAKE) -f CMakeFiles/ceebee.dir/build.make CMakeFiles/ceebee.dir/build
+.PHONY : ceebee/fast
+
+#=============================================================================
+# Target rules for targets named gmock_main
+
+# Build rule for target.
+gmock_main: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 gmock_main
+.PHONY : gmock_main
+
+# fast build rule for target.
+gmock_main/fast:
+	$(MAKE) -f googletest-build/googlemock/CMakeFiles/gmock_main.dir/build.make googletest-build/googlemock/CMakeFiles/gmock_main.dir/build
+.PHONY : gmock_main/fast
+
+#=============================================================================
+# Target rules for targets named gmock
+
+# Build rule for target.
+gmock: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 gmock
+.PHONY : gmock
+
+# fast build rule for target.
+gmock/fast:
+	$(MAKE) -f googletest-build/googlemock/CMakeFiles/gmock.dir/build.make googletest-build/googlemock/CMakeFiles/gmock.dir/build
+.PHONY : gmock/fast
+
+#=============================================================================
+# Target rules for targets named gtest_main
+
+# Build rule for target.
+gtest_main: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 gtest_main
+.PHONY : gtest_main
+
+# fast build rule for target.
+gtest_main/fast:
+	$(MAKE) -f googletest-build/googlemock/gtest/CMakeFiles/gtest_main.dir/build.make googletest-build/googlemock/gtest/CMakeFiles/gtest_main.dir/build
+.PHONY : gtest_main/fast
+
+#=============================================================================
+# Target rules for targets named gtest
+
+# Build rule for target.
+gtest: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 gtest
+.PHONY : gtest
+
+# fast build rule for target.
+gtest/fast:
+	$(MAKE) -f googletest-build/googlemock/gtest/CMakeFiles/gtest.dir/build.make googletest-build/googlemock/gtest/CMakeFiles/gtest.dir/build
+.PHONY : gtest/fast
+
+#=============================================================================
+# Target rules for targets named operations_tests
+
+# Build rule for target.
+operations_tests: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 operations_tests
 .PHONY : operations_tests
 
 # fast build rule for target.
 operations_tests/fast:
-	cd /home/nr/code/CeeBee && $(MAKE) -f test/CMakeFiles/operations_tests.dir/build.make test/CMakeFiles/operations_tests.dir/build
+	$(MAKE) -f test/CMakeFiles/operations_tests.dir/build.make test/CMakeFiles/operations_tests.dir/build
 .PHONY : operations_tests/fast
 
-__/src/common.o: __/src/common.c.o
+src/common.o: src/common.c.o
 
-.PHONY : __/src/common.o
-
-# target to build an object file
-__/src/common.c.o:
-	cd /home/nr/code/CeeBee && $(MAKE) -f test/CMakeFiles/operations_tests.dir/build.make test/CMakeFiles/operations_tests.dir/__/src/common.c.o
-.PHONY : __/src/common.c.o
-
-__/src/common.i: __/src/common.c.i
-
-.PHONY : __/src/common.i
-
-# target to preprocess a source file
-__/src/common.c.i:
-	cd /home/nr/code/CeeBee && $(MAKE) -f test/CMakeFiles/operations_tests.dir/build.make test/CMakeFiles/operations_tests.dir/__/src/common.c.i
-.PHONY : __/src/common.c.i
-
-__/src/common.s: __/src/common.c.s
-
-.PHONY : __/src/common.s
-
-# target to generate assembly for a file
-__/src/common.c.s:
-	cd /home/nr/code/CeeBee && $(MAKE) -f test/CMakeFiles/operations_tests.dir/build.make test/CMakeFiles/operations_tests.dir/__/src/common.c.s
-.PHONY : __/src/common.c.s
-
-__/src/cpu.o: __/src/cpu.c.o
-
-.PHONY : __/src/cpu.o
+.PHONY : src/common.o
 
 # target to build an object file
-__/src/cpu.c.o:
-	cd /home/nr/code/CeeBee && $(MAKE) -f test/CMakeFiles/operations_tests.dir/build.make test/CMakeFiles/operations_tests.dir/__/src/cpu.c.o
-.PHONY : __/src/cpu.c.o
+src/common.c.o:
+	$(MAKE) -f CMakeFiles/ceebee.dir/build.make CMakeFiles/ceebee.dir/src/common.c.o
+.PHONY : src/common.c.o
 
-__/src/cpu.i: __/src/cpu.c.i
+src/common.i: src/common.c.i
 
-.PHONY : __/src/cpu.i
+.PHONY : src/common.i
 
 # target to preprocess a source file
-__/src/cpu.c.i:
-	cd /home/nr/code/CeeBee && $(MAKE) -f test/CMakeFiles/operations_tests.dir/build.make test/CMakeFiles/operations_tests.dir/__/src/cpu.c.i
-.PHONY : __/src/cpu.c.i
+src/common.c.i:
+	$(MAKE) -f CMakeFiles/ceebee.dir/build.make CMakeFiles/ceebee.dir/src/common.c.i
+.PHONY : src/common.c.i
 
-__/src/cpu.s: __/src/cpu.c.s
+src/common.s: src/common.c.s
 
-.PHONY : __/src/cpu.s
+.PHONY : src/common.s
 
 # target to generate assembly for a file
-__/src/cpu.c.s:
-	cd /home/nr/code/CeeBee && $(MAKE) -f test/CMakeFiles/operations_tests.dir/build.make test/CMakeFiles/operations_tests.dir/__/src/cpu.c.s
-.PHONY : __/src/cpu.c.s
+src/common.c.s:
+	$(MAKE) -f CMakeFiles/ceebee.dir/build.make CMakeFiles/ceebee.dir/src/common.c.s
+.PHONY : src/common.c.s
 
-__/src/operations.o: __/src/operations.c.o
+src/cpu.o: src/cpu.c.o
 
-.PHONY : __/src/operations.o
+.PHONY : src/cpu.o
 
 # target to build an object file
-__/src/operations.c.o:
-	cd /home/nr/code/CeeBee && $(MAKE) -f test/CMakeFiles/operations_tests.dir/build.make test/CMakeFiles/operations_tests.dir/__/src/operations.c.o
-.PHONY : __/src/operations.c.o
+src/cpu.c.o:
+	$(MAKE) -f CMakeFiles/ceebee.dir/build.make CMakeFiles/ceebee.dir/src/cpu.c.o
+.PHONY : src/cpu.c.o
 
-__/src/operations.i: __/src/operations.c.i
+src/cpu.i: src/cpu.c.i
 
-.PHONY : __/src/operations.i
+.PHONY : src/cpu.i
 
 # target to preprocess a source file
-__/src/operations.c.i:
-	cd /home/nr/code/CeeBee && $(MAKE) -f test/CMakeFiles/operations_tests.dir/build.make test/CMakeFiles/operations_tests.dir/__/src/operations.c.i
-.PHONY : __/src/operations.c.i
+src/cpu.c.i:
+	$(MAKE) -f CMakeFiles/ceebee.dir/build.make CMakeFiles/ceebee.dir/src/cpu.c.i
+.PHONY : src/cpu.c.i
 
-__/src/operations.s: __/src/operations.c.s
+src/cpu.s: src/cpu.c.s
 
-.PHONY : __/src/operations.s
+.PHONY : src/cpu.s
 
 # target to generate assembly for a file
-__/src/operations.c.s:
-	cd /home/nr/code/CeeBee && $(MAKE) -f test/CMakeFiles/operations_tests.dir/build.make test/CMakeFiles/operations_tests.dir/__/src/operations.c.s
-.PHONY : __/src/operations.c.s
+src/cpu.c.s:
+	$(MAKE) -f CMakeFiles/ceebee.dir/build.make CMakeFiles/ceebee.dir/src/cpu.c.s
+.PHONY : src/cpu.c.s
 
-main.o: main.cpp.o
+src/main.o: src/main.c.o
 
-.PHONY : main.o
+.PHONY : src/main.o
 
 # target to build an object file
-main.cpp.o:
-	cd /home/nr/code/CeeBee && $(MAKE) -f test/CMakeFiles/operations_tests.dir/build.make test/CMakeFiles/operations_tests.dir/main.cpp.o
-.PHONY : main.cpp.o
+src/main.c.o:
+	$(MAKE) -f CMakeFiles/ceebee.dir/build.make CMakeFiles/ceebee.dir/src/main.c.o
+.PHONY : src/main.c.o
 
-main.i: main.cpp.i
+src/main.i: src/main.c.i
 
-.PHONY : main.i
+.PHONY : src/main.i
 
 # target to preprocess a source file
-main.cpp.i:
-	cd /home/nr/code/CeeBee && $(MAKE) -f test/CMakeFiles/operations_tests.dir/build.make test/CMakeFiles/operations_tests.dir/main.cpp.i
-.PHONY : main.cpp.i
+src/main.c.i:
+	$(MAKE) -f CMakeFiles/ceebee.dir/build.make CMakeFiles/ceebee.dir/src/main.c.i
+.PHONY : src/main.c.i
 
-main.s: main.cpp.s
+src/main.s: src/main.c.s
 
-.PHONY : main.s
+.PHONY : src/main.s
 
 # target to generate assembly for a file
-main.cpp.s:
-	cd /home/nr/code/CeeBee && $(MAKE) -f test/CMakeFiles/operations_tests.dir/build.make test/CMakeFiles/operations_tests.dir/main.cpp.s
-.PHONY : main.cpp.s
+src/main.c.s:
+	$(MAKE) -f CMakeFiles/ceebee.dir/build.make CMakeFiles/ceebee.dir/src/main.c.s
+.PHONY : src/main.c.s
 
-operations.o: operations.cpp.o
+src/operations.o: src/operations.c.o
 
-.PHONY : operations.o
+.PHONY : src/operations.o
 
 # target to build an object file
-operations.cpp.o:
-	cd /home/nr/code/CeeBee && $(MAKE) -f test/CMakeFiles/operations_tests.dir/build.make test/CMakeFiles/operations_tests.dir/operations.cpp.o
-.PHONY : operations.cpp.o
+src/operations.c.o:
+	$(MAKE) -f CMakeFiles/ceebee.dir/build.make CMakeFiles/ceebee.dir/src/operations.c.o
+.PHONY : src/operations.c.o
 
-operations.i: operations.cpp.i
+src/operations.i: src/operations.c.i
 
-.PHONY : operations.i
+.PHONY : src/operations.i
 
 # target to preprocess a source file
-operations.cpp.i:
-	cd /home/nr/code/CeeBee && $(MAKE) -f test/CMakeFiles/operations_tests.dir/build.make test/CMakeFiles/operations_tests.dir/operations.cpp.i
-.PHONY : operations.cpp.i
+src/operations.c.i:
+	$(MAKE) -f CMakeFiles/ceebee.dir/build.make CMakeFiles/ceebee.dir/src/operations.c.i
+.PHONY : src/operations.c.i
 
-operations.s: operations.cpp.s
+src/operations.s: src/operations.c.s
 
-.PHONY : operations.s
+.PHONY : src/operations.s
 
 # target to generate assembly for a file
-operations.cpp.s:
-	cd /home/nr/code/CeeBee && $(MAKE) -f test/CMakeFiles/operations_tests.dir/build.make test/CMakeFiles/operations_tests.dir/operations.cpp.s
-.PHONY : operations.cpp.s
+src/operations.c.s:
+	$(MAKE) -f CMakeFiles/ceebee.dir/build.make CMakeFiles/ceebee.dir/src/operations.c.s
+.PHONY : src/operations.c.s
 
 # Help Target
 help:
@@ -326,26 +362,28 @@ help:
 	@echo "... install/strip"
 	@echo "... install/local"
 	@echo "... test"
-	@echo "... operations_tests"
-	@echo "... edit_cache"
+	@echo "... ceebee"
 	@echo "... rebuild_cache"
+	@echo "... edit_cache"
 	@echo "... install"
 	@echo "... list_install_components"
-	@echo "... __/src/common.o"
-	@echo "... __/src/common.i"
-	@echo "... __/src/common.s"
-	@echo "... __/src/cpu.o"
-	@echo "... __/src/cpu.i"
-	@echo "... __/src/cpu.s"
-	@echo "... __/src/operations.o"
-	@echo "... __/src/operations.i"
-	@echo "... __/src/operations.s"
-	@echo "... main.o"
-	@echo "... main.i"
-	@echo "... main.s"
-	@echo "... operations.o"
-	@echo "... operations.i"
-	@echo "... operations.s"
+	@echo "... gmock_main"
+	@echo "... gmock"
+	@echo "... gtest_main"
+	@echo "... gtest"
+	@echo "... operations_tests"
+	@echo "... src/common.o"
+	@echo "... src/common.i"
+	@echo "... src/common.s"
+	@echo "... src/cpu.o"
+	@echo "... src/cpu.i"
+	@echo "... src/cpu.s"
+	@echo "... src/main.o"
+	@echo "... src/main.i"
+	@echo "... src/main.s"
+	@echo "... src/operations.o"
+	@echo "... src/operations.i"
+	@echo "... src/operations.s"
 .PHONY : help
 
 
@@ -357,6 +395,6 @@ help:
 # No rule that depends on this can have commands that come from listfiles
 # because they might be regenerated.
 cmake_check_build_system:
-	cd /home/nr/code/CeeBee && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
+	$(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
 .PHONY : cmake_check_build_system
 
