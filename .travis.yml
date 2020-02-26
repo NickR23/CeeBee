@@ -5,3 +5,5 @@ language: cpp
 script:
   - cmake . 
   - cmake --build .
+  - cd build
+  - ctest
