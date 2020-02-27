@@ -19,10 +19,12 @@ void NOP() {
   printf("\tOperation: NOP");
 }
 
+// Load 16 bits into destination
 void indir16LD(unsigned short* dst, unsigned short* src) {
 	*dst = *src;
 }
 
+// Load 8 bits into destination
 void indirLD(unsigned char* dst, unsigned char* src) {
 	*dst = *src;
 }
