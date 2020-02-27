@@ -2,10 +2,10 @@
 #include <stdlib.h>
 #include "ceebee/cpu.h"
 #include "ceebee/operations.h"
-#include "lib/common.h"
+#include "ceebee/common.h"
 
 //Provides codes to set term colors.
-#include "lib/termColors.h"
+#include "ceebee/termColors.h"
 
 void usage() {
   printf(RED "Usage: gba \"CART_PATH\"\n" RESET);

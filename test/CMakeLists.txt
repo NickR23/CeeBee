@@ -1,4 +1,4 @@
-iinclude_directories("${PROJECT_SOURCE_DIR}/include")
+include_directories("${PROJECT_SOURCE_DIR}/include")
 
 file(GLOB sources "${PROJECT_SOURCE_DIR}/src/*.c")
 list(REMOVE_ITEM sources "${PROJECT_SOURCE_DIR}/src/main.c")

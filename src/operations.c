@@ -1,7 +1,11 @@
 #include <stdio.h>
 #include "ceebee/operations.h"
-#include "lib/termColors.h"
-#include "lib/common.h"
+#include "ceebee/termColors.h"
+#include "ceebee/common.h"
+
+int add (int a, int b) {
+  return a + b;
+}
 
 void printOp(Opcode op){
   printf("\t\tx: %02x\n", op.x);
@@ -15,10 +19,12 @@ void NOP() {
   printf("\tOperation: NOP");
 }
 
+// Load 16 bits into destination
 void indir16LD(unsigned short* dst, unsigned short* src) {
 	*dst = *src;
 }
 
+// Load 8 bits into destination
 void indirLD(unsigned char* dst, unsigned char* src) {
 	*dst = *src;
 }

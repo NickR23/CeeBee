@@ -1,3 +1,4 @@
+#ifndef CPU_H
 #define CPU_H
 typedef struct CPU {
   //Regular registers
@@ -27,3 +28,4 @@ unsigned char getByte(unsigned char const *cart, unsigned short addr);
 void printCpu(CPU cpu);
 void run_cycle(CPU *cpu, unsigned char const *cart);
 unsigned char* loadCart(char const *cartPath, unsigned int* cartSize);
+#endif
