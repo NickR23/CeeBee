@@ -6,7 +6,7 @@ OBJECTS=main.o cpu.o operations.o common.o
 INC=-I./include -I./lib
 
 output: clean $(OBJECTS)
-	$(C) $(CFLAGS) $(OBJECTS) -o gba 
+	$(C) $(CFLAGS) $(OBJECTS) -o ceebee 
 
 main.o: $(SRCPATH)main.c
 	$(C) $(INC) $(CCFLAGS) $(SRCPATH)main.c
@@ -26,4 +26,4 @@ debug: output
 
 clean:
 	rm -f $(OBJECTS)
-	rm -f gba 
+	rm -f ceebee 
