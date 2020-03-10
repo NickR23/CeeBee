@@ -153,14 +153,17 @@ void run_cycle(CPU *cpu, unsigned char const *cart) {
     printf(YEL "PC: 0x%04hx\n" RESET, cpu->pc);
     printCpu(*cpu);
   #endif
+
   unsigned char code = cart[cpu->pc];
   struct Op_info info;
-  cpu->jumptable[0x03][0x01](cart, cpu, &info);
-  print_code_info(info);
+
+  // Parse the code
+  int hi = code >> 4;
+  int lo = code & (0x0F);
+  // Run the opcode for the instruction
+  cpu->jumptable[hi][lo](cart, cpu, &info);
 
   // Offset the pc register
   cpu->pc += info.size;
-  
-   
   
 }
