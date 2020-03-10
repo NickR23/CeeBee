@@ -165,5 +165,8 @@ void run_cycle(CPU *cpu, unsigned char const *cart) {
 
   // Offset the pc register
   cpu->pc += info.size;
-  
+   
+  // Reset the info struct
+  info.size = 0;
+  info.cycles = 0; 
 }
