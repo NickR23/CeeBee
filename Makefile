@@ -2,7 +2,7 @@ C=gcc
 CFLAGS=-Wall -std=c99
 CCFLAGS=-c
 SRCPATH=./src/
-OBJECTS=main.o cpu.o operations.o common.o
+OBJECTS=main.o cpu.o operations.o common.o jumptable.o
 INC=-I./include -I./lib
 
 output: clean $(OBJECTS)
@@ -16,6 +16,9 @@ cpu.o: $(SRCPATH)cpu.c
 
 operations.o: $(SRCPATH)operations.c
 	$(C) $(INC) $(CCFLAGS) $(SRCPATH)operations.c
+
+jumptable.o: $(SRCPATH)jumptable.c
+	$(C) $(INC) $(CCFLAGS) $(SRCPATH)jumptable.c
 
 common.o: $(SRCPATH)common.c
 	$(C) $(INC) $(CCFLAGS) $(SRCPATH)common.c

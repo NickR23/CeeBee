@@ -5,10 +5,12 @@
 #include "ceebee/operations.h"
 #include "ceebee/common.h"
 #include "ceebee/termColors.h"
+#include "ceebee/jumptable.h"
 
 CPU initCPU() {
   CPU cpu;
   cpu.ram = (unsigned char*) malloc(sizeof(unsigned char) * (65536));
+  init_jmp(cpu.jumptable);
   return cpu;
 }
 
@@ -144,7 +146,7 @@ void printCart(int start, unsigned char const *cart) {
 
 Opcode decodeOpCode(CPU *cpu, unsigned char const *cart) {
   unsigned char code = cart[cpu->pc];
-  printf(RED "\tI found this: 0x%x\n" RESET, code);
+  printf(RED "\tPC pointing to: 0x%x\n" RESET, code);
   //See my notes for decoding explanation
   Opcode op;
   unsigned char x, y, z, p, q;
@@ -155,7 +157,7 @@ Opcode decodeOpCode(CPU *cpu, unsigned char const *cart) {
   op.q = op.y & 0x1;
   mask = 0x07;
   op.z = (code & mask);
-	return op;
+  return op;
 }
 
 void run_cycle(CPU *cpu, unsigned char const *cart) {

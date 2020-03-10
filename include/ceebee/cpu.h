@@ -1,5 +1,8 @@
 #ifndef CPU_H
 #define CPU_H
+
+typedef void (*func_ptr)(void);
+
 typedef struct CPU {
   //Regular registers
   //These are sometimes combined into 16-bit registers
@@ -18,7 +21,7 @@ typedef struct CPU {
   //Memory
   unsigned char* ram;
   // Opcode jumptable
-  void (*jumptable[0xF][0xF])();
+  func_ptr jumptable[0xF][0xF];
 } CPU;
 
 CPU initCPU();
