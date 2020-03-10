@@ -153,7 +153,8 @@ void print_code_info(Op_info info) {
 }
 
 void run_cycle(CPU *cpu, unsigned char const *cart) {
-  unsigned char code = cart[cpu->pc];
+  //unsigned char code = cart[cpu->pc];
+  unsigned char code = 0x03;
   struct Op_info info;
 
   #ifdef DEBUG
