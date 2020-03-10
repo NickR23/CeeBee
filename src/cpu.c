@@ -78,7 +78,7 @@ unsigned char* getRegister(CPU *cpu, int index) {
 
 //Gets the next 16 bits in little endian from addr
 //addr should be a pointer to the end of your op code.
-int getNN(unsigned char const* cart, unsigned short addr) {
+unsigned int getNN(unsigned char const* cart, unsigned short addr) {
   int16_t byte_2_addr = addr + 1;
   //Get first nibble
   char x2 = cart[byte_2_addr] & 0x0f;
@@ -144,12 +144,23 @@ void printCart(int start, unsigned char const *cart) {
   printf("\n");
 }
 
+void print_code_info(Op_info info) {
+  printf(MAG "\tCycles: %d\n\tSize: %d\n" RESET, info.cycles, info.size);
+}
+
 void run_cycle(CPU *cpu, unsigned char const *cart) {
   #ifdef DEBUG
     printf(YEL "PC: 0x%04hx\n" RESET, cpu->pc);
     printCpu(*cpu);
   #endif
-  unsigned char op = cart[cpu->pc];
+  unsigned char code = cart[cpu->pc];
+  struct Op_info info;
+  cpu->jumptable[0x03][0x01](cart, cpu, &info);
+  print_code_info(info);
+
+  // Offset the pc register
+  cpu->pc += info.size;
   
-  cpu->jumptable[0x03][0x01]();
+   
+  
 }

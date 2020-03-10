@@ -1,8 +1,16 @@
 #ifndef CPU_H
 #define CPU_H
 
-typedef void (*func_ptr)(void);
+typedef struct Op_info {
+  // The number of cycles for the instruction
+  int cycles;
+  // The size of the instruction
+  int size;
+} Op_info;
 
+typedef void (*func_ptr)(unsigned char const* cart, void *, Op_info *);
+
+#include "jumptable.h"
 typedef struct CPU {
   //Regular registers
   //These are sometimes combined into 16-bit registers
@@ -29,8 +37,8 @@ void freeCPU(CPU *cpu);
 unsigned short* getRP2Register(CPU *cpu, int index);
 unsigned short* getRPRegister(CPU *cpu, int index);
 unsigned char* getRegister(CPU *cpu, int index);
-int getNN(unsigned char const *cart, unsigned short addr);
 unsigned char getByte(unsigned char const *cart, unsigned short addr);
+unsigned int getNN(unsigned char const *cart, unsigned short addr);
 void printCpu(CPU cpu);
 void run_cycle(CPU *cpu, unsigned char const *cart);
 unsigned char* loadCart(char const *cartPath, unsigned int* cartSize);
