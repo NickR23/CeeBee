@@ -17,7 +17,10 @@ typedef struct CPU {
   unsigned short sp;
   //Memory
   unsigned char* ram;
+  // Opcode jumptable
+  void (*jumptable[0xF][0xF])();
 } CPU;
+
 CPU initCPU();
 void freeCPU(CPU *cpu);
 unsigned short* getRP2Register(CPU *cpu, int index);
