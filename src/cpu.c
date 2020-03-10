@@ -8,7 +8,11 @@
 
 CPU initCPU() {
   CPU cpu;
+
+  /* The gameboy can address 65,536 positions in memory */
+  /* http://gameboy.mongenel.com/dmg/asmmemmap.html */
   cpu.ram = (unsigned char*) malloc(sizeof(unsigned char) * (65536));
+
   init_jmp(cpu.jumptable);
   return cpu;
 }
@@ -149,13 +153,14 @@ void print_code_info(Op_info info) {
 }
 
 void run_cycle(CPU *cpu, unsigned char const *cart) {
+  unsigned char code = cart[cpu->pc];
+  struct Op_info info;
+
   #ifdef DEBUG
-    printf(YEL "PC: 0x%04hx\n" RESET, cpu->pc);
+    printf(YEL "PC: 0x%04hx\tCode: 0x%02x\n" RESET, cpu->pc, code);
     printCpu(*cpu);
   #endif
 
-  unsigned char code = cart[cpu->pc];
-  struct Op_info info;
 
   // Parse the code
   int hi = code >> 4;

@@ -32,6 +32,17 @@ void LD_BC_d16(unsigned char const* cart, void *cpu, Op_info *info) {
   info->size = 3;
 }
 
+// Load a into addr in BC
+void LDINDR_BC_A(unsigned char const* cart, void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu; 
+  printf("RAM @ 0x9FFFF = 0x%02x\n", cpu_ptr->ram[0x9FFF]);
+  unsigned short* bc = getRPRegister(cpu_ptr, 0); 
+  cpu_ptr->ram[*bc] = cpu_ptr->a;
+  printf("BC: %04x\nRAM @ 0x9FFFF = 0x%02x\n", *bc, cpu_ptr->ram[0x9FFF]);
+}
+
+
+
 // Lets u kno that this opcode is not implemented yet
 void NOT_IMPL(unsigned char const* cart, void *cpu, Op_info *info) {
   printf(WHT "This instruction is not yet implemented :)\n" RESET);
@@ -47,5 +58,6 @@ void init_jmp (func_ptr jumptable[0xF][0xF]) {
  
   jumptable[0x00][0x00] = NOP;
   jumptable[0x00][0x01] = LD_BC_d16;
+  jumptable[0x00][0x02] = LDINDR_BC_A;
   jumptable[0x03][0x01] = LD_SP_d16;
 }
