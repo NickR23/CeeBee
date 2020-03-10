@@ -49,9 +49,6 @@ int main(int argc, char** argv) {
     printf(CYN "Cart size:\n\t%d\n" RESET, cartSize);
   #endif
 
-  LD16(getRPRegister(&cpu, 3), 0xc1);
-  LD(getRegister(&cpu, 7), 0xab);
-	
   for (int i = 0; i < 5; i++)	{
     #ifndef DEBUG
       printDebug(cpu);

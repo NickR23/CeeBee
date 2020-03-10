@@ -100,8 +100,7 @@ unsigned char getByte(unsigned char const *cart, unsigned short addr) {
 }
 
 void printCpu(CPU cpu) {
-  printf(MAG "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n" RESET);
-  printf(YEL "I am a cpu!\nThis is how I feel\n" RESET);
+  printf(MAG "~~~~~~~~~~~~~REGISTERS~~~~~~~~~~~~~~~~~\n" RESET);
   printf(GRN "\t\tb: 0x%02x\n", cpu.b);
   printf(GRN "\t\tc: 0x%02x\n", cpu.c);
   printf(GRN "\t\td: 0x%02x\n", cpu.d);
@@ -112,7 +111,7 @@ void printCpu(CPU cpu) {
   printf(GRN "\t\tl: 0x%02x\n", cpu.l);
   printf(GRN "\t\tpc: 0x%04x\n", cpu.pc);
   printf(GRN "\t\tsp: 0x%04x\n", cpu.sp);
-  printf(MAG "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n" RESET);
+  printf(MAG "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n" RESET);
 }
 
 unsigned char* loadCart(char const *cartPath, unsigned int* cartSize) {

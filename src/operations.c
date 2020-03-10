@@ -167,6 +167,7 @@ void exec(Opcode op, CPU *cpu,  unsigned char const *cart) {
     if (op.z == 3) {
       if (op.y == 1) {
         //CB Prefix
+        return;
       }
     }
   }
