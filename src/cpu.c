@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include "ceebee/cpu.h"
-#include "ceebee/operations.h"
 #include "ceebee/common.h"
 #include "ceebee/termColors.h"
 #include "ceebee/jumptable.h"
@@ -76,6 +75,7 @@ unsigned char* getRegister(CPU *cpu, int index) {
       return NULL;
     }
 }
+
 //Gets the next 16 bits in little endian from addr
 //addr should be a pointer to the end of your op code.
 int getNN(unsigned char const* cart, unsigned short addr) {
@@ -144,27 +144,12 @@ void printCart(int start, unsigned char const *cart) {
   printf("\n");
 }
 
-Opcode decodeOpCode(CPU *cpu, unsigned char const *cart) {
-  unsigned char code = cart[cpu->pc];
-  printf(RED "\tPC pointing to: 0x%x\n" RESET, code);
-  //See my notes for decoding explanation
-  Opcode op;
-  unsigned char x, y, z, p, q;
-  op.x = code >> 6;
-  unsigned char mask = 0x38;
-  op.y = (code & mask) >> 3;
-  op.p = op.y >> 1;
-  op.q = op.y & 0x1;
-  mask = 0x07;
-  op.z = (code & mask);
-  return op;
-}
-
 void run_cycle(CPU *cpu, unsigned char const *cart) {
   #ifdef DEBUG
     printf(YEL "PC: 0x%04hx\n" RESET, cpu->pc);
     printCpu(*cpu);
   #endif
-  Opcode op = decodeOpCode(cpu, cart);
-  exec(op, cpu, cart);
+  unsigned char op = cart[cpu->pc];
+  
+  cpu->jumptable[0x03][0x01]();
 }

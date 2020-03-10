@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "ceebee/cpu.h"
-#include "ceebee/operations.h"
 #include "ceebee/common.h"
 
 //Provides codes to set term colors.
