@@ -167,8 +167,8 @@ void run_cycle(CPU *cpu, unsigned char const *cart) {
   int hi = code >> 4;
   int lo = code & (0x0F);
   // Run the opcode for the instruction
-  cpu->jumptable[hi][lo](cart, cpu, &info);
-  //cpu->jumptable[0x0][0x4](cart, cpu, &info);
+  //cpu->jumptable[hi][lo](cart, cpu, &info);
+  cpu->jumptable[0x0][0x4](cart, cpu, &info);
 
   // Offset the pc register
   cpu->pc += info.size;

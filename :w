@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <stdbool.h>
 #include "ceebee/jumptable.h"
 #include "ceebee/cpu.h"
 #include "ceebee/termColors.h"
@@ -21,15 +20,15 @@ void setHF(CPU *cpu, bool state) {
 }
 
 // Sets the sets the subraction flag
-void setNF(CPU *cpu, bool state) {
+void setNF(CPU *cpu) {
   if (state)
     cpu->f |= 0x40;
   else
-    cpu->f &= 0x00;
+    cpu-> &= 0x00;
 }
 
 // Sets the sets the subraction flag
-void setZF(CPU *cpu, bool state) {
+void setZF(CPU *cpu) {
   if (state)
     cpu->f |= 0x80;
   else 
@@ -94,7 +93,10 @@ void INC_BC(unsigned char const* cart, void *cpu, Op_info *info) {
 void INC_B(unsigned char const* cart, void *cpu, Op_info *info) {
  CPU *cpu_ptr = (CPU*) cpu;
  unsigned char *b = getRegister(cpu_ptr, 0); 
+ // Save the previous value to detect (half) carry
+ unsigned char prev = *b;
 
+ *b = *b + 1;
  // Provide the info for the instruction
  info->cycles = 4;
  info->size = 1;
@@ -104,8 +106,6 @@ void INC_B(unsigned char const* cart, void *cpu, Op_info *info) {
  // [val] & 0xf gets rid of the upper nibble
  setHF(cpu_ptr,  ((*b & 0xf) + (1 & 0xf)) & 0x10 );
 
- // Carry out the operation
- *b = *b + 1;
 } 
 
 // Lets u kno that this opcode is not implemented yet
