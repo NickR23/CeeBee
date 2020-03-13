@@ -101,6 +101,7 @@ void INC_B(unsigned char const* cart, void *cpu, Op_info *info) {
 
  // Check flag states
  setZF(cpu_ptr, *b == 0x00);
+ setNF(cpu_ptr, false);
  // [val] & 0xf gets rid of the upper nibble
  setHF(cpu_ptr,  ((*b & 0xf) + (1 & 0xf)) & 0x10 );
 
