@@ -3,6 +3,27 @@
 #include "ceebee/cpu.h"
 #include "ceebee/termColors.h"
 
+// Sets the carry flag
+void setCF(CPU *cpu) {
+  cpu->f |= 0x10;
+}
+
+// Sets the half carry flag
+void setHF(CPU *cpu) {
+  cpu->f |= 0x20;
+}
+
+// Sets the sets the subraction flag
+void setNF(CPU *cpu) {
+  cpu->f |= 0x40;
+}
+
+// Sets the sets the subraction flag
+void setZF(CPU *cpu) {
+  cpu->f |= 0x80;
+}
+
+
 void NOP(unsigned char const* cart, void *cpu, Op_info *info) {
   printf("NOP\n");
   
@@ -51,11 +72,21 @@ void INC_BC(unsigned char const* cart, void *cpu, Op_info *info) {
  CPU *cpu_ptr = (CPU*) cpu;
  unsigned short *bc = getRPRegister(cpu_ptr, 0); 
  *bc = *bc + 1;
- printf("\tBC: 0x%04x\n",*bc);
  // Provide the info for the instruction
  info->cycles = 8;
  info->size = 1;
 }
+
+// Increment B
+void INC_B(unsigned char const* cart, void *cpu, Op_info *info) {
+ CPU *cpu_ptr = (CPU*) cpu;
+ unsigned char *b = getRegister(cpu_ptr, 0); 
+ *b = *b + 1;
+ // Provide the info for the instruction
+ info->cycles = 4;
+ info->size = 1;
+
+} 
 
 // Lets u kno that this opcode is not implemented yet
 void NOT_IMPL(unsigned char const* cart, void *cpu, Op_info *info) {
@@ -74,5 +105,6 @@ void init_jmp (func_ptr jumptable[0xF][0xF]) {
   jumptable[0x00][0x01] = LD_BC_d16;
   jumptable[0x00][0x02] = LDINDR_BC_A;
   jumptable[0x00][0x03] = INC_BC;
+  jumptable[0x00][0x04] = INC_B;
   jumptable[0x03][0x01] = LD_SP_d16;
 }
