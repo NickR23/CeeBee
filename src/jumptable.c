@@ -128,6 +128,33 @@ void DEC_B(unsigned char const* cart, void *cpu, Op_info *info) {
  *b = *b - 1;
 } 
 
+// Load immediate 8 bits into B
+void LD_B_d8(unsigned char const* cart, void *cpu, Op_info *info) {
+ CPU *cpu_ptr = (CPU*) cpu;
+ unsigned char *b = getRegister(cpu_ptr, 0); 
+
+ // Provide the info for the instruction
+ info->cycles = 8;
+ info->size = 2;
+  
+ *b = getByte(cart, cpu_ptr->pc + 1);
+}
+ 
+void RLCA(unsigned char const* cart, void *cpu, Op_info *info) {
+ CPU *cpu_ptr = (CPU*) cpu;
+ 
+ unsigned short cf = (cpu_ptr->a & 0x80) >> 7;
+ cpu_ptr->a = (cpu_ptr->a << 1) | cf;
+ 
+ setCF(cpu_ptr, cf);
+ 
+ // Provide the info for the instruction
+ info->cycles = 4;
+ info->size = 1;
+} 
+
+  
+
 // Lets u kno that this opcode is not implemented yet
 void NOT_IMPL(unsigned char const* cart, void *cpu, Op_info *info) {
   printf(WHT "This instruction is not yet implemented :)\n" RESET);
@@ -148,5 +175,7 @@ void init_jmp (func_ptr jumptable[0xF][0xF]) {
   jumptable[0x00][0x03] = INC_BC;
   jumptable[0x00][0x04] = INC_B;
   jumptable[0x00][0x05] = DEC_B;
+  jumptable[0x00][0x06] = LD_B_d8;
+  jumptable[0x00][0x07] = RLCA;
   jumptable[0x03][0x01] = LD_SP_d16;
 }

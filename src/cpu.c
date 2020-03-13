@@ -101,6 +101,7 @@ unsigned int getNN(unsigned char const* cart, unsigned short addr) {
   return nn;
 } 
 
+// Gets next 8 bits from addr
 unsigned char getByte(unsigned char const *cart, unsigned short addr) {
   return cart[addr];
 }
@@ -168,7 +169,7 @@ void run_cycle(CPU *cpu, unsigned char const *cart) {
   int lo = code & (0x0F);
   // Run the opcode for the instruction
   //cpu->jumptable[hi][lo](cart, cpu, &info);
-  cpu->jumptable[0x0][0x4](cart, cpu, &info);
+  cpu->jumptable[0x0][0x7](cart, cpu, &info);
 
   // Offset the pc register
   cpu->pc += info.size;
