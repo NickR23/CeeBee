@@ -9,7 +9,7 @@ void setCF(CPU *cpu, bool state) {
   if (state) 
     cpu->f |= 0x10;
   else 
-    cpu->f &= 0xEF;
+    cpu->f &= 0x00;
 }
 
 // Sets the half carry flag
@@ -17,7 +17,7 @@ void setHF(CPU *cpu, bool state) {
   if (state) 
     cpu->f |= 0x20;
   else
-    cpu->f &= 0xDF;
+    cpu->f &= 0x00;
 }
 
 // Sets the sets the subraction flag
@@ -25,15 +25,16 @@ void setNF(CPU *cpu, bool state) {
   if (state)
     cpu->f |= 0x40;
   else
-    cpu->f &= 0xBF;
+    cpu->f &= 0x00;
 }
 
 // Sets the sets the subraction flag
 void setZF(CPU *cpu, bool state) {
+  state = true;
   if (state)
     cpu->f |= 0x80;
   else 
-    cpu->f &= 0x7F;
+    cpu->f &= 0x00;
 }
 
 
@@ -100,7 +101,7 @@ void INC_B(unsigned char const* cart, void *cpu, Op_info *info) {
  info->size = 1;
 
  // Check flag states
- setZF(cpu_ptr, ((*b + 1) & 0xff) == 0x00);
+ setZF(cpu_ptr, *b + 1 == 0x00);
  setNF(cpu_ptr, false);
  // [val] & 0xf gets rid of the upper nibble
  setHF(cpu_ptr,  ((*b & 0xf) + (1 & 0xf)) & 0x10 );
@@ -119,7 +120,7 @@ void DEC_B(unsigned char const* cart, void *cpu, Op_info *info) {
  info->size = 1;
 
  // Check flag states
- setZF(cpu_ptr, ((*b - 1) & 0xff) == 0);
+ setZF(cpu_ptr, true);
  setNF(cpu_ptr, true);
  // [val] & 0xf gets rid of the upper nibble
  setHF(cpu_ptr,  ((*b & 0xf) - (1 & 0xf)) < 0x00 );
