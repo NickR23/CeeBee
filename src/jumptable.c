@@ -140,10 +140,11 @@ void LD_B_d8(unsigned char const* cart, void *cpu, Op_info *info) {
  *b = getByte(cart, cpu_ptr->pc + 1);
 }
  
+// Rotate A left (with wrapping) and save into cf
 void RLCA(unsigned char const* cart, void *cpu, Op_info *info) {
  CPU *cpu_ptr = (CPU*) cpu;
  
- unsigned short cf = (cpu_ptr->a & 0x80) >> 7;
+ unsigned char cf = (cpu_ptr->a & 0x80) >> 7;
  cpu_ptr->a = (cpu_ptr->a << 1) | cf;
  
  setCF(cpu_ptr, cf);
@@ -153,7 +154,19 @@ void RLCA(unsigned char const* cart, void *cpu, Op_info *info) {
  info->size = 1;
 } 
 
-  
+// Load SP into 16 bit addr
+void LD_a16_SP(unsigned char const* cart, void *cpu, Op_info *info) {
+ CPU *cpu_ptr = (CPU*) cpu;
+ 
+ unsigned short *sp = getRPRegister(cpu_ptr, 3);
+ 
+ unsigned short addr = getNN(cart, cpu_ptr->pc + 1);
+ printf(CYN "addr: 0x%04x\n" RESET, addr);
+ cpu_ptr->ram[addr] = cpu_ptr->a;
+ // Provide the info for the instruction
+ info->cycles = 20;
+ info->size = 3;
+}
 
 // Lets u kno that this opcode is not implemented yet
 void NOT_IMPL(unsigned char const* cart, void *cpu, Op_info *info) {
@@ -177,5 +190,6 @@ void init_jmp (func_ptr jumptable[0xF][0xF]) {
   jumptable[0x00][0x05] = DEC_B;
   jumptable[0x00][0x06] = LD_B_d8;
   jumptable[0x00][0x07] = RLCA;
+  jumptable[0x00][0x08] = LD_a16_SP;
   jumptable[0x03][0x01] = LD_SP_d16;
 }
