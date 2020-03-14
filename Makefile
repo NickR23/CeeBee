@@ -14,7 +14,7 @@ main.o: $(SRCPATH)main.c
 	$(C) $(INC) $(CCFLAGS) $(SRCPATH)main.c
 
 cpu.o: $(SRCPATH)cpu.c
-	$(C) $(INC) $(CCFLAGS) $(SRCPATH)cpu.c
+	$(C) $(INC) $(CCFLAGS) -std=c99 $(SRCPATH)cpu.c
 
 jumptable.o: $(SRCPATH)jumptable.c
 	$(C) $(INC) $(CCFLAGS) $(SRCPATH)jumptable.c
