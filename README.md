@@ -6,11 +6,7 @@ A gameboy emulator built in C
 ## References
 [Pandocs](http://bgb.bircd.org/pandocs.htm)
 
-## Testing setup
+## Running tests
 ```bash
-mkdir build
-cd build
-cmake ..
-make
-ctest
+./cmocka-setup.sh
 ```
