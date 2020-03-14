@@ -32,4 +32,4 @@ int add(int a, int b);
 void RALU(CPU *cpu, int index, unsigned char* rptr);
 void LD16(unsigned short* rptr, unsigned short data);
 void LD(unsigned char* rptr, unsigned char data);
-void exec(Opcode op, CPU *cpu, unsigned char const *cart);
+void exec(CPU *cpu, unsigned char const *cart, unsigned char const opcode);

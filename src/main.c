@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "ceebee/cpu.h"
-#include "ceebee/operations.h"
 #include "ceebee/common.h"
 
 //Provides codes to set term colors.
@@ -48,11 +47,8 @@ int main(int argc, char** argv) {
   #ifdef DEBUG
     printf(CYN "Cart size:\n\t%d\n" RESET, cartSize);
   #endif
-
-  LD16(getRPRegister(&cpu, 3), 0xc1);
-  LD(getRegister(&cpu, 7), 0xab);
-	
-  for (int i = 0; i < 5; i++)	{
+ 
+  for (int i = 0; i < 2; i++)	{
     #ifndef DEBUG
       printDebug(cpu);
     #endif
