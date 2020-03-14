@@ -6,6 +6,7 @@ mkdir -p cmocka-build
 cd cmocka-build
 cmake ../cmocka-1.1.2
 make
+sudo make install
 
 # Run tests
 cd ..

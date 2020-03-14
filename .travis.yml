@@ -1,9 +1,6 @@
 dist: trusty
-sudo: false
 language: cpp
-
-before_install:
-  - sudo apt-get -y install cmocka
+os: linux
 
 jobs:
   include:
