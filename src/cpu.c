@@ -49,7 +49,15 @@ unsigned char* getRegister(CPU *cpu, int index) {
     case 2:
       return (unsigned char*) &cpu->bc;
     case 3:
-      return (unsigned char*) &cpu->bc +1;
+      return (unsigned char*) &cpu->bc + 1;
+    case 4:
+      return (unsigned char*) &cpu->de;
+    case 5:
+      return (unsigned char*) &cpu->de + 1;
+    case 6:
+      return (unsigned char*) &cpu->hl;
+    case 7:
+      return (unsigned char*) &cpu->hl + 1;
     default:
       return NULL;
     }
@@ -140,8 +148,7 @@ void print_code_info(Op_info info) {
 }
 
 void run_cycle(CPU *cpu, unsigned char const *cart) {
-  //unsigned char code = cart[cpu->pc];
-  unsigned char code = 0x03;
+  unsigned char code = cart[cpu->pc];
   struct Op_info info;
 
   #ifdef DEBUG
