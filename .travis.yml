@@ -2,7 +2,7 @@ dist: trusty
 sudo: false
 language: cpp
 
-script:
-  - cmake . 
-  - cmake --build .
-  - ctest
+jobs:
+  include:
+    - stage: travis testing
+      script: echo "hello"
