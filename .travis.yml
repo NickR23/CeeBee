@@ -2,6 +2,9 @@ dist: trusty
 sudo: false
 language: cpp
 
+before_install:
+  - sudo apt-get -y install cmocka
+
 jobs:
   include:
     - stage: travis testing
