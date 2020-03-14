@@ -6,7 +6,8 @@ mkdir -p cmocka-build
 cd cmocka-build
 cmake ../cmocka-1.1.2
 make
-sudo make install
+# Tell the os about the cmocka's location
+export LD_LIBRARY_PATH=./cmocka-build/src:$LD_LIBRARY_PATH
 
 # Run tests
 cd ..
