@@ -3,10 +3,11 @@ CFLAGS=-Wall -std=c99
 CCFLAGS=-c
 SRCPATH=./src/
 TESTPATH=./test/
-OBJECTS=main.o cpu.o common.o jumptable.o
+OBJECTS=cpu.o common.o jumptable.o
+TESTOBJECTS=cmocka_test.o jumptable_test.o
 INC=-I./include -I./lib
 
-output: clean $(OBJECTS)
+output: clean main.o $(OBJECTS)
 	$(C) $(CFLAGS) $(OBJECTS) -o ceebee 
 
 main.o: $(SRCPATH)main.c
@@ -22,14 +23,20 @@ common.o: $(SRCPATH)common.c
 	$(C) $(INC) $(CCFLAGS) $(SRCPATH)common.c
 
 # Test build
-testing:
-	$(C) $(CFLAGS) $(TESTPATH)cmocka_test.c -o testing -l cmocka
+testing: clean $(OBJECTS) $(TESTOBJECTS)
+	$(C) $(CFLAGS) $(OBJECTS) $(TESTOBJECTS) -o testing -l cmocka
+
+cmocka_test.o: $(TESTPATH)cmocka_test.c
+	$(C) $(INC) $(CCFLAGS) $(TESTPATH)cmocka_test.c
+
+jumptable_test.o: $(TESTPATH)jumptable_test.c $(SRCPATH)jumptable.c
+	$(C) $(INC) $(CCFLAGS) $(TESTPATH)jumptable_test.c
 
 debug: CFLAGS += -DDEBUG
 debug: CCFLAGS += -DDEBUG
 debug: output
 
 clean:
-	rm -f $(OBJECTS)
+	rm -f *.o
 	rm -f ceebee 
 	rm -f testing
