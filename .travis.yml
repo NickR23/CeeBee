@@ -2,8 +2,3 @@ dist: trusty
 sudo: false
 language: cpp
 compiler: gcc
-
-jobs:
-  include:
-    - stage: build_cmake
-      script: echo "hello"
