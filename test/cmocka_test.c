@@ -20,7 +20,8 @@ int teardown (void ** state) {
 int main(void) {
   const struct CMUnitTest tests [] =
   {
-    cmocka_unit_test(test_setCF)
+    cmocka_unit_test(test_setCF),
+    cmocka_unit_test(test_fail),
   };
   
   int count_fail_tests = cmocka_run_group_tests(tests, setup, teardown);
