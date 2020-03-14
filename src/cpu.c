@@ -21,60 +21,35 @@ void freeCPU(CPU *cpu)	{
   free(cpu->ram);
 }
 
-unsigned short* getRP2Register(CPU *cpu, int index) {
+unsigned short* getRegister16(CPU *cpu, int index) {
   switch(index) {
-    //For combo registers, I'm just returning the addr for the first register
     case 0:
-      return (unsigned short*) &cpu->b;
-      break;
-    case 1:
-      return (unsigned short*) &cpu->d;
-      break;
+      return &cpu->af;
     case 2:
-      return (unsigned short*) &cpu->h;
-      break;
-    case 3:
-      return (unsigned short*) &cpu->a;
-  }
-  return NULL;
-}
-
-unsigned short* getRPRegister(CPU *cpu, int index) {
-  switch(index) {
-    //For combo registers, I'm just returning the addr for the first register
-    case 0:
-      return (unsigned short*) &cpu->b;
-      break;
-    case 1:
-      return (unsigned short*) &cpu->d;
-      break;
-    case 2:
-      return (unsigned short*) &cpu->h;
-      break;
-    case 3:
+      return &cpu->bc;
+    case 4:
+      return &cpu->de;
+    case 6:
+      return &cpu->hl;
+    case 8:
       return &cpu->sp;
+    case 9:
+      return &cpu->pc;
+    default: 
+      return NULL;
     }
-  return NULL;
 }
 
 unsigned char* getRegister(CPU *cpu, int index) {
   switch(index){
     case 0:
-      return &cpu->b;
-    case 1:
-      return &cpu->c;
+      return (unsigned char*) &cpu->af;
+    case 1: 
+      return (unsigned char*) &cpu->af + 1;
     case 2:
-      return &cpu->d;
+      return (unsigned char*) &cpu->bc;
     case 3:
-      return &cpu->e;
-    case 4:
-      return &cpu->h;
-    case 5:
-      return &cpu->l;
-    case 6:
-      panic(RED "CPU doesn't have HL yet :(\n" RESET);
-    case 7:
-      return &cpu->a;
+      return (unsigned char*) &cpu->bc +1;
     default:
       return NULL;
     }
@@ -107,17 +82,28 @@ unsigned char getByte(unsigned char const *cart, unsigned short addr) {
 }
 
 void printCpu(CPU cpu) {
+  unsigned char b = *getRegister(&cpu, B);
+  unsigned char c = *getRegister(&cpu, C);
+  unsigned char d = *getRegister(&cpu, D);
+  unsigned char e = *getRegister(&cpu, E);
+  unsigned char a = *getRegister(&cpu, A);
+  unsigned char f = *getRegister(&cpu, F);
+  unsigned char h = *getRegister(&cpu, H);
+  unsigned char l = *getRegister(&cpu, L);
+  unsigned short pc = *getRegister16(&cpu, PC);
+  unsigned short sp = *getRegister16(&cpu, SP);
+  
   printf(MAG "~~~~~~~~~~~~~REGISTERS~~~~~~~~~~~~~~~~~\n" RESET);
-  printf(GRN "\t\tb: 0x%02x\n", cpu.b);
-  printf(GRN "\t\tc: 0x%02x\n", cpu.c);
-  printf(GRN "\t\td: 0x%02x\n", cpu.d);
-  printf(GRN "\t\te: 0x%02x\n", cpu.e);
-  printf(GRN "\t\ta: 0x%02x\n", cpu.a);
-  printf(GRN "\t\tf: 0x%02x\n", cpu.f);
-  printf(GRN "\t\th: 0x%02x\n", cpu.h);
-  printf(GRN "\t\tl: 0x%02x\n", cpu.l);
-  printf(GRN "\t\tpc: 0x%04x\n", cpu.pc);
-  printf(GRN "\t\tsp: 0x%04x\n", cpu.sp);
+  printf(GRN "\t\tb: 0x%02x\n", b);
+  printf(GRN "\t\tc: 0x%02x\n", c);
+  printf(GRN "\t\td: 0x%02x\n", d);
+  printf(GRN "\t\te: 0x%02x\n", e);
+  printf(GRN "\t\ta: 0x%02x\n", a);
+  printf(GRN "\t\tf: 0x%02x\n", f);
+  printf(GRN "\t\th: 0x%02x\n", h);
+  printf(GRN "\t\tl: 0x%02x\n", l);
+  printf(GRN "\t\tpc: 0x%04x\n", pc);
+  printf(GRN "\t\tsp: 0x%04x\n", sp);
   printf(MAG "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n" RESET);
 }
 

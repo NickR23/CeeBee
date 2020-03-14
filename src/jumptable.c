@@ -6,34 +6,38 @@
 
 // Sets the carry flag
 void setCF(CPU *cpu, bool state) {
+  unsigned char *f = getRegister(cpu, F); 
   if (state) 
-    cpu->f |= 0x10;
+    *f |= 0x10;
   else 
-    cpu->f &= 0xEF;
+    *f &= 0xEF;
 }
 
 // Sets the half carry flag
 void setHF(CPU *cpu, bool state) {
+  unsigned char *f = getRegister(cpu, F); 
   if (state) 
-    cpu->f |= 0x20;
+    *f |= 0x20;
   else
-    cpu->f &= 0xDF;
+    *f &= 0xDF;
 }
 
 // Sets the sets the subraction flag
 void setNF(CPU *cpu, bool state) {
+  unsigned char *f = getRegister(cpu, F); 
   if (state)
-    cpu->f |= 0x40;
+    *f |= 0x40;
   else
-    cpu->f &= 0xBF;
+    *f &= 0xBF;
 }
 
 // Sets the sets the subraction flag
 void setZF(CPU *cpu, bool state) {
+  unsigned char *f = getRegister(cpu, F); 
   if (state)
-    cpu->f |= 0x80;
+    *f |= 0x80;
   else 
-    cpu->f &= 0x7F;
+    *f &= 0x7F;
 }
 
 
@@ -63,7 +67,7 @@ void LD_BC_d16(unsigned char const* cart, void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu; 
   // Get the next 16 bits from just after pc
   unsigned int nn = getNN(cart, cpu_ptr->pc + 1);
-  unsigned short* bc = getRPRegister(cpu_ptr, 0);
+  unsigned short* bc = getRegister16(cpu_ptr, B);
   *bc = nn;
   // Provide the info for the instruction
   info->cycles = 12;
@@ -73,8 +77,9 @@ void LD_BC_d16(unsigned char const* cart, void *cpu, Op_info *info) {
 // Load a into addr in BC
 void LDINDR_BC_A(unsigned char const* cart, void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu; 
-  unsigned short *bc = getRPRegister(cpu_ptr, 0); 
-  cpu_ptr->ram[*bc] = cpu_ptr->a;
+  unsigned short* bc = getRegister16(cpu_ptr, B);
+  unsigned char *a = getRegister(cpu_ptr, A);
+  cpu_ptr->ram[*bc] = *a;
   // Provide the info for the instruction
   info->cycles = 8;
   info->size = 1;
@@ -83,7 +88,7 @@ void LDINDR_BC_A(unsigned char const* cart, void *cpu, Op_info *info) {
 // Increment BC
 void INC_BC(unsigned char const* cart, void *cpu, Op_info *info) {
  CPU *cpu_ptr = (CPU*) cpu;
- unsigned short *bc = getRPRegister(cpu_ptr, 0); 
+ unsigned short *bc = getRegister16(cpu_ptr, B); 
  *bc = *bc + 1;
  // Provide the info for the instruction
  info->cycles = 8;
@@ -143,9 +148,10 @@ void LD_B_d8(unsigned char const* cart, void *cpu, Op_info *info) {
 // Rotate A left (with wrapping) and save into cf
 void RLCA(unsigned char const* cart, void *cpu, Op_info *info) {
  CPU *cpu_ptr = (CPU*) cpu;
- 
- unsigned char cf = (cpu_ptr->a & 0x80) >> 7;
- cpu_ptr->a = (cpu_ptr->a << 1) | cf;
+  
+ unsigned char *a = getRegister(cpu_ptr, A);
+ unsigned char cf = (*a & 0x80) >> 7;
+ *a = (*a << 1) | cf;
  
  setCF(cpu_ptr, cf);
  
@@ -158,11 +164,11 @@ void RLCA(unsigned char const* cart, void *cpu, Op_info *info) {
 void LD_a16_SP(unsigned char const* cart, void *cpu, Op_info *info) {
  CPU *cpu_ptr = (CPU*) cpu;
  
- unsigned short *sp = getRPRegister(cpu_ptr, 3);
- 
+ unsigned short *sp = getRegister16(cpu_ptr, SP);
  unsigned short addr = getNN(cart, cpu_ptr->pc + 1);
- printf(CYN "addr: 0x%04x\n" RESET, addr);
- cpu_ptr->ram[addr] = cpu_ptr->a;
+ unsigned char *a = getRegister(cpu_ptr, A);
+
+ cpu_ptr->ram[addr] = *a;
  // Provide the info for the instruction
  info->cycles = 20;
  info->size = 3;
@@ -172,8 +178,8 @@ void LD_a16_SP(unsigned char const* cart, void *cpu, Op_info *info) {
 void ADD_HL_BC(unsigned char const* cart, void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu;
   
-  unsigned short *hl = getRPRegister(cpu_ptr, 2);
-  unsigned short *bc = getRPRegister(cpu_ptr, 0);
+  unsigned short *hl = getRegister16(cpu_ptr, H);
+  unsigned short *bc = getRegister16(cpu_ptr, B);
 
   *hl += *bc;
   
