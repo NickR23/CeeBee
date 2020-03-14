@@ -24,7 +24,7 @@ common.o: $(SRCPATH)common.c
 
 # Test build
 testing: clean $(OBJECTS) $(TESTOBJECTS)
-	$(C) $(CFLAGS) $(OBJECTS) $(TESTOBJECTS) -o testing -l cmocka -L ./cmocka-build/src
+	$(C) $(CFLAGS) $(OBJECTS) $(TESTOBJECTS) -o testing -l cmocka
 
 cmocka_test.o: $(TESTPATH)cmocka_test.c
 	$(C) $(INC) $(CCFLAGS) $(TESTPATH)cmocka_test.c
