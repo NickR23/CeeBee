@@ -1,1 +1,0 @@
-/usr/bin/cc   -rdynamic CMakeFiles/assert_macro_test.dir/assert_macro.c.o CMakeFiles/assert_macro_test.dir/assert_macro_test.c.o  -o assert_macro_test  -Wl,-rpath,/home/nr/code/CeeBee/cmocka-build/src ../src/libcmocka.so.0.5.0 

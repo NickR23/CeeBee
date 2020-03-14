@@ -1,1 +1,0 @@
-/usr/bin/cc   -rdynamic CMakeFiles/key_value_test.dir/key_value.c.o CMakeFiles/key_value_test.dir/key_value_test.c.o  -o key_value_test  -Wl,-rpath,/home/nr/code/CeeBee/cmocka-build/src ../src/libcmocka.so.0.5.0 

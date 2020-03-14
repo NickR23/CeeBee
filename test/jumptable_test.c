@@ -8,10 +8,6 @@
 #include "ceebee/jumptable.h"
 #include "ceebee/cpu.h"
 
-void test_fail(void ** state) {
-  assert_true(false);
-}
-
 void test_setCF(void ** state) {
   CPU cpu = initCPU();
   setCF(&cpu, true);

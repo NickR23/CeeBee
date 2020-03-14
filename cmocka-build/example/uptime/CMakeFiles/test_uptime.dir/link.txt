@@ -1,1 +1,0 @@
-/usr/bin/cc   -rdynamic -Wl,--wrap=uptime CMakeFiles/test_uptime.dir/test_uptime.c.o  -o test_uptime  -Wl,-rpath,/home/nr/code/CeeBee/cmocka-build/src ../../src/libcmocka.so.0.5.0 
