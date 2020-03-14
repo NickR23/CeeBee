@@ -5,10 +5,10 @@ SRCPATH=./src/
 TESTPATH=./test/
 OBJECTS=cpu.o common.o jumptable.o
 TESTOBJECTS=cmocka_test.o jumptable_test.o
-INC=-I./include -I./lib
+INC=-I./include
 
 output: clean main.o $(OBJECTS)
-	$(C) $(CFLAGS) $(OBJECTS) -o ceebee 
+	$(C) $(CFLAGS) main.o $(OBJECTS) -o ceebee 
 
 main.o: $(SRCPATH)main.c
 	$(C) $(INC) $(CCFLAGS) $(SRCPATH)main.c
@@ -24,7 +24,7 @@ common.o: $(SRCPATH)common.c
 
 # Test build
 testing: clean $(OBJECTS) $(TESTOBJECTS)
-	$(C) $(CFLAGS) $(OBJECTS) $(TESTOBJECTS) -o testing -l cmocka
+	$(C) $(CFLAGS) $(OBJECTS) $(TESTOBJECTS) -o testing -l cmocka -L ./cmocka-build/src
 
 cmocka_test.o: $(TESTPATH)cmocka_test.c
 	$(C) $(INC) $(CCFLAGS) $(TESTPATH)cmocka_test.c
@@ -40,3 +40,5 @@ clean:
 	rm -f *.o
 	rm -f ceebee 
 	rm -f testing
+	rm -r -f cmocka-1.1.2 cmocka-1.1.2.tar.xz 
+	rm -r -f cmocka-build
