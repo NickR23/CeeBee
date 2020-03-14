@@ -1,0 +1,107 @@
+[
+{
+  "directory": "/home/nr/code/CeeBee/cmocka-build/src",
+  "command": "/usr/bin/cc -DCMOCKA_EXPORTS -DHAVE_CONFIG_H=1 -I/home/nr/code/CeeBee/cmocka-build/src -I/home/nr/code/CeeBee/cmocka-1.1.2/src -I/home/nr/code/CeeBee/cmocka-1.1.2/include -I/home/nr/code/CeeBee/cmocka-build  -fPIC   -std=gnu99 -pedantic -pedantic-errors -Wall -Wshadow -Wmissing-prototypes -Wcast-align -Werror=address -Wstrict-prototypes -Werror=strict-prototypes -Wwrite-strings -Werror=write-strings -Werror-implicit-function-declaration -Wpointer-arith -Werror=pointer-arith -Wdeclaration-after-statement -Werror=declaration-after-statement -Wreturn-type -Werror=return-type -Wuninitialized -Werror=uninitialized -Wimplicit-fallthrough -Werror=strict-overflow -Wstrict-overflow=2 -Wno-format-zero-length -Wformat -Wformat-security -Werror=format-security -Wno-gnu-zero-variadic-macro-arguments -fno-common -fstack-protector -o CMakeFiles/cmocka_shared.dir/cmocka.c.o   -c /home/nr/code/CeeBee/cmocka-1.1.2/src/cmocka.c",
+  "file": "/home/nr/code/CeeBee/cmocka-1.1.2/src/cmocka.c"
+},
+{
+  "directory": "/home/nr/code/CeeBee/cmocka-build/example",
+  "command": "/usr/bin/cc  -I/home/nr/code/CeeBee/cmocka-build/example -I/home/nr/code/CeeBee/cmocka-1.1.2/example -I/home/nr/code/CeeBee/cmocka-build -I/home/nr/code/CeeBee/cmocka-1.1.2/include    -o CMakeFiles/simple_test.dir/simple_test.c.o   -c /home/nr/code/CeeBee/cmocka-1.1.2/example/simple_test.c",
+  "file": "/home/nr/code/CeeBee/cmocka-1.1.2/example/simple_test.c"
+},
+{
+  "directory": "/home/nr/code/CeeBee/cmocka-build/example",
+  "command": "/usr/bin/cc  -I/home/nr/code/CeeBee/cmocka-build/example -I/home/nr/code/CeeBee/cmocka-1.1.2/example -I/home/nr/code/CeeBee/cmocka-build -I/home/nr/code/CeeBee/cmocka-1.1.2/include    -o CMakeFiles/key_value_test.dir/key_value.c.o   -c /home/nr/code/CeeBee/cmocka-1.1.2/example/key_value.c",
+  "file": "/home/nr/code/CeeBee/cmocka-1.1.2/example/key_value.c"
+},
+{
+  "directory": "/home/nr/code/CeeBee/cmocka-build/example",
+  "command": "/usr/bin/cc  -I/home/nr/code/CeeBee/cmocka-build/example -I/home/nr/code/CeeBee/cmocka-1.1.2/example -I/home/nr/code/CeeBee/cmocka-build -I/home/nr/code/CeeBee/cmocka-1.1.2/include    -o CMakeFiles/key_value_test.dir/key_value_test.c.o   -c /home/nr/code/CeeBee/cmocka-1.1.2/example/key_value_test.c",
+  "file": "/home/nr/code/CeeBee/cmocka-1.1.2/example/key_value_test.c"
+},
+{
+  "directory": "/home/nr/code/CeeBee/cmocka-build/example",
+  "command": "/usr/bin/cc  -DUNIT_TESTING=1 -I/home/nr/code/CeeBee/cmocka-build/example -I/home/nr/code/CeeBee/cmocka-1.1.2/example -I/home/nr/code/CeeBee/cmocka-build -I/home/nr/code/CeeBee/cmocka-1.1.2/include    -o CMakeFiles/assert_module_test.dir/assert_module.c.o   -c /home/nr/code/CeeBee/cmocka-1.1.2/example/assert_module.c",
+  "file": "/home/nr/code/CeeBee/cmocka-1.1.2/example/assert_module.c"
+},
+{
+  "directory": "/home/nr/code/CeeBee/cmocka-build/example",
+  "command": "/usr/bin/cc  -I/home/nr/code/CeeBee/cmocka-build/example -I/home/nr/code/CeeBee/cmocka-1.1.2/example -I/home/nr/code/CeeBee/cmocka-build -I/home/nr/code/CeeBee/cmocka-1.1.2/include    -o CMakeFiles/assert_module_test.dir/assert_module_test.c.o   -c /home/nr/code/CeeBee/cmocka-1.1.2/example/assert_module_test.c",
+  "file": "/home/nr/code/CeeBee/cmocka-1.1.2/example/assert_module_test.c"
+},
+{
+  "directory": "/home/nr/code/CeeBee/cmocka-build/example",
+  "command": "/usr/bin/cc  -I/home/nr/code/CeeBee/cmocka-build/example -I/home/nr/code/CeeBee/cmocka-1.1.2/example -I/home/nr/code/CeeBee/cmocka-build -I/home/nr/code/CeeBee/cmocka-1.1.2/include    -o CMakeFiles/assert_macro_test.dir/assert_macro.c.o   -c /home/nr/code/CeeBee/cmocka-1.1.2/example/assert_macro.c",
+  "file": "/home/nr/code/CeeBee/cmocka-1.1.2/example/assert_macro.c"
+},
+{
+  "directory": "/home/nr/code/CeeBee/cmocka-build/example",
+  "command": "/usr/bin/cc  -I/home/nr/code/CeeBee/cmocka-build/example -I/home/nr/code/CeeBee/cmocka-1.1.2/example -I/home/nr/code/CeeBee/cmocka-build -I/home/nr/code/CeeBee/cmocka-1.1.2/include    -o CMakeFiles/assert_macro_test.dir/assert_macro_test.c.o   -c /home/nr/code/CeeBee/cmocka-1.1.2/example/assert_macro_test.c",
+  "file": "/home/nr/code/CeeBee/cmocka-1.1.2/example/assert_macro_test.c"
+},
+{
+  "directory": "/home/nr/code/CeeBee/cmocka-build/example",
+  "command": "/usr/bin/cc  -DUNIT_TESTING=1 -I/home/nr/code/CeeBee/cmocka-build/example -I/home/nr/code/CeeBee/cmocka-1.1.2/example -I/home/nr/code/CeeBee/cmocka-build -I/home/nr/code/CeeBee/cmocka-1.1.2/include    -o CMakeFiles/calculator_test.dir/calculator.c.o   -c /home/nr/code/CeeBee/cmocka-1.1.2/example/calculator.c",
+  "file": "/home/nr/code/CeeBee/cmocka-1.1.2/example/calculator.c"
+},
+{
+  "directory": "/home/nr/code/CeeBee/cmocka-build/example",
+  "command": "/usr/bin/cc  -I/home/nr/code/CeeBee/cmocka-build/example -I/home/nr/code/CeeBee/cmocka-1.1.2/example -I/home/nr/code/CeeBee/cmocka-build -I/home/nr/code/CeeBee/cmocka-1.1.2/include    -o CMakeFiles/calculator_test.dir/calculator_test.c.o   -c /home/nr/code/CeeBee/cmocka-1.1.2/example/calculator_test.c",
+  "file": "/home/nr/code/CeeBee/cmocka-1.1.2/example/calculator_test.c"
+},
+{
+  "directory": "/home/nr/code/CeeBee/cmocka-build/example",
+  "command": "/usr/bin/cc  -DUNIT_TESTING=1 -I/home/nr/code/CeeBee/cmocka-build/example -I/home/nr/code/CeeBee/cmocka-1.1.2/example -I/home/nr/code/CeeBee/cmocka-build -I/home/nr/code/CeeBee/cmocka-1.1.2/include    -o CMakeFiles/allocate_module_test.dir/allocate_module.c.o   -c /home/nr/code/CeeBee/cmocka-1.1.2/example/allocate_module.c",
+  "file": "/home/nr/code/CeeBee/cmocka-1.1.2/example/allocate_module.c"
+},
+{
+  "directory": "/home/nr/code/CeeBee/cmocka-build/example",
+  "command": "/usr/bin/cc  -I/home/nr/code/CeeBee/cmocka-build/example -I/home/nr/code/CeeBee/cmocka-1.1.2/example -I/home/nr/code/CeeBee/cmocka-build -I/home/nr/code/CeeBee/cmocka-1.1.2/include    -o CMakeFiles/allocate_module_test.dir/allocate_module_test.c.o   -c /home/nr/code/CeeBee/cmocka-1.1.2/example/allocate_module_test.c",
+  "file": "/home/nr/code/CeeBee/cmocka-1.1.2/example/allocate_module_test.c"
+},
+{
+  "directory": "/home/nr/code/CeeBee/cmocka-build/example",
+  "command": "/usr/bin/cc  -I/home/nr/code/CeeBee/cmocka-build/example -I/home/nr/code/CeeBee/cmocka-1.1.2/example -I/home/nr/code/CeeBee/cmocka-build -I/home/nr/code/CeeBee/cmocka-1.1.2/include    -o CMakeFiles/customer_database_test.dir/customer_database.c.o   -c /home/nr/code/CeeBee/cmocka-1.1.2/example/customer_database.c",
+  "file": "/home/nr/code/CeeBee/cmocka-1.1.2/example/customer_database.c"
+},
+{
+  "directory": "/home/nr/code/CeeBee/cmocka-build/example",
+  "command": "/usr/bin/cc  -I/home/nr/code/CeeBee/cmocka-build/example -I/home/nr/code/CeeBee/cmocka-1.1.2/example -I/home/nr/code/CeeBee/cmocka-build -I/home/nr/code/CeeBee/cmocka-1.1.2/include    -o CMakeFiles/customer_database_test.dir/customer_database_test.c.o   -c /home/nr/code/CeeBee/cmocka-1.1.2/example/customer_database_test.c",
+  "file": "/home/nr/code/CeeBee/cmocka-1.1.2/example/customer_database_test.c"
+},
+{
+  "directory": "/home/nr/code/CeeBee/cmocka-build/example",
+  "command": "/usr/bin/cc  -I/home/nr/code/CeeBee/cmocka-build/example -I/home/nr/code/CeeBee/cmocka-1.1.2/example -I/home/nr/code/CeeBee/cmocka-build -I/home/nr/code/CeeBee/cmocka-1.1.2/include    -o CMakeFiles/product_database_test.dir/product_database.c.o   -c /home/nr/code/CeeBee/cmocka-1.1.2/example/product_database.c",
+  "file": "/home/nr/code/CeeBee/cmocka-1.1.2/example/product_database.c"
+},
+{
+  "directory": "/home/nr/code/CeeBee/cmocka-build/example",
+  "command": "/usr/bin/cc  -I/home/nr/code/CeeBee/cmocka-build/example -I/home/nr/code/CeeBee/cmocka-1.1.2/example -I/home/nr/code/CeeBee/cmocka-build -I/home/nr/code/CeeBee/cmocka-1.1.2/include    -o CMakeFiles/product_database_test.dir/product_database_test.c.o   -c /home/nr/code/CeeBee/cmocka-1.1.2/example/product_database_test.c",
+  "file": "/home/nr/code/CeeBee/cmocka-1.1.2/example/product_database_test.c"
+},
+{
+  "directory": "/home/nr/code/CeeBee/cmocka-build/example/chef_wrap",
+  "command": "/usr/bin/cc  -I/home/nr/code/CeeBee/cmocka-build/example/chef_wrap -I/home/nr/code/CeeBee/cmocka-1.1.2/example/chef_wrap -I/home/nr/code/CeeBee/cmocka-build -I/home/nr/code/CeeBee/cmocka-1.1.2/example -I/home/nr/code/CeeBee/cmocka-1.1.2/include    -o CMakeFiles/waiter_test_wrap.dir/waiter_test_wrap.c.o   -c /home/nr/code/CeeBee/cmocka-1.1.2/example/chef_wrap/waiter_test_wrap.c",
+  "file": "/home/nr/code/CeeBee/cmocka-1.1.2/example/chef_wrap/waiter_test_wrap.c"
+},
+{
+  "directory": "/home/nr/code/CeeBee/cmocka-build/example/chef_wrap",
+  "command": "/usr/bin/cc  -I/home/nr/code/CeeBee/cmocka-build/example/chef_wrap -I/home/nr/code/CeeBee/cmocka-1.1.2/example/chef_wrap -I/home/nr/code/CeeBee/cmocka-build -I/home/nr/code/CeeBee/cmocka-1.1.2/example -I/home/nr/code/CeeBee/cmocka-1.1.2/include    -o CMakeFiles/waiter_test_wrap.dir/chef.c.o   -c /home/nr/code/CeeBee/cmocka-1.1.2/example/chef_wrap/chef.c",
+  "file": "/home/nr/code/CeeBee/cmocka-1.1.2/example/chef_wrap/chef.c"
+},
+{
+  "directory": "/home/nr/code/CeeBee/cmocka-build/example/uptime",
+  "command": "/usr/bin/cc  -I/home/nr/code/CeeBee/cmocka-build/example/uptime -I/home/nr/code/CeeBee/cmocka-1.1.2/example/uptime -I/home/nr/code/CeeBee/cmocka-build -I/home/nr/code/CeeBee/cmocka-1.1.2/example -I/home/nr/code/CeeBee/cmocka-1.1.2/include    -std=gnu99 -pedantic -pedantic-errors -Wall -Wshadow -Wmissing-prototypes -Wcast-align -Werror=address -Wstrict-prototypes -Werror=strict-prototypes -Wwrite-strings -Werror=write-strings -Werror-implicit-function-declaration -Wpointer-arith -Werror=pointer-arith -Wdeclaration-after-statement -Werror=declaration-after-statement -Wreturn-type -Werror=return-type -Wuninitialized -Werror=uninitialized -Wimplicit-fallthrough -Werror=strict-overflow -Wstrict-overflow=2 -Wno-format-zero-length -Wformat -Wformat-security -Werror=format-security -Wno-gnu-zero-variadic-macro-arguments -fno-common -fstack-protector -o CMakeFiles/uptime.dir/uptime.c.o   -c /home/nr/code/CeeBee/cmocka-1.1.2/example/uptime/uptime.c",
+  "file": "/home/nr/code/CeeBee/cmocka-1.1.2/example/uptime/uptime.c"
+},
+{
+  "directory": "/home/nr/code/CeeBee/cmocka-build/example/uptime",
+  "command": "/usr/bin/cc  -I/home/nr/code/CeeBee/cmocka-build/example/uptime -I/home/nr/code/CeeBee/cmocka-1.1.2/example/uptime -I/home/nr/code/CeeBee/cmocka-build -I/home/nr/code/CeeBee/cmocka-1.1.2/example -I/home/nr/code/CeeBee/cmocka-1.1.2/include    -o CMakeFiles/proc_uptime.dir/proc_uptime.c.o   -c /home/nr/code/CeeBee/cmocka-1.1.2/example/uptime/proc_uptime.c",
+  "file": "/home/nr/code/CeeBee/cmocka-1.1.2/example/uptime/proc_uptime.c"
+},
+{
+  "directory": "/home/nr/code/CeeBee/cmocka-build/example/uptime",
+  "command": "/usr/bin/cc  -I/home/nr/code/CeeBee/cmocka-build/example/uptime -I/home/nr/code/CeeBee/cmocka-1.1.2/example/uptime -I/home/nr/code/CeeBee/cmocka-build -I/home/nr/code/CeeBee/cmocka-1.1.2/example -I/home/nr/code/CeeBee/cmocka-1.1.2/include    -std=gnu99 -pedantic -pedantic-errors -Wall -Wshadow -Wmissing-prototypes -Wcast-align -Werror=address -Wstrict-prototypes -Werror=strict-prototypes -Wwrite-strings -Werror=write-strings -Werror-implicit-function-declaration -Wpointer-arith -Werror=pointer-arith -Wdeclaration-after-statement -Werror=declaration-after-statement -Wreturn-type -Werror=return-type -Wuninitialized -Werror=uninitialized -Wimplicit-fallthrough -Werror=strict-overflow -Wstrict-overflow=2 -Wno-format-zero-length -Wformat -Wformat-security -Werror=format-security -Wno-gnu-zero-variadic-macro-arguments -fno-common -fstack-protector -o CMakeFiles/test_uptime.dir/test_uptime.c.o   -c /home/nr/code/CeeBee/cmocka-1.1.2/example/uptime/test_uptime.c",
+  "file": "/home/nr/code/CeeBee/cmocka-1.1.2/example/uptime/test_uptime.c"
+}
+]

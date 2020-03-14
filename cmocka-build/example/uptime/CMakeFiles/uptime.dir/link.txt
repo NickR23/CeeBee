@@ -1,0 +1,1 @@
+/usr/bin/cc   -rdynamic CMakeFiles/uptime.dir/uptime.c.o  -o uptime  libproc_uptime.a 

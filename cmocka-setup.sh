@@ -12,4 +12,4 @@ export LD_LIBRARY_PATH=./cmocka-build/src:$LD_LIBRARY_PATH
 # Run tests
 cd ..
 make testing
-./testing
+./jumptable_test

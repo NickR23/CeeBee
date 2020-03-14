@@ -1,0 +1,40 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/nr/code/CeeBee/cmocka-1.1.2/example/uptime/proc_uptime.h
+
+/home/nr/code/CeeBee/cmocka-1.1.2/example/uptime/test_uptime.c
+stdarg.h
+-
+stddef.h
+-
+setjmp.h
+-
+cmocka.h
+-
+uptime.c
+/home/nr/code/CeeBee/cmocka-1.1.2/example/uptime/uptime.c
+
+/home/nr/code/CeeBee/cmocka-1.1.2/example/uptime/uptime.c
+stdio.h
+-
+stdlib.h
+-
+stdint.h
+-
+string.h
+-
+time.h
+-
+sys/time.h
+-
+proc_uptime.h
+/home/nr/code/CeeBee/cmocka-1.1.2/example/uptime/proc_uptime.h
+
+/home/nr/code/CeeBee/cmocka-1.1.2/include/cmocka.h
+

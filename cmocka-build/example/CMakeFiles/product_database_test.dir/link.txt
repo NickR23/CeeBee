@@ -1,0 +1,1 @@
+/usr/bin/cc   -rdynamic CMakeFiles/product_database_test.dir/product_database.c.o CMakeFiles/product_database_test.dir/product_database_test.c.o  -o product_database_test  -Wl,-rpath,/home/nr/code/CeeBee/cmocka-build/src ../src/libcmocka.so.0.5.0 
