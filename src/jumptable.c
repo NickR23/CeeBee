@@ -168,6 +168,21 @@ void LD_a16_SP(unsigned char const* cart, void *cpu, Op_info *info) {
  info->size = 3;
 }
 
+// Add BC to HL
+void ADD_HL_BC(unsigned char const* cart, void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  
+  unsigned short *hl = getRPRegister(cpu_ptr, 2);
+  unsigned short *bc = getRPRegister(cpu_ptr, 0);
+
+  *hl += *bc;
+  
+ // Provide the info for the instruction
+ info->cycles = 8;
+ info->size = 1;
+}
+
+
 // Lets u kno that this opcode is not implemented yet
 void NOT_IMPL(unsigned char const* cart, void *cpu, Op_info *info) {
   printf(WHT "This instruction is not yet implemented :)\n" RESET);
@@ -182,14 +197,15 @@ void init_jmp (func_ptr jumptable[0xF][0xF]) {
   }
  
   // Set pointers for cpu operations
-  jumptable[0x00][0x00] = NOP;
-  jumptable[0x00][0x01] = LD_BC_d16;
-  jumptable[0x00][0x02] = LDINDR_BC_A;
-  jumptable[0x00][0x03] = INC_BC;
-  jumptable[0x00][0x04] = INC_B;
-  jumptable[0x00][0x05] = DEC_B;
-  jumptable[0x00][0x06] = LD_B_d8;
-  jumptable[0x00][0x07] = RLCA;
-  jumptable[0x00][0x08] = LD_a16_SP;
-  jumptable[0x03][0x01] = LD_SP_d16;
+  jumptable[0x0][0x0] = NOP;
+  jumptable[0x0][0x1] = LD_BC_d16;
+  jumptable[0x0][0x2] = LDINDR_BC_A;
+  jumptable[0x0][0x3] = INC_BC;
+  jumptable[0x0][0x4] = INC_B;
+  jumptable[0x0][0x5] = DEC_B;
+  jumptable[0x0][0x6] = LD_B_d8;
+  jumptable[0x0][0x7] = RLCA;
+  jumptable[0x0][0x8] = LD_a16_SP;
+  jumptable[0x0][0x9] = ADD_HL_BC;
+  jumptable[0x3][0x1] = LD_SP_d16;
 }
