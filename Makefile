@@ -2,6 +2,7 @@ C=gcc
 CFLAGS=-Wall -std=c99
 CCFLAGS=-c
 SRCPATH=./src/
+TESTPATH=./test/
 OBJECTS=main.o cpu.o common.o jumptable.o
 INC=-I./include -I./lib
 
@@ -20,6 +21,10 @@ jumptable.o: $(SRCPATH)jumptable.c
 common.o: $(SRCPATH)common.c
 	$(C) $(INC) $(CCFLAGS) $(SRCPATH)common.c
 
+# Test build
+testing:
+	$(C) $(CFLAGS) $(TESTPATH)cmocka_test.c -o testing -l cmocka
+
 debug: CFLAGS += -DDEBUG
 debug: CCFLAGS += -DDEBUG
 debug: output
@@ -27,3 +32,4 @@ debug: output
 clean:
 	rm -f $(OBJECTS)
 	rm -f ceebee 
+	rm -f testing
