@@ -44,5 +44,5 @@ clean: teardown
 	rm -r -f cmocka-build
 	rm -f ceebee 
 	rm -f testing
-	rm -f jumptable_test
+	rm -f jumptable_test cpu_test
 	rm -f -r *.gcov *.gcda *.gcno *.info ./out
