@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdbool.h>
-#include "ceebee/jumptable.h"
+#ifndef JMPTBL_H
+  #include "ceebee/jumptable.h"
+#endif
 #include "ceebee/cpu.h"
 #include "ceebee/termColors.h"
 

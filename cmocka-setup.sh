@@ -13,3 +13,8 @@ export LD_LIBRARY_PATH=./cmocka-build/src:$LD_LIBRARY_PATH
 cd ..
 make testing
 ./jumptable_test
+./cpu_test
+
+# Generate coverage html
+#lcov --capture --directory . --output-file coverage.info
+#genhtml coverage.info --output-directory out
