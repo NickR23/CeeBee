@@ -24,6 +24,8 @@ void LD_A_INDIR_BC(void *cpu, Op_info *info);
 void DEC_BC(void *cpu, Op_info *info);
 void INC_C(void *cpu, Op_info *info);
 void DEC_C(void *cpu, Op_info *info);
+void LD_C_d8(void *cpu, Op_info *info);
+void RLCA(void *cpu, Op_info *info);
 #endif
 
 #endif 

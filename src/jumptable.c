@@ -252,6 +252,33 @@ void INC_C(void *cpu, Op_info *info) {
  *c = *c + 1;
 } 
 
+// Load immediate 8 bits into C
+void LD_C_d8(void *cpu, Op_info *info) {
+ CPU *cpu_ptr = (CPU*) cpu;
+ unsigned char *c = getRegister(cpu_ptr, C); 
+
+ // Provide the info for the instruction
+ info->cycles = 8;
+ info->size = 2;
+  
+ *c = getByte(cpu_ptr, cpu_ptr->pc + 1);
+}
+
+// Rotate A right (with wrapping) and save into cf
+void RRCA(void *cpu, Op_info *info) {
+ CPU *cpu_ptr = (CPU*) cpu;
+  
+ unsigned char *a = getRegister(cpu_ptr, A);
+ unsigned char cf = (*a & 0x01) << 7;
+ *a = (*a >> 1) | cf;
+ 
+ setCF(cpu_ptr, cf >> 7);
+ 
+ // Provide the info for the instruction
+ info->cycles = 4;
+ info->size = 1;
+} 
+
 // Lets u kno that this opcode is not implemented yet
 void NOT_IMPL(void *cpu, Op_info *info) {
   printf(WHT "This instruction is not yet implemented :)\n" RESET);
@@ -280,5 +307,7 @@ void init_jmp (func_ptr jumptable[0xF][0xF]) {
   jumptable[0x0][0xB] = DEC_BC;
   jumptable[0x0][0xC] = INC_C;
   jumptable[0x0][0xD] = DEC_C;
+  jumptable[0x0][0xE] = LD_C_d8;
+  jumptable[0x0][0xF] = RRCA;
   jumptable[0x3][0x1] = LD_SP_d16;
 }

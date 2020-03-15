@@ -255,6 +255,36 @@ void test_DEC_C(void ** state) {
   assert_true(*f == 0x60);
 }
 
+void test_LD_C_d8(void ** state) {
+  Op_info info;
+  unsigned char *c = getRegister(&cpu,C);
+  LD_C_d8(&cpu, &info);
+  unsigned int expected = 0xfe;
+  assert_true(*c == expected);
+  assert_true(info.cycles == 8);
+  assert_true(info.size == 2);
+}
+
+void test_RRCA(void ** state) {
+  Op_info info;
+  unsigned char *a = getRegister(&cpu,A);
+  unsigned char *f = getRegister(&cpu,F);
+  *a = 0xF0;
+  RRCA(&cpu, &info);
+  unsigned int expected = 0x78;
+  assert_true(*a == expected);
+  assert_true(*f == 0x00);
+  
+  *a = 0x01;
+  expected = 0x80;
+  RRCA(&cpu, &info);
+  assert_true(*a == expected);
+  assert_true(*f == 0x10);
+  
+  assert_true(info.cycles == 4);
+  assert_true(info.size == 1);
+}
+
 int main (void) {
   const struct CMUnitTest tests [] =
   {
@@ -277,6 +307,8 @@ int main (void) {
     cmocka_unit_test_setup_teardown(test_DEC_BC,setup,teardown),
     cmocka_unit_test_setup_teardown(test_INC_C,setup,teardown),
     cmocka_unit_test_setup_teardown(test_DEC_C,setup,teardown),
+    cmocka_unit_test_setup_teardown(test_LD_C_d8,setup,teardown),
+    cmocka_unit_test_setup_teardown(test_RRCA,setup,teardown),
   };
 
   int count_fail_tests = cmocka_run_group_tests (tests, NULL, NULL);
