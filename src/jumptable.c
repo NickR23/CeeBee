@@ -279,6 +279,65 @@ void RRCA(void *cpu, Op_info *info) {
  info->size = 1;
 } 
 
+// Load the next 16 bits into DE
+void LD_DE_d16(void *cpu, Op_info *info) {
+  // Trick to pass cpu into instruction
+  CPU *cpu_ptr = (CPU*) cpu; 
+  // Get the next 16 bits from just after pc
+  unsigned int nn = getNN(cpu_ptr, cpu_ptr->pc + 1);
+  cpu_ptr->de = nn;
+  // Provide the info for the instruction
+  info->cycles = 12;
+  info->size = 3;
+}
+
+// Load the next 16 bits into HL
+void LD_HL_d16(void *cpu, Op_info *info) {
+  // Trick to pass cpu into instruction
+  CPU *cpu_ptr = (CPU*) cpu; 
+  // Get the next 16 bits from just after pc
+  unsigned int nn = getNN(cpu_ptr, cpu_ptr->pc + 1);
+  cpu_ptr->hl = nn;
+  // Provide the info for the instruction
+  info->cycles = 12;
+  info->size = 3;
+}
+
+// Load a into addr in DE
+void LDINDR_DE_A(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu; 
+  unsigned short *de = getRegister16(cpu_ptr, B);
+  unsigned char *a = getRegister(cpu_ptr, A);
+  cpu_ptr->mmu[*de] = *a;
+  // Provide the info for the instruction
+  info->cycles = 8;
+  info->size = 1;
+}
+
+// Load a into addr in HL and INC
+void LDINC_HL_A(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu; 
+  unsigned short hl = cpu_ptr->hl;
+  unsigned char *a = getRegister(cpu_ptr, A);
+  cpu_ptr->mmu[hl] = *a;
+  cpu_ptr->hl++;
+  // Provide the info for the instruction
+  info->cycles = 8;
+  info->size = 1;
+}
+
+// Load a into addr in HL and INC
+void LDDEC_HL_A(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu; 
+  unsigned short hl = cpu_ptr->hl;
+  unsigned char *a = getRegister(cpu_ptr, A);
+  cpu_ptr->mmu[hl] = *a;
+  cpu_ptr->hl--;
+  // Provide the info for the instruction
+  info->cycles = 8;
+  info->size = 1;
+}
+
 // Lets u kno that this opcode is not implemented yet
 void NOT_IMPL(void *cpu, Op_info *info) {
   printf(WHT "This instruction is not yet implemented :)\n" RESET);
@@ -309,5 +368,12 @@ void init_jmp (func_ptr jumptable[0xF][0xF]) {
   jumptable[0x0][0xD] = DEC_C;
   jumptable[0x0][0xE] = LD_C_d8;
   jumptable[0x0][0xF] = RRCA;
+  jumptable[0x1][0x1] = LD_DE_d16;
+  jumptable[0x1][0x2] = LDINDR_DE_A;
+  jumptable[0x2][0x2] = LDINC_HL_A;
+  jumptable[0x2][0x1] = LD_HL_d16;
+  jumptable[0x3][0x2] = LDDEC_HL_A;
+  /* SKIPPING STOP (0x10) FOR NOW */
+  
   jumptable[0x3][0x1] = LD_SP_d16;
 }

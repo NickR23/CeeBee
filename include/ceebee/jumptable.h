@@ -10,7 +10,6 @@ void setHF(CPU *cpu, bool state);
 void setZF(CPU *cpu, bool state);
 void setNF(CPU *cpu, bool state);
 void NOP(void *cpu, Op_info *info);
-void LD_SP_d16(void *cpu, Op_info *info);
 void LD_BC_d16(void *cpu, Op_info *info);
 void LDINDR_BC_A(void *cpu, Op_info *info);
 void INC_BC(void *cpu, Op_info *info);
@@ -25,7 +24,13 @@ void DEC_BC(void *cpu, Op_info *info);
 void INC_C(void *cpu, Op_info *info);
 void DEC_C(void *cpu, Op_info *info);
 void LD_C_d8(void *cpu, Op_info *info);
-void RLCA(void *cpu, Op_info *info);
+void RRCA(void *cpu, Op_info *info);
+void LD_DE_d16(void *cpu, Op_info *info);
+void LD_HL_d16(void *cpu, Op_info *info);
+void LD_SP_d16(void *cpu, Op_info *info);
+void LDINDR_DE_A(void *cpu, Op_info *info);
+void LDINC_HL_A(void *cpu, Op_info *info);
+void LDDEC_HL_A(void *cpu, Op_info *info);
 #endif
 
 #endif 

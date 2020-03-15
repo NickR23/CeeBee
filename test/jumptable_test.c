@@ -285,6 +285,57 @@ void test_RRCA(void ** state) {
   assert_true(info.size == 1);
 }
 
+void test_LD_DE_d16(void ** state) {
+  Op_info info;
+  LD_DE_d16(&cpu, &info);
+  unsigned int expected = 0xfffe;
+  assert_true(cpu.de == expected);
+  assert_true(info.cycles == 12);
+  assert_true(info.size == 3);
+}
+
+void test_LD_HL_d16(void ** state) {
+  Op_info info;
+  LD_HL_d16(&cpu, &info);
+  unsigned int expected = 0xfffe;
+  assert_true(cpu.hl == expected);
+  assert_true(info.cycles == 12);
+  assert_true(info.size == 3);
+}
+
+void test_LDINDR_DE_A(void ** state) {
+  Op_info info;
+  LDINDR_DE_A(&cpu, &info);
+  assert_true(cpu.mmu[cpu.de] == (cpu.af & 0xFF));
+  assert_true(info.cycles == 8);
+  assert_true(info.size == 1);
+}
+
+void test_LDINC_HL_A(void ** state) {
+  Op_info info;
+  unsigned char pre_hl = cpu.hl;
+  LDINC_HL_A(&cpu, &info);
+  assert_true(cpu.mmu[pre_hl] == (cpu.af & 0xFF));
+  assert_true(cpu.hl == pre_hl + 1); 
+  
+  assert_true(info.cycles == 8);
+  assert_true(info.size == 1);
+}
+
+void test_LDDEC_HL_A(void ** state) {
+  Op_info info;
+  cpu.hl = 0xCE;
+  cpu.af = 0xBC79;
+  unsigned short pre_hl = cpu.hl;
+  LDDEC_HL_A(&cpu, &info);
+  unsigned char *a = getRegister(&cpu,A);
+  assert_true(cpu.mmu[pre_hl] == *a);
+  assert_true(cpu.hl == pre_hl - 1); 
+  
+  assert_true(info.cycles == 8);
+  assert_true(info.size == 1);
+}
+
 int main (void) {
   const struct CMUnitTest tests [] =
   {
@@ -293,7 +344,6 @@ int main (void) {
     cmocka_unit_test_setup_teardown(test_setNF,setup,teardown),
     cmocka_unit_test_setup_teardown(test_setZF,setup,teardown),
     cmocka_unit_test_setup_teardown(test_NOP,setup,teardown),
-    cmocka_unit_test_setup_teardown(test_LD_SP_d16,setup,teardown),
     cmocka_unit_test_setup_teardown(test_LD_BC_d16,setup,teardown),
     cmocka_unit_test_setup_teardown(test_LDINDR_BC_A,setup,teardown),
     cmocka_unit_test_setup_teardown(test_INC_BC,setup,teardown),
@@ -309,6 +359,12 @@ int main (void) {
     cmocka_unit_test_setup_teardown(test_DEC_C,setup,teardown),
     cmocka_unit_test_setup_teardown(test_LD_C_d8,setup,teardown),
     cmocka_unit_test_setup_teardown(test_RRCA,setup,teardown),
+    cmocka_unit_test_setup_teardown(test_LD_DE_d16,setup,teardown),
+    cmocka_unit_test_setup_teardown(test_LD_HL_d16,setup,teardown),
+    cmocka_unit_test_setup_teardown(test_LD_SP_d16,setup,teardown),
+    cmocka_unit_test_setup_teardown(test_LDINDR_DE_A,setup,teardown),
+    cmocka_unit_test_setup_teardown(test_LDINC_HL_A,setup,teardown),
+    cmocka_unit_test_setup_teardown(test_LDDEC_HL_A,setup,teardown),
   };
 
   int count_fail_tests = cmocka_run_group_tests (tests, NULL, NULL);
