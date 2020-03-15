@@ -13,4 +13,4 @@ jobs:
       script: ./cmocka-setup.sh 
 
 after_success:
-  - coveralls --exclude cmocka-1.1.2/ cmocka-build/ include/ --exclude tests --gcov-options '\-lp'
+  - coveralls -e cmocka-1.1.2/ -e cmocka-build/ -e include/ -e tests --gcov-options '\-lp'
