@@ -426,6 +426,65 @@ void INCINDR_HL(void *cpu, Op_info *info) {
  cpu_ptr->mmu[hl]++;
 } 
 
+// Decrement D
+void DEC_D(void *cpu, Op_info *info) {
+ CPU *cpu_ptr = (CPU*) cpu;
+ unsigned char *d = getRegister(cpu_ptr, D); 
+
+ // Provide the info for the instruction
+ info->cycles = 4;
+ info->size = 1;
+
+ // Check flag states
+ setZF(cpu_ptr, ((*d - 1) & 0xff) == 0);
+ setNF(cpu_ptr, true);
+ // [val] & 0xf gets rid of the upper nibble
+ setHF(cpu_ptr,  ((*d & 0xf) - (1 & 0xf)) < 0x00 );
+
+ // Carry out the operation
+ *d = *d - 1;
+} 
+
+// Decrement H
+void DEC_H(void *cpu, Op_info *info) {
+ CPU *cpu_ptr = (CPU*) cpu;
+ unsigned char *h = getRegister(cpu_ptr, H); 
+
+ // Provide the info for the instruction
+ info->cycles = 4;
+ info->size = 1;
+
+ // Check flag states
+ setZF(cpu_ptr, ((*h - 1) & 0xff) == 0);
+ setNF(cpu_ptr, true);
+ // [val] & 0xf gets rid of the upper nibble
+ setHF(cpu_ptr,  ((*h & 0xf) - (1 & 0xf)) < 0x00 );
+
+ // Carry out the operation
+ *h = *h - 1;
+} 
+
+// Decrement address at HL
+void DECINDR_HL(void *cpu, Op_info *info) {
+ CPU *cpu_ptr = (CPU*) cpu;
+ unsigned short hl = cpu_ptr->hl; 
+
+ // Provide the info for the instruction
+ info->cycles = 12;
+ info->size = 1;
+ 
+ unsigned char val = cpu_ptr->mmu[hl]; 
+
+ // Check flag states
+ setZF(cpu_ptr, ((val - 1) & 0xff) == 0);
+ setNF(cpu_ptr, true);
+ // [val] & 0xf gets rid of the upper nibble
+ setHF(cpu_ptr,  ((val & 0xf) - (1 & 0xf)) < 0x00 );
+
+ // Carry out the operation
+ cpu_ptr->mmu[hl]--;
+} 
+
 // Lets u kno that this opcode is not implemented yet
 void NOT_IMPL(void *cpu, Op_info *info) {
   printf(WHT "This instruction is not yet implemented :)\n" RESET);
@@ -460,13 +519,16 @@ void init_jmp (func_ptr jumptable[0xF][0xF]) {
   jumptable[0x1][0x2] = LDINDR_DE_A;
   jumptable[0x1][0x3] = INC_DE;
   jumptable[0x1][0x4] = INC_D;
+  jumptable[0x1][0x5] = DEC_D;
   jumptable[0x2][0x2] = LDINC_HL_A;
   jumptable[0x2][0x3] = INC_HL;
   jumptable[0x2][0x4] = INC_H;
+  jumptable[0x2][0x5] = INC_D;
   jumptable[0x2][0x1] = LD_HL_d16;
   jumptable[0x3][0x2] = LDDEC_HL_A;
   jumptable[0x3][0x3] = INC_SP;
   jumptable[0x3][0x4] = INCINDR_HL;
+  jumptable[0x3][0x5] = DECINDR_HL;
   /* SKIPPING STOP (0x10) FOR NOW */
   
   jumptable[0x3][0x1] = LD_SP_d16;

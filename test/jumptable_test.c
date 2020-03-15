@@ -416,6 +416,59 @@ void test_INCINDR_HL(void ** state) {
   assert_true(*f == 0xA0);
 }
 
+void test_DEC_D(void ** state) {
+  Op_info info;
+  cpu.de = 0x008D;
+  DEC_D(&cpu, &info);
+  assert_true(cpu.de == 0x008C);
+  assert_true(info.cycles == 4);
+  assert_true(info.size == 1);
+  
+  // Try to underflow
+  unsigned char *f = getRegister(&cpu,F);
+  *f = 0xE0;
+  cpu.de = 0x0000;
+  DEC_D(&cpu, &info);
+  assert_true(cpu.de == 0x00FF);
+  assert_true(*f == 0x60);
+}
+
+void test_DEC_H(void ** state) {
+  Op_info info;
+  cpu.hl = 0x008D;
+  DEC_H(&cpu, &info);
+  assert_true(cpu.hl == 0x008C);
+  assert_true(info.cycles == 4);
+  assert_true(info.size == 1);
+  
+  // Try to underflow
+  unsigned char *f = getRegister(&cpu,F);
+  *f = 0xE0;
+  cpu.hl = 0x0000;
+  DEC_H(&cpu, &info);
+  assert_true(cpu.hl == 0x00FF);
+  assert_true(*f == 0x60);
+}
+
+void test_DECINDR_HL(void ** state) {
+  Op_info info;
+  cpu.hl = 0xCC8D;
+  cpu.mmu[cpu.hl] = 0xFB;
+  DECINDR_HL(&cpu, &info);
+  assert_true(cpu.mmu[cpu.hl] == 0xFA);
+  assert_true(info.cycles == 12);
+  assert_true(info.size == 1);
+  
+  // Try to underflow
+  unsigned char *f = getRegister(&cpu,F);
+  *f = 0xE0;
+  cpu.hl = 0x00FF;
+  cpu.mmu[cpu.hl] = 0x00;
+  DECINDR_HL(&cpu, &info);
+  assert_true(cpu.mmu[cpu.hl] == 0xFF);
+  assert_true(*f == 0x60);
+}
+
 int main (void) {
   const struct CMUnitTest tests [] =
   {
@@ -451,6 +504,9 @@ int main (void) {
     cmocka_unit_test_setup_teardown(test_INC_D,setup,teardown),
     cmocka_unit_test_setup_teardown(test_INC_H,setup,teardown),
     cmocka_unit_test_setup_teardown(test_INCINDR_HL,setup,teardown),
+    cmocka_unit_test_setup_teardown(test_DEC_D,setup,teardown),
+    cmocka_unit_test_setup_teardown(test_DEC_H,setup,teardown),
+    cmocka_unit_test_setup_teardown(test_DECINDR_HL,setup,teardown),
   };
 
   int count_fail_tests = cmocka_run_group_tests (tests, NULL, NULL);
