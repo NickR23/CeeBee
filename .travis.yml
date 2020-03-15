@@ -1,8 +1,14 @@
 dist: trusty
-sudo: false
-language: cpp
+language: c
+os: linux
 
-script:
-  - cmake . 
-  - cmake --build .
-  - ctest
+before_install:
+  - pip install --user cpp-coveralls
+
+jobs:
+  include:
+    - stage: travis testing
+      script: ./cmocka-setup.sh 
+
+after_success:
+  - coveralls --exclude lib --exclude tests --gcov-options '\-lp'

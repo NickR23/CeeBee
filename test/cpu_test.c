@@ -8,17 +8,20 @@
 #include "ceebee/jumptable.h"
 #include "ceebee/cpu.h"
 
-void test_setCF(void ** state) {
+void test_initCPU(void ** state) {
   CPU cpu = initCPU();
-  setCF(&cpu, true);
-  unsigned char *f = getRegister(&cpu,F);
-  assert_true(*f == 0x10);
+  assert_true(cpu.af == 0x0000);
+  assert_true(cpu.bc == 0x0000);
+  assert_true(cpu.de == 0x0000);
+  assert_true(cpu.hl == 0x0000);
+  assert_true(cpu.sp == 0x0000);
+  assert_true(cpu.pc == 0x0000);
 }
 
 int main (void) {
   const struct CMUnitTest tests [] =
   {
-    cmocka_unit_test (test_setCF),
+    cmocka_unit_test (test_initCPU),
   };
 
   int count_fail_tests = cmocka_run_group_tests (tests, NULL, NULL);
