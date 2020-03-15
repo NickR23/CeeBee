@@ -57,12 +57,38 @@ void test_getRegister(void ** state) {
   assert_null(getRegister(&cpu,9));
 }
 
+void test_loadCart(void ** state) {
+  unsigned int cartSize;
+  unsigned char *cart = loadCart("boot.gb", &cartSize);
+  
+  assert_true(cartSize == 256);
+}
+
+void test_getNN(void ** state) {
+  unsigned int cartSize;
+  unsigned char *cart = loadCart("boot.gb", &cartSize);
+  unsigned int nn = getNN(cart,0); 
+
+  assert_true(nn == 0xfe31);
+}
+
+void test_getByte(void ** state) {
+  unsigned int cartSize;
+  unsigned char *cart = loadCart("boot.gb", &cartSize);
+  unsigned int n = getByte(cart,0); 
+
+  assert_true(n == 0x31);
+}
+
 int main (void) {
   const struct CMUnitTest tests [] =
   {
     cmocka_unit_test(test_initCPU),
     cmocka_unit_test(test_getRegister16),
     cmocka_unit_test(test_getRegister),
+    cmocka_unit_test(test_loadCart),
+    cmocka_unit_test(test_getNN),
+    cmocka_unit_test(test_getByte),
   };
 
   int count_fail_tests = cmocka_run_group_tests (tests, NULL, NULL);

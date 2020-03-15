@@ -65,8 +65,8 @@ unsigned char* getRegister(CPU *cpu, int index) {
 
 //Gets the next 16 bits in little endian from addr
 //addr should be a pointer to the end of your op code.
-unsigned int getNN(unsigned char const* cart, unsigned short addr) {
-  int16_t byte_2_addr = addr + 1;
+unsigned short getNN(unsigned char const* cart, unsigned short addr) {
+  short byte_2_addr = addr + 1;
   //Get first nibble
   char x2 = cart[byte_2_addr] & 0x0f;
   //Get second nibble
@@ -76,7 +76,7 @@ unsigned int getNN(unsigned char const* cart, unsigned short addr) {
   //Get fourth nibble
   char x3 = cart[addr] >> 4;
   
-  int nn = x1 << 12;
+  unsigned short nn = x1 << 12;
   nn = nn | (x2 << 8);
   nn = nn | (x3 << 4);
   nn = nn | x4;
