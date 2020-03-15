@@ -44,8 +44,6 @@ void setZF(CPU *cpu, bool state) {
 
 
 void NOP(unsigned char const* cart, void *cpu, Op_info *info) {
-  printf("NOP\n");
-  
   // Provide the info for the instruction
   info->cycles = 4;
   info->size = 1;
@@ -100,7 +98,7 @@ void INC_BC(unsigned char const* cart, void *cpu, Op_info *info) {
 // Increment B
 void INC_B(unsigned char const* cart, void *cpu, Op_info *info) {
  CPU *cpu_ptr = (CPU*) cpu;
- unsigned char *b = getRegister(cpu_ptr, 0); 
+ unsigned char *b = getRegister(cpu_ptr, B); 
 
  // Provide the info for the instruction
  info->cycles = 4;
