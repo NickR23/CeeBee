@@ -101,7 +101,6 @@ void test_runCycle(void ** state) {
   CPU cpu = initCPU();
   cpu.sp = 0x0000;
   cpu.pc = 0x0000; 
-  unsigned char code = cart[cpu.pc];
   
   Op_info info = run_cycle(&cpu, cart);
  
