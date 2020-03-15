@@ -1,4 +1,5 @@
 #include <stdarg.h>
+#include <stdlib.h>
 #include <stddef.h>
 #include <setjmp.h>
 #include <cmocka.h>
@@ -16,6 +17,8 @@ void test_initCPU(void ** state) {
   assert_true(cpu.hl == 0x0000);
   assert_true(cpu.sp == 0x0000);
   assert_true(cpu.pc == 0x0000);
+
+  freeCPU(&cpu);
 }
 
 void test_getRegister16(void ** state) {
@@ -34,6 +37,8 @@ void test_getRegister16(void ** state) {
   assert_true(*getRegister16(&cpu,SP) == 0x5766);
   assert_true(*getRegister16(&cpu,PC) == 0xABCD);
   assert_null(getRegister16(&cpu,99));
+
+  freeCPU(&cpu);
 }
 
 void test_getRegister(void ** state) {
@@ -55,13 +60,17 @@ void test_getRegister(void ** state) {
   assert_true(*getRegister(&cpu,H) == 0xD1);
   assert_true(*getRegister(&cpu,L) == 0x7D);
   assert_null(getRegister(&cpu,9));
+
+  freeCPU(&cpu);
 }
 
 void test_loadCart(void ** state) {
   unsigned int cartSize;
   unsigned char *cart = loadCart("boot.gb", &cartSize);
-  
+  assert_true(cart[0] == 0x31);  
   assert_true(cartSize == 256);
+
+  free((char *) cart);
 }
 
 void test_getNN(void ** state) {
@@ -70,6 +79,8 @@ void test_getNN(void ** state) {
   unsigned int nn = getNN(cart,0); 
 
   assert_true(nn == 0xfe31);
+
+  free((char *) cart);
 }
 
 void test_getByte(void ** state) {
@@ -78,6 +89,28 @@ void test_getByte(void ** state) {
   unsigned int n = getByte(cart,0); 
 
   assert_true(n == 0x31);
+  free((char *) cart);
+}
+
+void test_runCycle(void ** state) {
+  //Load cart
+  unsigned int cartSize = 0;
+  const unsigned char *cart = loadCart("boot.gb", &cartSize);
+
+  //Make CPU
+  CPU cpu = initCPU();
+  cpu.sp = 0x0000;
+  cpu.pc = 0x0000; 
+  unsigned char code = cart[cpu.pc];
+  
+  Op_info info = run_cycle(&cpu, cart);
+ 
+  assert_true(cpu.pc == 0x3);
+  assert_true(info.size == 3);
+  assert_true(info.cycles == 12);
+  
+  free((char *) cart);
+  freeCPU(&cpu);
 }
 
 int main (void) {
@@ -89,6 +122,7 @@ int main (void) {
     cmocka_unit_test(test_loadCart),
     cmocka_unit_test(test_getNN),
     cmocka_unit_test(test_getByte),
+    cmocka_unit_test(test_runCycle)
   };
 
   int count_fail_tests = cmocka_run_group_tests (tests, NULL, NULL);

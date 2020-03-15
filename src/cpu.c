@@ -147,9 +147,13 @@ void print_code_info(Op_info info) {
   printf(MAG "\tCycles: %d\n\tSize: %d\n" RESET, info.cycles, info.size);
 }
 
-void run_cycle(CPU *cpu, unsigned char const *cart) {
+Op_info run_cycle(CPU *cpu, unsigned char const *cart) {
   unsigned char code = cart[cpu->pc];
   struct Op_info info;
+
+  // Initialize the info struct
+  info.size = 0;
+  info.cycles = 0; 
 
   #ifdef DEBUG
     printf(YEL "PC: 0x%04hx\tCode: 0x%02x\n" RESET, cpu->pc, code);
@@ -161,13 +165,10 @@ void run_cycle(CPU *cpu, unsigned char const *cart) {
   int hi = code >> 4;
   int lo = code & (0x0F);
   // Run the opcode for the instruction
-  //cpu->jumptable[hi][lo](cart, cpu, &info);
-  cpu->jumptable[0x0][0x8](cart, cpu, &info);
+  cpu->jumptable[hi][lo](cart, cpu, &info);
 
   // Offset the pc register
   cpu->pc += info.size;
-   
-  // Reset the info struct
-  info.size = 0;
-  info.cycles = 0; 
+ 
+  return info;
 }

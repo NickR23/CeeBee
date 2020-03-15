@@ -49,6 +49,6 @@ unsigned char getByte(unsigned char const *cart, unsigned short addr);
 unsigned short getNN(unsigned char const *cart, unsigned short addr);
 
 void printCpu(CPU cpu);
-void run_cycle(CPU *cpu, unsigned char const *cart);
+Op_info run_cycle(CPU *cpu, unsigned char const *cart);
 unsigned char* loadCart(char const *cartPath, unsigned int* cartSize);
 #endif
