@@ -33,6 +33,7 @@ void test_getRegister16(void ** state) {
   assert_true(*getRegister16(&cpu,H) == 0x7DD1);
   assert_true(*getRegister16(&cpu,SP) == 0x5766);
   assert_true(*getRegister16(&cpu,PC) == 0xABCD);
+  assert_null(getRegister16(&cpu,99));
 }
 
 void test_getRegister(void ** state) {
@@ -53,6 +54,7 @@ void test_getRegister(void ** state) {
   assert_true(*getRegister(&cpu,E) == 0x5F);
   assert_true(*getRegister(&cpu,H) == 0xD1);
   assert_true(*getRegister(&cpu,L) == 0x7D);
+  assert_null(getRegister(&cpu,9));
 }
 
 int main (void) {
