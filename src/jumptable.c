@@ -117,7 +117,7 @@ void INC_B(unsigned char const* cart, void *cpu, Op_info *info) {
 // Decrement B
 void DEC_B(unsigned char const* cart, void *cpu, Op_info *info) {
  CPU *cpu_ptr = (CPU*) cpu;
- unsigned char *b = getRegister(cpu_ptr, 0); 
+ unsigned char *b = getRegister(cpu_ptr, B); 
 
  // Provide the info for the instruction
  info->cycles = 4;
@@ -136,7 +136,7 @@ void DEC_B(unsigned char const* cart, void *cpu, Op_info *info) {
 // Load immediate 8 bits into B
 void LD_B_d8(unsigned char const* cart, void *cpu, Op_info *info) {
  CPU *cpu_ptr = (CPU*) cpu;
- unsigned char *b = getRegister(cpu_ptr, 0); 
+ unsigned char *b = getRegister(cpu_ptr, B); 
 
  // Provide the info for the instruction
  info->cycles = 8;
@@ -166,9 +166,8 @@ void LD_a16_SP(unsigned char const* cart, void *cpu, Op_info *info) {
  
  unsigned short *sp = getRegister16(cpu_ptr, SP);
  unsigned short addr = getNN(cart, cpu_ptr->pc + 1);
- unsigned char *a = getRegister(cpu_ptr, A);
 
- cpu_ptr->ram[addr] = *a;
+ *((short*)(cpu_ptr->ram + addr)) = *sp;
  // Provide the info for the instruction
  info->cycles = 20;
  info->size = 3;
@@ -180,12 +179,16 @@ void ADD_HL_BC(unsigned char const* cart, void *cpu, Op_info *info) {
   
   unsigned short *hl = getRegister16(cpu_ptr, H);
   unsigned short *bc = getRegister16(cpu_ptr, B);
+  unsigned short res = *hl + *bc;
+   
+  setCF(cpu_ptr, res < *hl);
+  setHF(cpu_ptr,  ((*hl & 0xf) + (*bc & 0xf)) & 0x10 );
+  setNF(cpu_ptr, false);
 
-  *hl += *bc;
-  
- // Provide the info for the instruction
- info->cycles = 8;
- info->size = 1;
+  *hl = res;
+  // Provide the info for the instruction
+  info->cycles = 8;
+  info->size = 1;
 }
 
 
