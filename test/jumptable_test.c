@@ -363,6 +363,59 @@ void test_INC_SP(void ** state) {
   assert_true(info.size == 1);
 }
 
+void test_INC_D(void ** state) {
+  Op_info info;
+  cpu.de = 0x008D;
+  INC_D(&cpu, &info);
+  assert_true(cpu.de == 0x008E);
+  assert_true(info.cycles == 4);
+  assert_true(info.size == 1);
+  
+  // Try to overflow
+  unsigned char *f = getRegister(&cpu,F);
+  *f = 0xE0;
+  cpu.de = 0x00FF;
+  INC_D(&cpu, &info);
+  assert_true(cpu.de == 0x0000);
+  assert_true(*f == 0xA0);
+}
+
+void test_INC_H(void ** state) {
+  Op_info info;
+  cpu.hl = 0x008D;
+  INC_H(&cpu, &info);
+  assert_true(cpu.hl == 0x008E);
+  assert_true(info.cycles == 4);
+  assert_true(info.size == 1);
+  
+  // Try to overflow
+  unsigned char *f = getRegister(&cpu,F);
+  *f = 0xE0;
+  cpu.hl = 0x00FF;
+  INC_H(&cpu, &info);
+  assert_true(cpu.hl == 0x0000);
+  assert_true(*f == 0xA0);
+}
+
+void test_INCINDR_HL(void ** state) {
+  Op_info info;
+  cpu.hl = 0xCC8D;
+  cpu.mmu[cpu.hl] = 0xFB;
+  INCINDR_HL(&cpu, &info);
+  assert_true(cpu.mmu[cpu.hl] == 0xFC);
+  assert_true(info.cycles == 12);
+  assert_true(info.size == 1);
+  
+  // Try to overflow
+  unsigned char *f = getRegister(&cpu,F);
+  *f = 0xE0;
+  cpu.hl = 0x00FF;
+  cpu.mmu[cpu.hl] = 0xFF;
+  INCINDR_HL(&cpu, &info);
+  assert_true(cpu.mmu[cpu.hl] == 0x00);
+  assert_true(*f == 0xA0);
+}
+
 int main (void) {
   const struct CMUnitTest tests [] =
   {
@@ -395,6 +448,9 @@ int main (void) {
     cmocka_unit_test_setup_teardown(test_INC_DE,setup,teardown),
     cmocka_unit_test_setup_teardown(test_INC_HL,setup,teardown),
     cmocka_unit_test_setup_teardown(test_INC_SP,setup,teardown),
+    cmocka_unit_test_setup_teardown(test_INC_D,setup,teardown),
+    cmocka_unit_test_setup_teardown(test_INC_H,setup,teardown),
+    cmocka_unit_test_setup_teardown(test_INCINDR_HL,setup,teardown),
   };
 
   int count_fail_tests = cmocka_run_group_tests (tests, NULL, NULL);

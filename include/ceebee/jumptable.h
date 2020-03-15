@@ -34,6 +34,9 @@ void LDDEC_HL_A(void *cpu, Op_info *info);
 void INC_DE(void *cpu, Op_info *info);
 void INC_HL(void *cpu, Op_info *info);
 void INC_SP(void *cpu, Op_info *info);
+void INC_D(void *cpu, Op_info *info);
+void INC_H(void *cpu, Op_info *info);
+void INCINDR_HL(void *cpu, Op_info *info);
 #endif
 
 #endif 
