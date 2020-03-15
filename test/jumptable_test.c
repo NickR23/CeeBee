@@ -336,6 +336,33 @@ void test_LDDEC_HL_A(void ** state) {
   assert_true(info.size == 1);
 }
 
+void test_INC_DE(void ** state) {
+  Op_info info;
+  cpu.de = 0xA78D;
+  INC_DE(&cpu, &info);
+  assert_true(cpu.de == 0xA78E);
+  assert_true(info.cycles == 8);
+  assert_true(info.size == 1);
+}
+
+void test_INC_HL(void ** state) {
+  Op_info info;
+  cpu.hl = 0xA78D;
+  INC_HL(&cpu, &info);
+  assert_true(cpu.hl == 0xA78E);
+  assert_true(info.cycles == 8);
+  assert_true(info.size == 1);
+}
+
+void test_INC_SP(void ** state) {
+  Op_info info;
+  cpu.sp = 0xA78D;
+  INC_SP(&cpu, &info);
+  assert_true(cpu.sp == 0xA78E);
+  assert_true(info.cycles == 8);
+  assert_true(info.size == 1);
+}
+
 int main (void) {
   const struct CMUnitTest tests [] =
   {
@@ -365,6 +392,9 @@ int main (void) {
     cmocka_unit_test_setup_teardown(test_LDINDR_DE_A,setup,teardown),
     cmocka_unit_test_setup_teardown(test_LDINC_HL_A,setup,teardown),
     cmocka_unit_test_setup_teardown(test_LDDEC_HL_A,setup,teardown),
+    cmocka_unit_test_setup_teardown(test_INC_DE,setup,teardown),
+    cmocka_unit_test_setup_teardown(test_INC_HL,setup,teardown),
+    cmocka_unit_test_setup_teardown(test_INC_SP,setup,teardown),
   };
 
   int count_fail_tests = cmocka_run_group_tests (tests, NULL, NULL);

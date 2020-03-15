@@ -338,6 +338,36 @@ void LDDEC_HL_A(void *cpu, Op_info *info) {
   info->size = 1;
 }
 
+// Increment DE
+void INC_DE(void *cpu, Op_info *info) {
+ CPU *cpu_ptr = (CPU*) cpu;
+
+ cpu_ptr->de++;
+ // Provide the info for the instruction
+ info->cycles = 8;
+ info->size = 1;
+}
+
+// Increment HL
+void INC_HL(void *cpu, Op_info *info) {
+ CPU *cpu_ptr = (CPU*) cpu;
+
+ cpu_ptr->hl++;
+ // Provide the info for the instruction
+ info->cycles = 8;
+ info->size = 1;
+}
+
+// Increment SP
+void INC_SP(void *cpu, Op_info *info) {
+ CPU *cpu_ptr = (CPU*) cpu;
+
+ cpu_ptr->sp++;
+ // Provide the info for the instruction
+ info->cycles = 8;
+ info->size = 1;
+}
+
 // Lets u kno that this opcode is not implemented yet
 void NOT_IMPL(void *cpu, Op_info *info) {
   printf(WHT "This instruction is not yet implemented :)\n" RESET);
@@ -370,9 +400,12 @@ void init_jmp (func_ptr jumptable[0xF][0xF]) {
   jumptable[0x0][0xF] = RRCA;
   jumptable[0x1][0x1] = LD_DE_d16;
   jumptable[0x1][0x2] = LDINDR_DE_A;
+  jumptable[0x1][0x3] = INC_DE;
   jumptable[0x2][0x2] = LDINC_HL_A;
+  jumptable[0x2][0x3] = INC_HL;
   jumptable[0x2][0x1] = LD_HL_d16;
   jumptable[0x3][0x2] = LDDEC_HL_A;
+  jumptable[0x3][0x3] = INC_SP;
   /* SKIPPING STOP (0x10) FOR NOW */
   
   jumptable[0x3][0x1] = LD_SP_d16;
