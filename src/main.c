@@ -52,7 +52,7 @@ int main(int argc, char** argv) {
     #ifndef DEBUG
       printDebug(cpu);
     #endif
-    run_cycle(&cpu, cart);
+    run_cycle(&cpu);
   }
 
   free((char *) cart);

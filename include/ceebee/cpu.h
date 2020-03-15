@@ -13,6 +13,7 @@
 #define SP 8
 #define PC 9
 
+
 typedef struct Op_info {
   // The number of cycles for the instruction
   int cycles;
@@ -20,7 +21,7 @@ typedef struct Op_info {
   int size;
 } Op_info;
 
-typedef void (*func_ptr)(unsigned char const* cart, void *, Op_info *);
+typedef void (*func_ptr)(void *, Op_info *);
 
 #include "jumptable.h"
 typedef struct CPU {
@@ -34,21 +35,22 @@ typedef struct CPU {
   //Stack pointer
   unsigned short sp;
   //Memory
-  unsigned char* ram;
+  unsigned char* mmu;
   // Opcode jumptable
   func_ptr jumptable[0xF][0xF];
 } CPU;
 
 CPU initCPU();
+void mmu_load_boot_rom(unsigned char *mmu);
 void freeCPU(CPU *cpu);
 
 unsigned short* getRegister16(CPU *cpu, int index);
 unsigned char* getRegister(CPU *cpu, int index);
 
-unsigned char getByte(unsigned char const *cart, unsigned short addr);
-unsigned short getNN(unsigned char const *cart, unsigned short addr);
+unsigned char getByte(CPU *cpu, unsigned short addr);
+unsigned short getNN(CPU *cpu, unsigned short addr);
 
 void printCpu(CPU cpu);
-Op_info run_cycle(CPU *cpu, unsigned char const *cart);
+Op_info run_cycle(CPU *cpu);
 unsigned char* loadCart(char const *cartPath, unsigned int* cartSize);
 #endif
