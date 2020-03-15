@@ -136,7 +136,8 @@ int main (void) {
     cmocka_unit_test(test_loadCart),
     cmocka_unit_test(test_getNN),
     cmocka_unit_test(test_getByte),
-    cmocka_unit_test(test_runCycle)
+    cmocka_unit_test(test_runCycle),
+    cmocka_unit_test(test_mmu_load_boot_rom),
   };
 
   int count_fail_tests = cmocka_run_group_tests (tests, NULL, NULL);
