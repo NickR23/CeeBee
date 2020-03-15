@@ -136,7 +136,6 @@ unsigned char* loadCart(char const *cartPath, unsigned int* cartSize) {
 }
 
 void printCart(int start, unsigned char const *cart) {
-  unsigned char const *ptr = &cart[start];
   for (int i = 0; i < 20; i++) {
     printf(GRN "%02x " RESET, cart[i]);
   }
