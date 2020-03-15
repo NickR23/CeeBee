@@ -7,10 +7,8 @@ notifications:
 before_install:
   - pip install --user cpp-coveralls
 
-jobs:
-  include:
-    - stage: travis testing
-      script: ./cmocka-setup.sh 
+script:
+  - ./cmocka-setup.sh 
 
 after_success:
   - coveralls -e cmocka-1.1.2/ -e cmocka-build/ -e include/ -e tests --gcov-options '\-lp'
