@@ -1,6 +1,8 @@
 dist: trusty
 language: c
 os: linux
+notifications:
+  email: false
 
 before_install:
   - pip install --user cpp-coveralls
