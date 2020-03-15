@@ -205,6 +205,53 @@ void LD_A_INDIR_BC(void *cpu, Op_info *info) {
   info->size = 1;
 }
 
+// Decrements BC
+void DEC_BC(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  cpu_ptr->bc--;
+
+  info->cycles = 8;
+  info->size = 1;
+} 
+
+// Decrement C
+void DEC_C(void *cpu, Op_info *info) {
+ CPU *cpu_ptr = (CPU*) cpu;
+ unsigned char *c = getRegister(cpu_ptr, C); 
+
+ // Provide the info for the instruction
+ info->cycles = 4;
+ info->size = 1;
+
+ // Check flag states
+ setZF(cpu_ptr, ((*c - 1) & 0xff) == 0);
+ setNF(cpu_ptr, true);
+ // [val] & 0xf gets rid of the upper nibble
+ setHF(cpu_ptr,  ((*c & 0xf) - (1 & 0xf)) < 0x00 );
+
+ // Carry out the operation
+ *c = *c - 1;
+} 
+
+// Increment C
+void INC_C(void *cpu, Op_info *info) {
+ CPU *cpu_ptr = (CPU*) cpu;
+ unsigned char *c = getRegister(cpu_ptr, C); 
+
+ // Provide the info for the instruction
+ info->cycles = 4;
+ info->size = 1;
+
+ // Check flag states
+ setZF(cpu_ptr, ((*c + 1) & 0xff) == 0x00);
+ setNF(cpu_ptr, false);
+ // [val] & 0xf gets rid of the upper nibble
+ setHF(cpu_ptr,  ((*c & 0xf) + (1 & 0xf)) & 0x10 );
+
+ // Carry out the operation
+ *c = *c + 1;
+} 
+
 // Lets u kno that this opcode is not implemented yet
 void NOT_IMPL(void *cpu, Op_info *info) {
   printf(WHT "This instruction is not yet implemented :)\n" RESET);
@@ -229,5 +276,9 @@ void init_jmp (func_ptr jumptable[0xF][0xF]) {
   jumptable[0x0][0x7] = RLCA;
   jumptable[0x0][0x8] = LD_a16_SP;
   jumptable[0x0][0x9] = ADD_HL_BC;
+  jumptable[0x0][0xA] = LD_A_INDIR_BC;
+  jumptable[0x0][0xB] = DEC_BC;
+  jumptable[0x0][0xC] = INC_C;
+  jumptable[0x0][0xD] = DEC_C;
   jumptable[0x3][0x1] = LD_SP_d16;
 }

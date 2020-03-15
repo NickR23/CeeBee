@@ -21,6 +21,9 @@ void RLCA(void *cpu, Op_info *info);
 void LD_a16_SP(void *cpu, Op_info *info);
 void ADD_HL_BC(void *cpu, Op_info *info);
 void LD_A_INDIR_BC(void *cpu, Op_info *info);
+void DEC_BC(void *cpu, Op_info *info);
+void INC_C(void *cpu, Op_info *info);
+void DEC_C(void *cpu, Op_info *info);
 #endif
 
 #endif 

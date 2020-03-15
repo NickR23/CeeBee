@@ -34,8 +34,6 @@ CPU initCPU() {
   cpu.mmu = (unsigned char*) malloc(sizeof(unsigned char) * (0x10000));
   
   mmu_load_boot_rom(cpu.mmu);
-
-  printf("\n");
   
   init_jmp(cpu.jumptable);
   return cpu;

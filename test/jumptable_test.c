@@ -203,6 +203,58 @@ void test_LD_A_INDIR_BC(void ** state) {
   assert_true(info.size == 1);
 }
 
+void test_DEC_BC(void ** state) {
+  Op_info info;
+  cpu.bc = 0x00C4;
+  unsigned short expected = 0x00C3;
+  
+  DEC_BC(&cpu, &info);
+  assert_true(cpu.bc == expected);
+ 
+  /* Test underflow */
+  cpu.bc = 0x0000;
+  expected = 0xFFFF;
+  DEC_BC(&cpu, &info);
+  assert_true(cpu.bc == expected);
+  
+  assert_true(info.cycles == 8);
+  assert_true(info.size == 1);
+}
+
+void test_INC_C(void ** state) {
+  Op_info info;
+  cpu.bc = 0x568D;
+  INC_C(&cpu, &info);
+  assert_true(cpu.bc == 0x578D);
+  assert_true(info.cycles == 4);
+  assert_true(info.size == 1);
+  
+  // Try to overflow
+  unsigned char *f = getRegister(&cpu,F);
+  *f = 0xE0;
+  cpu.bc = 0xFF00;
+  INC_C(&cpu, &info);
+  assert_true(cpu.bc == 0x0000);
+  assert_true(*f == 0xA0);
+}
+
+void test_DEC_C(void ** state) {
+  Op_info info;
+  cpu.bc = 0x328D;
+  DEC_C(&cpu, &info);
+  assert_true(cpu.bc == 0x318D);
+  assert_true(info.cycles == 4);
+  assert_true(info.size == 1);
+  
+  // Try to underflow
+  unsigned char *f = getRegister(&cpu,F);
+  *f = 0xE0;
+  cpu.bc = 0x0000;
+  DEC_C(&cpu, &info);
+  assert_true(cpu.bc == 0xFF00);
+  assert_true(*f == 0x60);
+}
+
 int main (void) {
   const struct CMUnitTest tests [] =
   {
@@ -222,6 +274,9 @@ int main (void) {
     cmocka_unit_test_setup_teardown(test_a16_SP,setup,teardown),
     cmocka_unit_test_setup_teardown(test_ADD_HL_BC,setup,teardown),
     cmocka_unit_test_setup_teardown(test_LD_A_INDIR_BC,setup,teardown),
+    cmocka_unit_test_setup_teardown(test_DEC_BC,setup,teardown),
+    cmocka_unit_test_setup_teardown(test_INC_C,setup,teardown),
+    cmocka_unit_test_setup_teardown(test_DEC_C,setup,teardown),
   };
 
   int count_fail_tests = cmocka_run_group_tests (tests, NULL, NULL);
