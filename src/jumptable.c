@@ -43,18 +43,18 @@ void setZF(CPU *cpu, bool state) {
 }
 
 
-void NOP(unsigned char const* cart, void *cpu, Op_info *info) {
+void NOP(void *cpu, Op_info *info) {
   // Provide the info for the instruction
   info->cycles = 4;
   info->size = 1;
 }
 
 // Load the next 16 bits into sp
-void LD_SP_d16(unsigned char const* cart, void *cpu, Op_info *info) {
+void LD_SP_d16(void *cpu, Op_info *info) {
   // Trick to pass cpu into instruction
   CPU *cpu_ptr = (CPU*) cpu; 
   // Get the next 16 bits from just after pc
-  unsigned int nn = getNN(cart, cpu_ptr->pc + 1);
+  unsigned int nn = getNN(cpu_ptr, cpu_ptr->pc + 1);
   cpu_ptr->sp = nn;
   // Provide the info for the instruction
   info->cycles = 12;
@@ -62,11 +62,11 @@ void LD_SP_d16(unsigned char const* cart, void *cpu, Op_info *info) {
 }
 
 // Load the next 16 bits into bc
-void LD_BC_d16(unsigned char const* cart, void *cpu, Op_info *info) {
+void LD_BC_d16(void *cpu, Op_info *info) {
   // Trick to pass cpu into instruction
   CPU *cpu_ptr = (CPU*) cpu; 
   // Get the next 16 bits from just after pc
-  unsigned int nn = getNN(cart, cpu_ptr->pc + 1);
+  unsigned int nn = getNN(cpu_ptr, cpu_ptr->pc + 1);
   unsigned short* bc = getRegister16(cpu_ptr, B);
   *bc = nn;
   // Provide the info for the instruction
@@ -75,18 +75,18 @@ void LD_BC_d16(unsigned char const* cart, void *cpu, Op_info *info) {
 }
 
 // Load a into addr in BC
-void LDINDR_BC_A(unsigned char const* cart, void *cpu, Op_info *info) {
+void LDINDR_BC_A(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu; 
   unsigned short* bc = getRegister16(cpu_ptr, B);
   unsigned char *a = getRegister(cpu_ptr, A);
-  cpu_ptr->ram[*bc] = *a;
+  cpu_ptr->mmu[*bc] = *a;
   // Provide the info for the instruction
   info->cycles = 8;
   info->size = 1;
 }
 
 // Increment BC
-void INC_BC(unsigned char const* cart, void *cpu, Op_info *info) {
+void INC_BC(void *cpu, Op_info *info) {
  CPU *cpu_ptr = (CPU*) cpu;
  unsigned short *bc = getRegister16(cpu_ptr, B); 
  *bc = *bc + 1;
@@ -96,7 +96,7 @@ void INC_BC(unsigned char const* cart, void *cpu, Op_info *info) {
 }
 
 // Increment B
-void INC_B(unsigned char const* cart, void *cpu, Op_info *info) {
+void INC_B(void *cpu, Op_info *info) {
  CPU *cpu_ptr = (CPU*) cpu;
  unsigned char *b = getRegister(cpu_ptr, B); 
 
@@ -115,7 +115,7 @@ void INC_B(unsigned char const* cart, void *cpu, Op_info *info) {
 } 
 
 // Decrement B
-void DEC_B(unsigned char const* cart, void *cpu, Op_info *info) {
+void DEC_B(void *cpu, Op_info *info) {
  CPU *cpu_ptr = (CPU*) cpu;
  unsigned char *b = getRegister(cpu_ptr, B); 
 
@@ -134,7 +134,7 @@ void DEC_B(unsigned char const* cart, void *cpu, Op_info *info) {
 } 
 
 // Load immediate 8 bits into B
-void LD_B_d8(unsigned char const* cart, void *cpu, Op_info *info) {
+void LD_B_d8(void *cpu, Op_info *info) {
  CPU *cpu_ptr = (CPU*) cpu;
  unsigned char *b = getRegister(cpu_ptr, B); 
 
@@ -142,11 +142,11 @@ void LD_B_d8(unsigned char const* cart, void *cpu, Op_info *info) {
  info->cycles = 8;
  info->size = 2;
   
- *b = getByte(cart, cpu_ptr->pc + 1);
+ *b = getByte(cpu_ptr, cpu_ptr->pc + 1);
 }
  
 // Rotate A left (with wrapping) and save into cf
-void RLCA(unsigned char const* cart, void *cpu, Op_info *info) {
+void RLCA(void *cpu, Op_info *info) {
  CPU *cpu_ptr = (CPU*) cpu;
   
  unsigned char *a = getRegister(cpu_ptr, A);
@@ -161,20 +161,20 @@ void RLCA(unsigned char const* cart, void *cpu, Op_info *info) {
 } 
 
 // Load SP into 16 bit addr
-void LD_a16_SP(unsigned char const* cart, void *cpu, Op_info *info) {
+void LD_a16_SP(void *cpu, Op_info *info) {
  CPU *cpu_ptr = (CPU*) cpu;
  
  unsigned short *sp = getRegister16(cpu_ptr, SP);
- unsigned short addr = getNN(cart, cpu_ptr->pc + 1);
+ unsigned short addr = getNN(cpu_ptr, cpu_ptr->pc + 1);
 
- *((short*)(cpu_ptr->ram + addr)) = *sp;
+ *((short*)(cpu_ptr->mmu + addr)) = *sp;
  // Provide the info for the instruction
  info->cycles = 20;
  info->size = 3;
 }
 
 // Add BC to HL
-void ADD_HL_BC(unsigned char const* cart, void *cpu, Op_info *info) {
+void ADD_HL_BC(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu;
   
   unsigned short *hl = getRegister16(cpu_ptr, H);
@@ -191,9 +191,22 @@ void ADD_HL_BC(unsigned char const* cart, void *cpu, Op_info *info) {
   info->size = 1;
 }
 
+// Load byte BC points to into A
+void LD_A_INDIR_BC(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  
+  unsigned short *bc = getRegister16(cpu_ptr, B);
+  unsigned char *a = getRegister(cpu_ptr, A);
+  
+  *a = cpu_ptr->mmu[*bc];
+
+  // Provide the info for the instruction
+  info->cycles = 8;
+  info->size = 1;
+}
 
 // Lets u kno that this opcode is not implemented yet
-void NOT_IMPL(unsigned char const* cart, void *cpu, Op_info *info) {
+void NOT_IMPL(void *cpu, Op_info *info) {
   printf(WHT "This instruction is not yet implemented :)\n" RESET);
 }
 

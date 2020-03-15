@@ -9,6 +9,8 @@
 #include "ceebee/jumptable.h"
 #include "ceebee/cpu.h"
 
+#define TESTCART "PokemonRed.gb"
+
 void test_initCPU(void ** state) {
   CPU cpu = initCPU();
   assert_true(cpu.af == 0x0000);
@@ -19,6 +21,16 @@ void test_initCPU(void ** state) {
   assert_true(cpu.pc == 0x0000);
 
   freeCPU(&cpu);
+}
+
+void test_mmu_load_boot_rom(void ** state) {
+  unsigned char *mmu = (unsigned char*) malloc(sizeof(unsigned char) * (0x10000));
+  
+  mmu_load_boot_rom(mmu);
+  unsigned char expected = 0x31; 
+  
+  assert_true(mmu[0] == expected);
+
 }
 
 void test_getRegister16(void ** state) {
@@ -66,43 +78,46 @@ void test_getRegister(void ** state) {
 
 void test_loadCart(void ** state) {
   unsigned int cartSize;
-  unsigned char *cart = loadCart("boot.gb", &cartSize);
-  assert_true(cart[0] == 0x31);  
-  assert_true(cartSize == 256);
+  unsigned char *cart = loadCart(TESTCART, &cartSize);
+  assert_true(cart[0] == 0xFF);  
+  assert_true(cartSize == 1048576);
 
   free((char *) cart);
 }
 
 void test_getNN(void ** state) {
-  unsigned int cartSize;
-  unsigned char *cart = loadCart("boot.gb", &cartSize);
-  unsigned int nn = getNN(cart,0); 
+  //Make CPU
+  CPU cpu = initCPU();
+  cpu.sp = 0x0000;
+  cpu.pc = 0x0000; 
+
+  unsigned int nn = getNN(&cpu,0); 
 
   assert_true(nn == 0xfe31);
-
-  free((char *) cart);
 }
 
 void test_getByte(void ** state) {
-  unsigned int cartSize;
-  unsigned char *cart = loadCart("boot.gb", &cartSize);
-  unsigned int n = getByte(cart,0); 
+  //Make CPU
+  CPU cpu = initCPU();
+  cpu.sp = 0x0000;
+  cpu.pc = 0x0000; 
+
+  unsigned int n = getByte(&cpu,0); 
 
   assert_true(n == 0x31);
-  free((char *) cart);
 }
 
 void test_runCycle(void ** state) {
   //Load cart
   unsigned int cartSize = 0;
-  const unsigned char *cart = loadCart("boot.gb", &cartSize);
+  const unsigned char *cart = loadCart(TESTCART, &cartSize);
 
   //Make CPU
   CPU cpu = initCPU();
   cpu.sp = 0x0000;
   cpu.pc = 0x0000; 
   
-  Op_info info = run_cycle(&cpu, cart);
+  Op_info info = run_cycle(&cpu);
  
   assert_true(cpu.pc == 0x3);
   assert_true(info.size == 3);
