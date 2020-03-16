@@ -470,7 +470,7 @@ void LDDEC_HL_A(void *cpu, Op_info *info) {
   unsigned short hl_val = read_r16(cpu_ptr, HL);
   unsigned char *a = getRegister(cpu_ptr, A);
   cpu_ptr->mmu[hl_val] = *a;
-  hl_val++;
+  hl_val--;
   write_r16(cpu_ptr, HL, hl_val);
   // Provide the info for the instruction
   info->cycles = 8;

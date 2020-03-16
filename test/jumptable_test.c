@@ -74,7 +74,6 @@ void test_LD_BC_d16(void ** state) {
   LD_BC_d16(&cpu, &info);
   unsigned short expected = 0xfffe;
   unsigned short bc_val = read_r16(&cpu, BC);
-  printf("bc: 0%04x\n",bc_val);
   assert_true(bc_val == expected);
   assert_true(info.cycles == 12);
   assert_true(info.size == 3);
@@ -84,7 +83,7 @@ void test_LDINDR_BC_A(void ** state) {
   Op_info info;
   cpu.mmu[0xA78D] = 0x98;
   write_r16(&cpu,BC,0xA78D);
-  write_r16(&cpu,AF,0xFFEE);
+  cpu.a = 0xEE;
   LDINDR_BC_A(&cpu, &info);
   assert_true(cpu.mmu[0xA78D] == 0xEE);
   assert_true(info.cycles == 8);
@@ -230,39 +229,35 @@ void test_DEC_BC(void ** state) {
 
 void test_INC_C(void ** state) {
   Op_info info;
-  write_r16(&cpu, BC, 0x568D);
+  cpu.c = 0x8D;
   INC_C(&cpu, &info);
-  unsigned short bc_val = read_r16(&cpu, BC);
-  assert_true(bc_val == 0x578D);
+  assert_true(cpu.c == 0x8E);
   assert_true(info.cycles == 4);
   assert_true(info.size == 1);
   
   // Try to overflow
   unsigned char *f = getRegister(&cpu,F);
   *f = 0xE0;
-  write_r16(&cpu, BC, 0xFF00);
+  cpu.c = 0xFF;
   INC_C(&cpu, &info);
-  bc_val = read_r16(&cpu, BC);
-  assert_true(bc_val == 0x0000);
+  assert_true(cpu.c == 0x00);
   assert_true(*f == 0xA0);
 }
 
 void test_DEC_C(void ** state) {
   Op_info info;
-  write_r16(&cpu, BC, 0x328D);
+  cpu.c = 0x32;
   DEC_C(&cpu, &info);
-  unsigned short bc_val = read_r16(&cpu, BC);
-  assert_true(bc_val == 0x318D);
+  assert_true(cpu.c == 0x31);
   assert_true(info.cycles == 4);
   assert_true(info.size == 1);
   
   // Try to underflow
   unsigned char *f = getRegister(&cpu,F);
   *f = 0xE0;
-  write_r16(&cpu, BC, 0x0000);
+  cpu.c = 0x00;
   DEC_C(&cpu, &info);
-  bc_val = read_r16(&cpu, BC);
-  assert_true(bc_val == 0xFF00);
+  assert_true(cpu.c == 0xFF);
   assert_true(*f == 0x60);
 }
 
@@ -340,8 +335,8 @@ void test_LDINC_HL_A(void ** state) {
 
 void test_LDDEC_HL_A(void ** state) {
   Op_info info;
-  write_r16(&cpu, HL, 0xCE);
-  write_r16(&cpu, AF, 0xBC79);
+  write_r16(&cpu, HL, 0x00CE);
+  cpu.a = 0x79;
   unsigned short pre_hl = read_r16(&cpu, HL);
   LDDEC_HL_A(&cpu, &info);
   unsigned char *a = getRegister(&cpu,A);
@@ -356,7 +351,7 @@ void test_INC_DE(void ** state) {
   Op_info info;
   write_r16(&cpu, DE, 0xA78D);
   INC_DE(&cpu, &info);
-  unsigned char de_val = read_r16(&cpu, HL);
+  unsigned short de_val = read_r16(&cpu, DE);
   assert_true(de_val == 0xA78E);
   assert_true(info.cycles == 8);
   assert_true(info.size == 1);
@@ -366,7 +361,7 @@ void test_INC_HL(void ** state) {
   Op_info info;
   write_r16(&cpu, HL, 0xA78D);
   INC_HL(&cpu, &info);
-  unsigned char hl_val = read_r16(&cpu, HL);
+  unsigned short hl_val = read_r16(&cpu, HL);
   assert_true(hl_val == 0xA78E);
   assert_true(info.cycles == 8);
   assert_true(info.size == 1);
@@ -417,7 +412,7 @@ void test_INC_H(void ** state) {
 
 void test_INCINDR_HL(void ** state) {
   Op_info info;
-  write_r16(&cpu,DE,0xCC8D);
+  write_r16(&cpu,HL,0xCC8D);
   cpu.mmu[0xCC8D] = 0xFB;
   INCINDR_HL(&cpu, &info);
   assert_true(cpu.mmu[0xCC8D] == 0xFC);
@@ -427,7 +422,7 @@ void test_INCINDR_HL(void ** state) {
   // Try to overflow
   unsigned char *f = getRegister(&cpu,F);
   *f = 0xE0;
-  write_r16(&cpu,DE,0x00FF);
+  write_r16(&cpu,HL,0x00FF);
   cpu.mmu[0x00FF] = 0xFF;
   INCINDR_HL(&cpu, &info);
   assert_true(cpu.mmu[0x00FF] == 0x00);
@@ -436,39 +431,35 @@ void test_INCINDR_HL(void ** state) {
 
 void test_DEC_D(void ** state) {
   Op_info info;
-  write_r16(&cpu,DE,0x008D);
+  cpu.d = 0x8D;
   DEC_D(&cpu, &info);
-  unsigned char de_val = read_r16(&cpu,DE);
-  assert_true(de_val == 0x008C);
+  assert_true(cpu.d == 0x8C);
   assert_true(info.cycles == 4);
   assert_true(info.size == 1);
   
   // Try to underflow
   unsigned char *f = getRegister(&cpu,F);
   *f = 0xE0;
-  write_r16(&cpu,DE,0x008D);
+  cpu.d = 0x00;
   DEC_D(&cpu, &info);
-  de_val = read_r16(&cpu,DE);
-  assert_true(de_val == 0x00FF);
+  assert_true(cpu.d == 0xFF);
   assert_true(*f == 0x60);
 }
 
 void test_DEC_H(void ** state) {
   Op_info info;
-  write_r16(&cpu, HL, 0x008D);
+  cpu.h = 0x8D;
   DEC_H(&cpu, &info);
-  unsigned char hl_val = read_r16(&cpu, HL);
-  assert_true(hl_val == 0x008C);
+  assert_true(cpu.h == 0x008C);
   assert_true(info.cycles == 4);
   assert_true(info.size == 1);
   
   // Try to underflow
   unsigned char *f = getRegister(&cpu,F);
   *f = 0xE0;
-  write_r16(&cpu, HL, 0x0000);
+  cpu.h = 0x00;
   DEC_H(&cpu, &info);
-  hl_val = read_r16(&cpu, HL);
-  assert_true(hl_val == 0x00FF);
+  assert_true(cpu.h == 0x00FF);
   assert_true(*f == 0x60);
 }
 
@@ -523,20 +514,18 @@ void test_LDINDR_HL_d8(void ** state) {
 
 void test_RLA(void ** state) {
   Op_info info;
-  write_r16(&cpu,AF,0x0080);
+  cpu.a = 0x80;
   RLA(&cpu, &info);
-  unsigned char *a = getRegister(&cpu, A);
-  unsigned char *f = getRegister(&cpu, F);
 
   unsigned char expected = 0x00;
-  assert_true(*a == expected); 
-  assert_true(*f == 0x10);
+  assert_true(cpu.a == expected); 
+  assert_true(cpu.f == 0x10);
   
-  write_r16(&cpu,AF,0x107C);
+  cpu.a = 0x7C;
   expected = 0xF9;
   RLA(&cpu,&info);
-  assert_true(*a == expected); 
-  assert_true(*f == 0x00);
+  assert_true(cpu.a == expected); 
+  assert_true(cpu.f == 0x00);
 
   assert_true(info.cycles == 4);
   assert_true(info.size == 1);
@@ -544,20 +533,19 @@ void test_RLA(void ** state) {
 
 void test_RRA(void ** state) {
   Op_info info;
-  write_r16(&cpu,AF,0x0080);
+  cpu.a = 0x80;
   RRA(&cpu, &info);
-  unsigned char *a = getRegister(&cpu, A);
-  unsigned char *f = getRegister(&cpu, F);
 
   unsigned char expected = 0x40;
-  assert_true(*a == expected); 
-  assert_true(*f == 0x00);
+  assert_true(cpu.a == expected); 
+  assert_true(cpu.f == 0x00);
   
-  write_r16(&cpu, AF, 0x1071);
+  cpu.a = 0x71;
+  cpu.f = 0x10;
   expected = 0xB8;
   RRA(&cpu,&info);
-  assert_true(*a == expected); 
-  assert_true(*f == 0x10);
+  assert_true(cpu.a == expected); 
+  assert_true(cpu.f == 0x10);
 
   assert_true(info.cycles == 4);
   assert_true(info.size == 1);
@@ -583,14 +571,14 @@ void test_CPL(void ** state) {
 void test_CCF(void ** state) { 
   Op_info info;
 
-  write_r16(&cpu, AF, 0x90FF);
+  cpu.f = 0x90;
   CCF(&cpu,&info);
   unsigned char *f = getRegister(&cpu, F);
-  assert_true(*f == 0x80);
+  assert_true(cpu.f == 0x80);
 
-  write_r16(&cpu, AF, 0xE0FF);
+  cpu.f = 0xE0;
   CCF(&cpu,&info);
-  assert_true(*f == 0x90);
+  assert_true(cpu.f == 0x90);
 
   assert_true(info.cycles == 4);
   assert_true(info.size == 1);
@@ -598,11 +586,10 @@ void test_CCF(void ** state) {
 
 void test_SCF(void ** state) {
   Op_info info;
-  write_r16(&cpu,AF,0xF000);
+  cpu.f = 0x80;
   SCF(&cpu, &info);
   unsigned char expected = 0x90;
-  unsigned char *f = getRegister(&cpu,F);
-  assert_true(*f == expected);
+  assert_true(cpu.f == expected);
 
   assert_true(info.cycles == 4);
   assert_true(info.size == 1);
@@ -623,7 +610,7 @@ void test_JR_r8(void ** state) {
 void test_JR_Z_r8(void ** state) {
   Op_info info;
   cpu.pc = 0x0004;
-  write_r16(&cpu,AF,0x8000);
+  cpu.f = 0x80;
  
   JR_Z_r8(&cpu,&info);
 
@@ -643,7 +630,7 @@ void test_JR_Z_r8(void ** state) {
 void test_JR_C_r8(void ** state) {
   Op_info info;
   cpu.pc = 0x0004;
-  write_r16(&cpu,AF,0x1000);
+  cpu.f = 0x10;
  
   JR_C_r8(&cpu,&info);
 
@@ -652,7 +639,7 @@ void test_JR_C_r8(void ** state) {
   assert_true(info.cycles == 12);
   assert_true(info.size == 2);
   
-  write_r16(&cpu,AF,0x0000);
+  cpu.f = 0x00;
   JR_C_r8(&cpu,&info);
   assert_true(cpu.pc == 0x0003);
 
@@ -662,15 +649,12 @@ void test_JR_C_r8(void ** state) {
 
 void test_XOR_A(void ** state) {
   Op_info info;
-  unsigned char *a = getRegister(&cpu, A);
-  unsigned char *f = getRegister(&cpu, F);
   
-  *a = 0x88;
-  *f = 0xF0;
+  cpu.a = 0x88;
+  cpu.f = 0xF0;
   XOR_A(&cpu,&info);
-  printf("a: 0x%02x\n",*a);
-  assert_true(*a == 0x00);
-  assert_true(*f == 0x80);
+  assert_true(cpu.a == 0x00);
+  assert_true(cpu.f == 0x80);
   
   assert_true(info.cycles == 4);
   assert_true(info.size == 1);
