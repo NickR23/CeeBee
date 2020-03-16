@@ -48,7 +48,7 @@ int main(int argc, char** argv) {
     printf(CYN "Cart size:\n\t%d\n" RESET, cartSize);
   #endif
  
-  while (1) {
+  for (int i = 0; i < 10; i++) {
     #ifndef DEBUG
       printDebug(cpu);
     #endif

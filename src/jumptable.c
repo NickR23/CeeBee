@@ -49,7 +49,7 @@ void setZF(CPU *cpu, bool state) {
 bool check_flag(CPU *cpu, unsigned char flag) {
   unsigned char flag_status = *getRegister(cpu, F);
   flag_status = flag_status >> flag;
-  flag_status = flag_status & 0xFE;
+  flag_status = flag_status & 0x01;
   return (flag_status == 1);
 }
 
@@ -108,7 +108,7 @@ void cond_jmp_r8(CPU *cpu, Op_info *info, bool condition) {
   
   if (condition){
     // Get the next 8 bytes after pc
-    short r8 = getByte(cpu, cpu->pc + 1);
+    signed char r8 = getByte(cpu, cpu->pc + 1);
     cpu->pc += r8;
     info->cycles = 12;
   } 
@@ -796,7 +796,7 @@ void LD_A_INDR_C(void *cpu, Op_info *info) {
 // Set zero flag if bit n of register reg is 0.
 void bit_n(CPU *cpu, Op_info *info, unsigned char n, unsigned short reg) {
   unsigned char *dest = getRegister(cpu, reg); 
-  unsigned char bit_n = (*dest >> n) & 0xFE;
+  unsigned char bit_n = (*dest >> n) & 0x01;
   setZF(cpu, bit_n == 0);
   setNF(cpu, false);
   setHF(cpu, true);
