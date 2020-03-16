@@ -11,12 +11,38 @@
 
 #define TESTCART "PokemonRed.gb"
 
+CPU cpu;
+
+int setup(void ** state) {
+  cpu = initCPU();
+  cpu.a = 0x12;
+  cpu.f = 0x34;
+  cpu.b = 0x87;
+  cpu.c = 0x65;
+  cpu.d = 0x5F;
+  cpu.e = 0xA1;
+  cpu.h = 0x7D;
+  cpu.l = 0xD1;
+  cpu.sp = 0x5766;
+  cpu.pc = 0xABCD;
+  return 0;
+}
+
+int teardown(void ** state) {
+  freeCPU(&cpu);
+  return 0;
+}
+
 void test_initCPU(void ** state) {
   CPU cpu = initCPU();
-  assert_true(cpu.af == 0x0000);
-  assert_true(cpu.bc == 0x0000);
-  assert_true(cpu.de == 0x0000);
-  assert_true(cpu.hl == 0x0000);
+  assert_true(cpu.a == 0x0000);
+  assert_true(cpu.f == 0x0000);
+  assert_true(cpu.b == 0x0000);
+  assert_true(cpu.c == 0x0000);
+  assert_true(cpu.d == 0x0000);
+  assert_true(cpu.e == 0x0000);
+  assert_true(cpu.h == 0x0000);
+  assert_true(cpu.l == 0x0000);
   assert_true(cpu.sp == 0x0000);
   assert_true(cpu.pc == 0x0000);
 
@@ -33,47 +59,44 @@ void test_mmu_load_boot_rom(void ** state) {
 
 }
 
-void test_getRegister16(void ** state) {
-  CPU cpu = initCPU();
-  
-  cpu.af = 0x1234;
-  cpu.bc = 0x8765;
-  cpu.de = 0x5FA1;
-  cpu.hl = 0x7DD1;
-  cpu.sp = 0x5766;
-  cpu.pc = 0xABCD;
-  assert_true(*getRegister16(&cpu,A) == 0x1234);
-  assert_true(*getRegister16(&cpu,B) == 0x8765);
-  assert_true(*getRegister16(&cpu,D) == 0x5FA1);
-  assert_true(*getRegister16(&cpu,H) == 0x7DD1);
-  assert_true(*getRegister16(&cpu,SP) == 0x5766);
-  assert_true(*getRegister16(&cpu,PC) == 0xABCD);
-  assert_null(getRegister16(&cpu,99));
-
-  freeCPU(&cpu);
+void test_getRegister(void ** state) {
+  assert_true(*getRegister(&cpu,A) == 0x12);
+  assert_true(*getRegister(&cpu,F) == 0x34);
+  assert_true(*getRegister(&cpu,B) == 0x87);
+  assert_true(*getRegister(&cpu,C) == 0x65);
+  assert_true(*getRegister(&cpu,D) == 0x5F);
+  assert_true(*getRegister(&cpu,E) == 0xA1);
+  assert_true(*getRegister(&cpu,H) == 0x7D);
+  assert_true(*getRegister(&cpu,L) == 0xD1);
+  assert_null(getRegister(&cpu,9));
 }
 
-void test_getRegister(void ** state) {
-  CPU cpu = initCPU();
-  
-  cpu.af = 0x1234;
-  cpu.bc = 0x8765;
-  cpu.de = 0x5FA1;
-  cpu.hl = 0x7DD1;
-  cpu.sp = 0x5766;
-  cpu.pc = 0xABCD;
-  
-  assert_true(*getRegister(&cpu,A) == 0x34);
-  assert_true(*getRegister(&cpu,F) == 0x12);
-  assert_true(*getRegister(&cpu,B) == 0x65);
-  assert_true(*getRegister(&cpu,C) == 0x87);
-  assert_true(*getRegister(&cpu,D) == 0xA1);
-  assert_true(*getRegister(&cpu,E) == 0x5F);
-  assert_true(*getRegister(&cpu,H) == 0xD1);
-  assert_true(*getRegister(&cpu,L) == 0x7D);
-  assert_null(getRegister(&cpu,9));
+void test_read_r16(void ** state) {
+  cpu.a = 0xAA;
+  assert_true(read_r16(&cpu,AF) == 0xAA34);
+  assert_true(read_r16(&cpu,BC) == 0x8765);
+  assert_true(read_r16(&cpu,DE) == 0x5FA1);
+  assert_true(read_r16(&cpu,HL) == 0x7DD1);
+  assert_true(read_r16(&cpu,SP) == 0x5766);
+  assert_true(read_r16(&cpu,PC) == 0xABCD);
+  assert_true(read_r16(&cpu,99) == 0x0000);
+}
 
-  freeCPU(&cpu);
+void test_write_r16(void ** state) {
+  write_r16(&cpu,AF,0x9088);
+  write_r16(&cpu,BC,0xFE89);
+  write_r16(&cpu,DE,0xAAAA);
+  write_r16(&cpu,HL,0x8999);
+  write_r16(&cpu,SP,0xBBBB);
+  write_r16(&cpu,PC,0xCCCC);
+  
+  assert_true(read_r16(&cpu,AF) == 0x9088);
+  assert_true(read_r16(&cpu,BC) == 0xFE89);
+  assert_true(read_r16(&cpu,DE) == 0xAAAA);
+  assert_true(read_r16(&cpu,HL) == 0x8999);
+  assert_true(read_r16(&cpu,SP) == 0xBBBB);
+  assert_true(read_r16(&cpu,PC) == 0xCCCC);
+  assert_true(read_r16(&cpu,99) == 0x0000);
 }
 
 void test_loadCart(void ** state) {
@@ -86,44 +109,24 @@ void test_loadCart(void ** state) {
 }
 
 void test_getNN(void ** state) {
-  //Make CPU
-  CPU cpu = initCPU();
-  cpu.sp = 0x0000;
-  cpu.pc = 0x0000; 
-
   unsigned int nn = getNN(&cpu,0); 
-
   assert_true(nn == 0xfe31);
 }
 
 void test_getByte(void ** state) {
-  //Make CPU
-  CPU cpu = initCPU();
-  cpu.sp = 0x0000;
-  cpu.pc = 0x0000; 
-
   unsigned int n = getByte(&cpu,0); 
-
   assert_true(n == 0x31);
 }
 
 void test_runCycle(void ** state) {
-  //Load cart
-  unsigned int cartSize = 0;
-  const unsigned char *cart = loadCart(TESTCART, &cartSize);
-
-  //Make CPU
-  CPU cpu = initCPU();
-  cpu.sp = 0x0000;
-  cpu.pc = 0x0000; 
-  
+  cpu = initCPU();
+  cpu.pc = 0x0000;
   Op_info info = run_cycle(&cpu);
- 
-  assert_true(cpu.pc == 0x3);
+   
+  assert_true(cpu.pc == 0x03);
   assert_true(info.size == 3);
   assert_true(info.cycles == 12);
-  
-  free((char *) cart);
+
   freeCPU(&cpu);
 }
 
@@ -131,13 +134,14 @@ int main (void) {
   const struct CMUnitTest tests [] =
   {
     cmocka_unit_test(test_initCPU),
-    cmocka_unit_test(test_getRegister16),
-    cmocka_unit_test(test_getRegister),
     cmocka_unit_test(test_loadCart),
-    cmocka_unit_test(test_getNN),
-    cmocka_unit_test(test_getByte),
     cmocka_unit_test(test_runCycle),
     cmocka_unit_test(test_mmu_load_boot_rom),
+    cmocka_unit_test_setup_teardown(test_getRegister,setup,teardown),
+    cmocka_unit_test_setup_teardown(test_read_r16,setup,teardown),
+    cmocka_unit_test_setup_teardown(test_write_r16,setup,teardown),
+    cmocka_unit_test_setup_teardown(test_getNN,setup,teardown),
+    cmocka_unit_test_setup_teardown(test_getByte,setup,teardown),
   };
 
   int count_fail_tests = cmocka_run_group_tests (tests, NULL, NULL);

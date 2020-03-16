@@ -35,7 +35,7 @@ CPU initCPU() {
   
   mmu_load_boot_rom(cpu.mmu);
   
-  init_jmp(cpu.jumptable);
+  init_jmp(cpu.jumptable, cpu.cb_jumptable);
   return cpu;
 }
 
@@ -46,48 +46,87 @@ void mmu_load_boot_rom(unsigned char *mmu) {
   memcpy(mmu, BIOS, sizeof(BIOS));
 }
 
-
 void freeCPU(CPU *cpu)	{
   free(cpu->mmu);
 }
 
-unsigned short* getRegister16(CPU *cpu, int index) {
-  switch(index) {
-    case 0:
-      return &cpu->af;
-    case 2:
-      return &cpu->bc;
-    case 4:
-      return &cpu->de;
-    case 6:
-      return &cpu->hl;
-    case 8:
-      return &cpu->sp;
-    case 9:
-      return &cpu->pc;
-    default: 
-      return NULL;
+/* Returns value of register as 16 bits*/
+unsigned short read_r16(CPU *cpu, int index) {
+  unsigned short res;
+  switch(index){
+    case AF:
+      res = (cpu->a << 8) | (cpu->f);
+      return res;
+    case BC:
+      res = (cpu->b << 8) | (cpu->c);
+      return res;
+    case DE:
+      res = (cpu->d << 8) | (cpu->e);
+      return res;
+    case HL:
+      res = (cpu->h << 8) | (cpu->l);
+      return res;
+    case SP:
+      return cpu->sp;
+    case PC:
+      return cpu->pc;
+    default:
+      return 0x0000;
     }
+}
+
+/* Write value to register as 16 bits*/
+void write_r16(CPU *cpu, int index, unsigned short val) {
+  unsigned char *hi_reg;
+  unsigned char *low_reg;
+  switch(index){
+    case AF:
+      hi_reg = &cpu->a;
+      low_reg = &cpu->f;
+      break;
+    case BC:
+      hi_reg = &cpu->b;
+      low_reg = &cpu->c;
+      break;
+    case DE:
+      hi_reg = &cpu->d;
+      low_reg = &cpu->e;
+      break;
+    case HL:
+      hi_reg = &cpu->h;
+      low_reg = &cpu->l;
+      break;
+    case SP:
+      cpu->sp = val;
+      return;
+    case PC:
+      cpu->pc = val;
+      return;
+    default:
+      return;
+    }
+    *hi_reg = (val >> 8) & 0xFF;
+    *low_reg = val & 0xFF; 
 }
 
 unsigned char* getRegister(CPU *cpu, int index) {
   switch(index){
     case 0:
-      return (unsigned char*) &cpu->af;
+      return (unsigned char*) &cpu->a;
     case 1: 
-      return (unsigned char*) &cpu->af + 1;
+      return (unsigned char*) &cpu->f;
     case 2:
-      return (unsigned char*) &cpu->bc;
+      return (unsigned char*) &cpu->b;
     case 3:
-      return (unsigned char*) &cpu->bc + 1;
+      return (unsigned char*) &cpu->c;
     case 4:
-      return (unsigned char*) &cpu->de;
+      return (unsigned char*) &cpu->d;
     case 5:
-      return (unsigned char*) &cpu->de + 1;
+      return (unsigned char*) &cpu->e;
     case 6:
-      return (unsigned char*) &cpu->hl;
+      return (unsigned char*) &cpu->h;
     case 7:
-      return (unsigned char*) &cpu->hl + 1;
+      return (unsigned char*) &cpu->l;
     default:
       return NULL;
     }
@@ -128,8 +167,8 @@ void printCpu(CPU cpu) {
   unsigned char f = *getRegister(&cpu, F);
   unsigned char h = *getRegister(&cpu, H);
   unsigned char l = *getRegister(&cpu, L);
-  unsigned short pc = *getRegister16(&cpu, PC);
-  unsigned short sp = *getRegister16(&cpu, SP);
+  unsigned short pc = read_r16(&cpu, PC);
+  unsigned short sp = read_r16(&cpu, SP);
   
   printf(MAG "~~~~~~~~~~~~~REGISTERS~~~~~~~~~~~~~~~~~\n" RESET);
   printf(GRN "\t\tb: 0x%02x\n", b);
@@ -189,12 +228,30 @@ Op_info run_cycle(CPU *cpu) {
     printCpu(*cpu);
   #endif
 
-
   // Parse the code
   int hi = code >> 4;
   int lo = code & (0x0F);
-  // Run the opcode for the instruction
-  cpu->jumptable[hi][lo](cpu, &info);
+
+  // Handle CB prefix
+  if (code == 0xCB) {
+    /* Update the program counter */
+    cpu->pc += 1;
+    /* Get the new code */
+    code = cpu->mmu[cpu->pc];
+    #ifdef DEBUG
+      printf(BLU "***********CB PREFIX********\n");
+      printf(YEL "PC: 0x%04hx\tCode: 0x%02x\n" RESET, cpu->pc, code);
+      printCpu(*cpu);
+    #endif
+
+    hi = code >> 4;
+    lo = code & (0x0F);
+    cpu->cb_jumptable[hi][lo](cpu, &info);
+  }
+  else {
+    // Run the opcode for the instruction
+    cpu->jumptable[hi][lo](cpu, &info);
+  }
 
   // Offset the pc register
   cpu->pc += info.size;
