@@ -25,6 +25,7 @@ void INC_C(void *cpu, Op_info *info);
 void DEC_C(void *cpu, Op_info *info);
 void LD_C_d8(void *cpu, Op_info *info);
 void RRCA(void *cpu, Op_info *info);
+void RLA(void *cpu, Op_info *info);
 void LD_DE_d16(void *cpu, Op_info *info);
 void LD_HL_d16(void *cpu, Op_info *info);
 void LD_SP_d16(void *cpu, Op_info *info);
@@ -40,7 +41,6 @@ void INCINDR_HL(void *cpu, Op_info *info);
 void DEC_D(void *cpu, Op_info *info);
 void DEC_H(void *cpu, Op_info *info);
 void DECINDR_HL(void *cpu, Op_info *info);
-
 void LD_D_d8(void *cpu, Op_info *info);
 void LD_H_d8(void *cpu, Op_info *info);
 void LDINDR_HL_d8(void *cpu, Op_info *info);

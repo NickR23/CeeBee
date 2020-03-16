@@ -492,12 +492,44 @@ void test_LD_H_d8(void ** state) {
 void test_LDINDR_HL_d8(void ** state) {
   Op_info info;
   cpu.hl = 0xCC80;
-  unsigned short hl = cpu.hl;
   LDINDR_HL_d8(&cpu, &info);
   unsigned int expected = 0xfe;
   assert_true(cpu.mmu[cpu.hl] == expected);
   assert_true(info.cycles == 12);
   assert_true(info.size == 2);
+}
+
+void test_RLA(void ** state) {
+  Op_info info;
+  cpu.af = 0x0080;
+  RLA(&cpu, &info);
+  unsigned char *a = getRegister(&cpu, A);
+  unsigned char *f = getRegister(&cpu, F);
+
+  unsigned char expected = 0x00;
+  assert_true(*a == expected); 
+  assert_true(*f == 0x10);
+  
+  cpu.af = 0x107C;
+  expected = 0xF9;
+  RLA(&cpu,&info);
+  assert_true(*a == expected); 
+  assert_true(*f == 0x00);
+
+  assert_true(info.cycles == 4);
+  assert_true(info.size == 1);
+}
+
+void test_SCF(void ** state) {
+  Op_info info;
+  cpu.af = 0xF000;
+  SCF(&cpu, &info);
+  unsigned char expected = 0x90;
+  unsigned char *f = getRegister(&cpu,F);
+  assert_true(*f == expected);
+
+  assert_true(info.cycles == 4);
+  assert_true(info.size == 1);
 }
 
 int main (void) {
@@ -540,7 +572,9 @@ int main (void) {
     cmocka_unit_test_setup_teardown(test_DECINDR_HL,setup,teardown),
     cmocka_unit_test_setup_teardown(test_LD_D_d8,setup,teardown),
     cmocka_unit_test_setup_teardown(test_LD_H_d8,setup,teardown),
-    cmocka_unit_test_setup_teardown(test_LDINDR_H_d8,setup,teardown),
+    cmocka_unit_test_setup_teardown(test_LDINDR_HL_d8,setup,teardown),
+    cmocka_unit_test_setup_teardown(test_RLA,setup,teardown),
+    cmocka_unit_test_setup_teardown(test_SCF,setup,teardown),
   };
 
   int count_fail_tests = cmocka_run_group_tests (tests, NULL, NULL);
