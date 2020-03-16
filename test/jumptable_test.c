@@ -639,6 +639,22 @@ void test_JR_C_r8(void ** state) {
   assert_true(info.size == 2);
 }
 
+void test_XOR_A(void ** state) {
+  Op_info info;
+  unsigned char *a = getRegister(&cpu, A);
+  unsigned char *f = getRegister(&cpu, F);
+  
+  *a = 0x88;
+  *f = 0xF0;
+  XOR_A(&cpu,&info);
+  printf("a: 0x%02x\n",*a);
+  assert_true(*a == 0x00);
+  assert_true(*f == 0x80);
+  
+  assert_true(info.cycles == 4);
+  assert_true(info.size == 1);
+}
+
 
 int main (void) {
   const struct CMUnitTest tests [] =
@@ -688,6 +704,7 @@ int main (void) {
     cmocka_unit_test_setup_teardown(test_JR_Z_r8,setup,teardown),
     cmocka_unit_test_setup_teardown(test_JR_C_r8,setup,teardown),
     cmocka_unit_test_setup_teardown(test_CCF,setup,teardown),
+    cmocka_unit_test_setup_teardown(test_XOR_A,setup,teardown),
   };
 
   int count_fail_tests = cmocka_run_group_tests (tests, NULL, NULL);

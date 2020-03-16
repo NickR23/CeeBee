@@ -3,6 +3,7 @@
 #ifndef JMPTBL_H
   #include "ceebee/jumptable.h"
 #endif
+#include "ceebee/common.h"
 #include "ceebee/cpu.h"
 #include "ceebee/termColors.h"
 
@@ -42,6 +43,23 @@ void setZF(CPU *cpu, bool state) {
     *f |= 0x80;
   else 
     *f &= 0x7F;
+}
+
+void xor_reg(CPU *cpu, Op_info *info, unsigned short dest_reg, unsigned short src_reg) {
+  unsigned char *dest = getRegister(cpu, dest_reg); 
+  unsigned char *src = getRegister(cpu, src_reg); 
+  unsigned char result = *src ^ *dest;
+
+  setZF(cpu, result == 0);
+  setNF(cpu, false);
+  setHF(cpu, false);
+  setCF(cpu, false);
+  
+  *dest = result;  
+  
+  // Provide the info for the instruction
+  info->cycles = 4;
+  info->size = 1;
 }
 
 // 8bit load from 8 bits after pc
@@ -705,9 +723,16 @@ void DEC_A(void *cpu, Op_info *info) {
   dec_8_reg(cpu_ptr, info, A);
 } 
 
+// Xor A with A
+void XOR_A(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  xor_reg(cpu_ptr, info, A, A);
+}
+  
+
 // Lets u kno that this opcode is not implemented yet
 void NOT_IMPL(void *cpu, Op_info *info) {
-  printf(WHT "This instruction is not yet implemented :)\n" RESET);
+  panic(GRN "This instruction is not yet implemented ... Exiting :)\n" RESET);
 }
 
 void init_jmp (func_ptr jumptable[0xF][0xF]) {
@@ -783,5 +808,7 @@ void init_jmp (func_ptr jumptable[0xF][0xF]) {
   jumptable[0x3][0xD] = DEC_A;
   jumptable[0x3][0xE] = LD_A_d8;
   jumptable[0x3][0xF] = CCF;
+  
+  jumptable[0xA][0xF] = XOR_A;
 
 }

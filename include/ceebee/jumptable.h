@@ -54,6 +54,7 @@ void ADD_HL_HL(void *cpu, Op_info *info);
 void ADD_HL_SP(void *cpu, Op_info *info);
 void CPL(void *cpu, Op_info *info);
 void CCF(void *cpu, Op_info *info);
+void XOR_A(void *cpu, Op_info *info);
 #endif
 
 #endif 
