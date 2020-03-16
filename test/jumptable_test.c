@@ -469,6 +469,37 @@ void test_DECINDR_HL(void ** state) {
   assert_true(*f == 0x60);
 }
 
+void test_LD_D_d8(void ** state) {
+  Op_info info;
+  unsigned char *d = getRegister(&cpu,D);
+  LD_D_d8(&cpu, &info);
+  unsigned int expected = 0xfe;
+  assert_true(*d == expected);
+  assert_true(info.cycles == 8);
+  assert_true(info.size == 2);
+}
+
+void test_LD_H_d8(void ** state) {
+  Op_info info;
+  unsigned char *h = getRegister(&cpu,H);
+  LD_H_d8(&cpu, &info);
+  unsigned int expected = 0xfe;
+  assert_true(*h == expected);
+  assert_true(info.cycles == 8);
+  assert_true(info.size == 2);
+}
+
+void test_LDINDR_HL_d8(void ** state) {
+  Op_info info;
+  cpu.hl = 0xCC80;
+  unsigned short hl = cpu.hl;
+  LDINDR_HL_d8(&cpu, &info);
+  unsigned int expected = 0xfe;
+  assert_true(cpu.mmu[cpu.hl] == expected);
+  assert_true(info.cycles == 12);
+  assert_true(info.size == 2);
+}
+
 int main (void) {
   const struct CMUnitTest tests [] =
   {
@@ -507,6 +538,9 @@ int main (void) {
     cmocka_unit_test_setup_teardown(test_DEC_D,setup,teardown),
     cmocka_unit_test_setup_teardown(test_DEC_H,setup,teardown),
     cmocka_unit_test_setup_teardown(test_DECINDR_HL,setup,teardown),
+    cmocka_unit_test_setup_teardown(test_LD_D_d8,setup,teardown),
+    cmocka_unit_test_setup_teardown(test_LD_H_d8,setup,teardown),
+    cmocka_unit_test_setup_teardown(test_LDINDR_H_d8,setup,teardown),
   };
 
   int count_fail_tests = cmocka_run_group_tests (tests, NULL, NULL);

@@ -485,6 +485,42 @@ void DECINDR_HL(void *cpu, Op_info *info) {
  cpu_ptr->mmu[hl]--;
 } 
 
+// Load immediate 8 bits into D
+void LD_D_d8(void *cpu, Op_info *info) {
+ CPU *cpu_ptr = (CPU*) cpu;
+ unsigned char *d = getRegister(cpu_ptr, d); 
+
+ // Provide the info for the instruction
+ info->cycles = 8;
+ info->size = 2;
+  
+ *d = getByte(cpu_ptr, cpu_ptr->pc + 1);
+}
+
+// Load immediate 8 bits into H
+void LD_H_d8(void *cpu, Op_info *info) {
+ CPU *cpu_ptr = (CPU*) cpu;
+ unsigned char *h = getRegister(cpu_ptr, H); 
+
+ // Provide the info for the instruction
+ info->cycles = 8;
+ info->size = 2;
+  
+ *h = getByte(cpu_ptr, cpu_ptr->pc + 1);
+}
+
+// Load immediate 8 bits into address in HL 
+void LDINDR_HL_d8(void *cpu, Op_info *info) {
+ CPU *cpu_ptr = (CPU*) cpu;
+ unsigned short hl = cpu_ptr->hl;
+
+ // Provide the info for the instruction
+ info->cycles = 12;
+ info->size = 2;
+  
+ cpu_ptr->mmu[hl] = getByte(cpu_ptr, cpu_ptr->pc + 1);
+}
+
 // Lets u kno that this opcode is not implemented yet
 void NOT_IMPL(void *cpu, Op_info *info) {
   printf(WHT "This instruction is not yet implemented :)\n" RESET);
@@ -515,20 +551,27 @@ void init_jmp (func_ptr jumptable[0xF][0xF]) {
   jumptable[0x0][0xD] = DEC_C;
   jumptable[0x0][0xE] = LD_C_d8;
   jumptable[0x0][0xF] = RRCA;
+
   jumptable[0x1][0x1] = LD_DE_d16;
   jumptable[0x1][0x2] = LDINDR_DE_A;
   jumptable[0x1][0x3] = INC_DE;
   jumptable[0x1][0x4] = INC_D;
   jumptable[0x1][0x5] = DEC_D;
+  jumptable[0x1][0x6] = LD_D_d8;
+
   jumptable[0x2][0x2] = LDINC_HL_A;
   jumptable[0x2][0x3] = INC_HL;
   jumptable[0x2][0x4] = INC_H;
   jumptable[0x2][0x5] = INC_D;
+  jumptable[0x2][0x6] = LD_H_d8;
+
   jumptable[0x2][0x1] = LD_HL_d16;
   jumptable[0x3][0x2] = LDDEC_HL_A;
   jumptable[0x3][0x3] = INC_SP;
   jumptable[0x3][0x4] = INCINDR_HL;
   jumptable[0x3][0x5] = DECINDR_HL;
+  jumptable[0x3][0x6] = LDINDR_HL_d8;
+
   /* SKIPPING STOP (0x10) FOR NOW */
   
   jumptable[0x3][0x1] = LD_SP_d16;

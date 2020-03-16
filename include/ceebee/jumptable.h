@@ -40,6 +40,10 @@ void INCINDR_HL(void *cpu, Op_info *info);
 void DEC_D(void *cpu, Op_info *info);
 void DEC_H(void *cpu, Op_info *info);
 void DECINDR_HL(void *cpu, Op_info *info);
+
+void LD_D_d8(void *cpu, Op_info *info);
+void LD_H_d8(void *cpu, Op_info *info);
+void LDINDR_HL_d8(void *cpu, Op_info *info);
 #endif
 
 #endif 
