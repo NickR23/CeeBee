@@ -206,6 +206,24 @@ void LD_B_d8(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu;
   load_n_to_reg(cpu_ptr, info, B);
 }
+
+// Load immediate 8 bits into E
+void LD_E_d8(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  load_n_to_reg(cpu_ptr, info, E);
+}
+
+// Load immediate 8 bits into L
+void LD_L_d8(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  load_n_to_reg(cpu_ptr, info, L);
+}
+
+// Load immediate 8 bits into A
+void LD_A_d8(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  load_n_to_reg(cpu_ptr, info, A);
+}
  
 // Rotate A left (with wrapping) and save into cf
 void RLCA(void *cpu, Op_info *info) {
@@ -237,6 +255,52 @@ void RLA(void *cpu, Op_info *info) {
   info->cycles = 4;
   info->size = 1;
 } 
+
+// Rotate A right and save into cf
+void RRA(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+   
+  unsigned char *a = getRegister(cpu_ptr, A);
+  unsigned char *f = getRegister(cpu_ptr, F);
+  unsigned char cf = (*a & 0x01) << 7;
+  *a = (*a >> 1) | ((*f & 0x10) << 3);
+  
+  setCF(cpu_ptr, cf);
+  
+  // Provide the info for the instruction
+  info->cycles = 4;
+  info->size = 1;
+} 
+
+// Compliment the A register
+void CPL(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  unsigned char *a = getRegister(cpu_ptr, A);
+  *a = ~*a;
+  
+  setNF(cpu_ptr, true);
+  setHF(cpu_ptr, true);
+
+  info->cycles = 4;
+  info->size = 1;
+}
+
+// Compliment the carry flag
+void CCF(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  unsigned char *f = getRegister(cpu_ptr, F);
+  unsigned char cf = (*f & 0x10) >> 4;
+  if (cf) 
+    setCF(cpu_ptr, false);
+  else
+    setCF(cpu_ptr, true);
+  
+  setNF(cpu_ptr, false);
+  setHF(cpu_ptr, false);
+
+  info->cycles = 4;
+  info->size = 1;
+}
 
 // Load SP into 16 bit addr
 void LD_a16_SP(void *cpu, Op_info *info) {
@@ -685,6 +749,8 @@ void init_jmp (func_ptr jumptable[0xF][0xF]) {
   jumptable[0x1][0xB] = DEC_DE;
   jumptable[0x1][0xC] = INC_E;
   jumptable[0x1][0xD] = DEC_E;
+  jumptable[0x1][0xE] = LD_E_d8;
+  jumptable[0x1][0xF] = RRA;
 
   jumptable[0x2][0x1] = LD_HL_d16;
   jumptable[0x2][0x2] = LDINC_HL_A;
@@ -699,6 +765,8 @@ void init_jmp (func_ptr jumptable[0xF][0xF]) {
   jumptable[0x2][0xB] = DEC_HL;
   jumptable[0x2][0xC] = INC_L;
   jumptable[0x2][0xD] = DEC_L;
+  jumptable[0x2][0xE] = LD_L_d8;
+  jumptable[0x2][0xF] = CPL;
 
   jumptable[0x3][0x1] = LD_SP_d16;
   jumptable[0x3][0x2] = LDDEC_HL_A;
@@ -713,5 +781,7 @@ void init_jmp (func_ptr jumptable[0xF][0xF]) {
   jumptable[0x3][0xB] = DEC_SP;
   jumptable[0x3][0xC] = INC_A;
   jumptable[0x3][0xD] = DEC_A;
+  jumptable[0x3][0xE] = LD_A_d8;
+  jumptable[0x3][0xF] = CCF;
 
 }

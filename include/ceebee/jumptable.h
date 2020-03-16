@@ -25,6 +25,7 @@ void INC_C(void *cpu, Op_info *info);
 void DEC_C(void *cpu, Op_info *info);
 void LD_C_d8(void *cpu, Op_info *info);
 void RRCA(void *cpu, Op_info *info);
+void RRA(void *cpu, Op_info *info);
 void RLA(void *cpu, Op_info *info);
 void LD_DE_d16(void *cpu, Op_info *info);
 void LD_HL_d16(void *cpu, Op_info *info);
@@ -51,6 +52,8 @@ void JR_C_r8(void *cpu, Op_info *info);
 void ADD_HL_DE(void *cpu, Op_info *info);
 void ADD_HL_HL(void *cpu, Op_info *info);
 void ADD_HL_SP(void *cpu, Op_info *info);
+void CPL(void *cpu, Op_info *info);
+void CCF(void *cpu, Op_info *info);
 #endif
 
 #endif 

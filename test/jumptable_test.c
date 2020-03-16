@@ -521,6 +521,60 @@ void test_RLA(void ** state) {
   assert_true(info.size == 1);
 }
 
+void test_RRA(void ** state) {
+  Op_info info;
+  cpu.af = 0x0080;
+  RRA(&cpu, &info);
+  unsigned char *a = getRegister(&cpu, A);
+  unsigned char *f = getRegister(&cpu, F);
+
+  unsigned char expected = 0x40;
+  assert_true(*a == expected); 
+  assert_true(*f == 0x00);
+  
+  cpu.af = 0x1071;
+  expected = 0xB8;
+  RRA(&cpu,&info);
+  assert_true(*a == expected); 
+  assert_true(*f == 0x10);
+
+  assert_true(info.cycles == 4);
+  assert_true(info.size == 1);
+}
+
+void test_CPL(void ** state) { 
+  Op_info info;
+  
+  cpu.af = 0x00FF;
+  CPL(&cpu,&info);
+  unsigned char *a = getRegister(&cpu, A);
+  unsigned char expected = 0x00;
+  assert_true(*a == expected);
+
+  cpu.af = 0x00C9;
+  expected = 0x36;
+  assert_true(*a == expected);
+
+  assert_true(info.cycles == 4);
+  assert_true(info.size == 1);
+}
+
+void test_CCF(void ** state) { 
+  Op_info info;
+
+  cpu.af = 0x90FF;
+  CCF(&cpu,&info);
+  unsigned char *f = getRegister(&cpu, F);
+  assert_true(*f == 0x80);
+
+  cpu.af = 0xE0FF;
+  CCF(&cpu,&info);
+  assert_true(*f == 0x90);
+
+  assert_true(info.cycles == 4);
+  assert_true(info.size == 1);
+} 
+
 void test_SCF(void ** state) {
   Op_info info;
   cpu.af = 0xF000;
@@ -628,10 +682,12 @@ int main (void) {
     cmocka_unit_test_setup_teardown(test_LD_H_d8,setup,teardown),
     cmocka_unit_test_setup_teardown(test_LDINDR_HL_d8,setup,teardown),
     cmocka_unit_test_setup_teardown(test_RLA,setup,teardown),
+    cmocka_unit_test_setup_teardown(test_RRA,setup,teardown),
     cmocka_unit_test_setup_teardown(test_SCF,setup,teardown),
     cmocka_unit_test_setup_teardown(test_JR_r8,setup,teardown),
     cmocka_unit_test_setup_teardown(test_JR_Z_r8,setup,teardown),
     cmocka_unit_test_setup_teardown(test_JR_C_r8,setup,teardown),
+    cmocka_unit_test_setup_teardown(test_CCF,setup,teardown),
   };
 
   int count_fail_tests = cmocka_run_group_tests (tests, NULL, NULL);
