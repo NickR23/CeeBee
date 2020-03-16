@@ -1,5 +1,6 @@
 #include <stdarg.h>
 #include <stddef.h>
+#include <stdio.h>
 #include <setjmp.h>
 #include <cmocka.h>
 #include <stdbool.h>
@@ -532,6 +533,58 @@ void test_SCF(void ** state) {
   assert_true(info.size == 1);
 }
 
+void test_JR_r8(void ** state) {
+  Op_info info;
+  cpu.pc = 0x0004;
+ 
+  JR_r8(&cpu,&info);
+
+  assert_true(cpu.pc == 0x0003);
+
+  assert_true(info.cycles == 12);
+  assert_true(info.size == 2);
+}
+
+void test_JR_Z_r8(void ** state) {
+  Op_info info;
+  cpu.pc = 0x0004;
+  cpu.af = 0x8000;
+ 
+  JR_Z_r8(&cpu,&info);
+
+  assert_true(cpu.pc == 0x0003);
+
+  assert_true(info.cycles == 12);
+  assert_true(info.size == 2);
+  
+  cpu.af = 0x0000;
+  JR_Z_r8(&cpu,&info);
+  assert_true(cpu.pc == 0x0003);
+
+  assert_true(info.cycles == 8);
+  assert_true(info.size == 2);
+}
+
+void test_JR_C_r8(void ** state) {
+  Op_info info;
+  cpu.pc = 0x0004;
+  cpu.af = 0x1000;
+ 
+  JR_C_r8(&cpu,&info);
+
+  assert_true(cpu.pc == 0x0003);
+
+  assert_true(info.cycles == 12);
+  assert_true(info.size == 2);
+  
+  cpu.af = 0x0000;
+  JR_C_r8(&cpu,&info);
+  assert_true(cpu.pc == 0x0003);
+
+  assert_true(info.cycles == 8);
+  assert_true(info.size == 2);
+}
+
 int main (void) {
   const struct CMUnitTest tests [] =
   {
@@ -575,6 +628,9 @@ int main (void) {
     cmocka_unit_test_setup_teardown(test_LDINDR_HL_d8,setup,teardown),
     cmocka_unit_test_setup_teardown(test_RLA,setup,teardown),
     cmocka_unit_test_setup_teardown(test_SCF,setup,teardown),
+    cmocka_unit_test_setup_teardown(test_JR_r8,setup,teardown),
+    cmocka_unit_test_setup_teardown(test_JR_Z_r8,setup,teardown),
+    cmocka_unit_test_setup_teardown(test_JR_C_r8,setup,teardown),
   };
 
   int count_fail_tests = cmocka_run_group_tests (tests, NULL, NULL);

@@ -44,6 +44,10 @@ void DECINDR_HL(void *cpu, Op_info *info);
 void LD_D_d8(void *cpu, Op_info *info);
 void LD_H_d8(void *cpu, Op_info *info);
 void LDINDR_HL_d8(void *cpu, Op_info *info);
+void SCF(void *cpu, Op_info *info);
+void JR_r8(void *cpu, Op_info *info);
+void JR_Z_r8(void *cpu, Op_info *info);
+void JR_C_r8(void *cpu, Op_info *info);
 #endif
 
 #endif 

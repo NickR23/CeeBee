@@ -580,6 +580,46 @@ void SCF(void *cpu, Op_info *info) {
   info->size = 1;
 }
 
+// Set the jump to address
+void JR_r8(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  
+  char offset = getByte(cpu_ptr, cpu_ptr->pc + 1);
+  cpu_ptr->pc += offset;
+
+  // Provide the info for the instruction
+  info->cycles = 12;
+  info->size = 2;
+}
+
+void JR_Z_r8(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  unsigned char *f = getRegister(cpu_ptr, F); 
+  unsigned char zf = (*f & 0x80) >> 7;
+  if (zf) {
+    JR_r8(cpu_ptr, info);
+  }
+  else {
+    // Provide the info for the instruction
+    info->cycles = 8;
+    info->size = 2;
+  }
+}
+
+void JR_C_r8(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  unsigned char *f = getRegister(cpu_ptr, F); 
+  unsigned char cf = (*f & 0x10) >> 4;
+  if (cf) {
+    JR_r8(cpu_ptr, info);
+  }
+  else {
+    // Provide the info for the instruction
+    info->cycles = 8;
+    info->size = 2;
+  }
+}
+
 // Lets u kno that this opcode is not implemented yet
 void NOT_IMPL(void *cpu, Op_info *info) {
   printf(WHT "This instruction is not yet implemented :)\n" RESET);
@@ -618,6 +658,7 @@ void init_jmp (func_ptr jumptable[0xF][0xF]) {
   jumptable[0x1][0x5] = DEC_D;
   jumptable[0x1][0x6] = LD_D_d8;
   jumptable[0x1][0x7] = RLA;
+  jumptable[0x1][0x8] = JR_r8;
 
   jumptable[0x2][0x2] = LDINC_HL_A;
   jumptable[0x2][0x3] = INC_HL;
@@ -625,6 +666,7 @@ void init_jmp (func_ptr jumptable[0xF][0xF]) {
   jumptable[0x2][0x5] = INC_D;
   jumptable[0x2][0x6] = LD_H_d8;
   jumptable[0x2][0x7] = DAA;
+  jumptable[0x2][0x8] = JR_Z_r8;
 
   jumptable[0x2][0x1] = LD_HL_d16;
   jumptable[0x3][0x2] = LDDEC_HL_A;
@@ -633,6 +675,7 @@ void init_jmp (func_ptr jumptable[0xF][0xF]) {
   jumptable[0x3][0x5] = DECINDR_HL;
   jumptable[0x3][0x6] = LDINDR_HL_d8;
   jumptable[0x3][0x7] = SCF;
+  jumptable[0x3][0x8] = JR_C_r8;
 
   /* SKIPPING STOP (0x10) FOR NOW */
   
