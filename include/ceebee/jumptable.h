@@ -48,6 +48,9 @@ void SCF(void *cpu, Op_info *info);
 void JR_r8(void *cpu, Op_info *info);
 void JR_Z_r8(void *cpu, Op_info *info);
 void JR_C_r8(void *cpu, Op_info *info);
+void ADD_HL_DE(void *cpu, Op_info *info);
+void ADD_HL_HL(void *cpu, Op_info *info);
+void ADD_HL_SP(void *cpu, Op_info *info);
 #endif
 
 #endif 

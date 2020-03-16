@@ -7,6 +7,29 @@
 #include "ceebee/termColors.h"
 
 /* SUPER RAD COMMON FUNCTIONS FOR ALL OPS */
+
+// 8bit load from 8 bits after pc
+void load_n_to_reg(CPU *cpu, Op_info *info, unsigned short reg) {
+  unsigned char *dest = getRegister(cpu, reg); 
+ 
+  // Provide the info for the instruction
+  info->cycles = 8;
+  info->size = 2;
+   
+  *dest = getByte(cpu, cpu->pc + 1);
+}
+
+// 16bit load from 16 bits after pc
+void load_nn_to_reg(CPU *cpu, Op_info *info, unsigned short reg) {
+  // Get the next 16 bits from just after pc
+  unsigned int nn = getNN(cpu, cpu->pc + 1);
+  // Get the register
+  unsigned short *dest = getRegister16(cpu, reg);
+  *dest = nn;
+  // Provide the info for the instruction
+  info->cycles = 12;
+  info->size = 3;
+}
   
 // Sets the carry flag
 void setCF(CPU *cpu, bool state) {
@@ -44,118 +67,6 @@ void setZF(CPU *cpu, bool state) {
     *f &= 0x7F;
 }
 
-// 8bit load from 8 bits after pc
-void load_n_to_reg(CPU *cpu, Op_info *info, unsigned short reg) {
-  unsigned char *dest = getRegister(cpu, reg); 
- 
-  // Provide the info for the instruction
-  info->cycles = 8;
-  info->size = 2;
-   
-  *dest = getByte(cpu, cpu->pc + 1);
-}
-
-// 16bit load from 16 bits after pc
-void load_nn_to_reg(CPU *cpu, Op_info *info, unsigned short reg) {
-  // Get the next 16 bits from just after pc
-  unsigned int nn = getNN(cpu, cpu->pc + 1);
-  // Get the register
-  unsigned short *dest = getRegister16(cpu, reg);
-  *dest = nn;
-  // Provide the info for the instruction
-  info->cycles = 12;
-  info->size = 3;
-}
-
-// Load 8 bits to address in src
-void loadindr_n_from_reg(CPU *cpu, Op_info *info, unsigned short dest_reg, unsigned short src_reg) {
-  unsigned short *dest = getRegister16(cpu, dest_reg);
-  unsigned char *src = getRegister(cpu, src_reg);
-  cpu->mmu[*dest] = *src;
-  // Provide the info for the instruction
-  info->cycles = 8;
-  info->size = 1;
-}
-
-void inc_16_reg(CPU *cpu, Op_info *info, unsigned short reg) {
-  unsigned short *dest = getRegister16(cpu, reg); 
-  *dest = *dest + 1;
-  // Provide the info for the instruction
-  info->cycles = 8;
-  info->size = 1;
-}
-
-void dec_16_reg(CPU *cpu, Op_info *info, unsigned short reg) {
-  unsigned short *dest = getRegister16(cpu, reg); 
-  
-  *dest = *dest - 1;
-
-  info->cycles = 8;
-  info->size = 1;
-}
-
-void indir_n_load(CPU *cpu, Op_info *info, unsigned short dest_reg, unsigned short src_reg) {
-  unsigned short *src = getRegister16(cpu, src_reg);
-  unsigned char *dest = getRegister(cpu, dest_reg);
-  
-  *dest = cpu->mmu[*src];
-
-  // Provide the info for the instruction
-  info->cycles = 8;
-  info->size = 1;
-}
-
-void add_16_reg(CPU *cpu, Op_info *info, unsigned short dest_reg, unsigned short src_reg) {
-  unsigned short *dest = getRegister16(cpu, dest_reg);
-  unsigned short *src = getRegister16(cpu, src_reg);
-  unsigned short res = *dest + *src;
-   
-  setCF(cpu, res < *dest);
-  setHF(cpu,  ((*dest & 0xf) + (*src & 0xf)) & 0x10 );
-  setNF(cpu, false);
-
-  *dest = res;
-  // Provide the info for the instruction
-  info->cycles = 8;
-  info->size = 1;
-}
-
-
-void inc_8_reg(CPU *cpu, Op_info *info, unsigned short reg) {
-  unsigned char *dest = getRegister(cpu, reg); 
- 
-  // Provide the info for the instruction
-  info->cycles = 4;
-  info->size = 1;
- 
-  // Check flag states
-  setZF(cpu, ((*dest + 1) & 0xff) == 0x00);
-  setNF(cpu, false);
-  // [val] & 0xf gets rid of the upper nibble
-  setHF(cpu, ((*dest & 0xf) + (1 & 0xf)) & 0x10 );
- 
-  // Carry out the operation
-  *dest = *dest + 1;
-}
-
-void dec_8_reg(CPU *cpu, Op_info *info, unsigned short reg) {
-  unsigned char *dest = getRegister(cpu, reg); 
- 
-  // Provide the info for the instruction
-  info->cycles = 4;
-  info->size = 1;
- 
-  // Check flag states
-  setZF(cpu, ((*dest - 1) & 0xff) == 0);
-  setNF(cpu, true);
-  // [val] & 0xf gets rid of the upper nibble
-  setHF(cpu, ((*dest & 0xf) - (1 & 0xf)) < 0x00 );
-
-  // Carry out the operation
-  *dest = *dest - 1;
-}
-
-/* JUMPTABLE FUNCTIONS */
 
 void NOP(void *cpu, Op_info *info) {
   // Provide the info for the instruction
@@ -174,31 +85,72 @@ void LD_SP_d16(void *cpu, Op_info *info) {
 void LD_BC_d16(void *cpu, Op_info *info) {
   // Trick to pass cpu into instruction
   CPU *cpu_ptr = (CPU*) cpu; 
-  load_nn_to_reg(cpu_ptr, info, B);
+  // Get the next 16 bits from just after pc
+  unsigned int nn = getNN(cpu_ptr, cpu_ptr->pc + 1);
+  unsigned short* bc = getRegister16(cpu_ptr, B);
+  *bc = nn;
+  // Provide the info for the instruction
+  info->cycles = 12;
+  info->size = 3;
 }
 
 // Load a into addr in BC
 void LDINDR_BC_A(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu; 
-  loadindr_n_from_reg(cpu_ptr, info, B, A);
+  unsigned short* bc = getRegister16(cpu_ptr, B);
+  unsigned char *a = getRegister(cpu_ptr, A);
+  cpu_ptr->mmu[*bc] = *a;
+  // Provide the info for the instruction
+  info->cycles = 8;
+  info->size = 1;
 }
 
 // Increment BC
 void INC_BC(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu;
-  inc_16_reg(cpu_ptr, info, B); 
+  unsigned short *bc = getRegister16(cpu_ptr, B); 
+  *bc = *bc + 1;
+  // Provide the info for the instruction
+  info->cycles = 8;
+  info->size = 1;
 }
 
 // Increment B
 void INC_B(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu;
-  inc_8_reg(cpu_ptr, info, B);
+  unsigned char *b = getRegister(cpu_ptr, B); 
+ 
+  // Provide the info for the instruction
+  info->cycles = 4;
+  info->size = 1;
+ 
+  // Check flag states
+  setZF(cpu_ptr, ((*b + 1) & 0xff) == 0x00);
+  setNF(cpu_ptr, false);
+  // [val] & 0xf gets rid of the upper nibble
+  setHF(cpu_ptr,  ((*b & 0xf) + (1 & 0xf)) & 0x10 );
+ 
+  // Carry out the operation
+  *b = *b + 1;
 } 
 
 // Decrement B
 void DEC_B(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu;
-  dec_8_reg(cpu_ptr, info, B);
+  unsigned char *b = getRegister(cpu_ptr, B); 
+ 
+  // Provide the info for the instruction
+  info->cycles = 4;
+  info->size = 1;
+ 
+  // Check flag states
+  setZF(cpu_ptr, ((*b - 1) & 0xff) == 0);
+  setNF(cpu_ptr, true);
+  // [val] & 0xf gets rid of the upper nibble
+  setHF(cpu_ptr,  ((*b & 0xf) - (1 & 0xf)) < 0x00 );
+
+  // Carry out the operation
+  *b = *b - 1;
 } 
 
 // Load immediate 8 bits into B
@@ -254,31 +206,86 @@ void LD_a16_SP(void *cpu, Op_info *info) {
 // Add BC to HL
 void ADD_HL_BC(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu;
-  add_16_reg(cpu_ptr, info, H, B);
+  
+  unsigned short *hl = getRegister16(cpu_ptr, H);
+  unsigned short *bc = getRegister16(cpu_ptr, B);
+  unsigned short res = *hl + *bc;
+   
+  setCF(cpu_ptr, res < *hl);
+  setHF(cpu_ptr,  ((*hl & 0xf) + (*bc & 0xf)) & 0x10 );
+  setNF(cpu_ptr, false);
+
+  *hl = res;
+  // Provide the info for the instruction
+  info->cycles = 8;
+  info->size = 1;
 }
 
 // Add DE to HL
 void ADD_HL_DE(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu;
-  add_16_reg(cpu_ptr, info, H, D);
+  
+  unsigned short *hl = getRegister16(cpu_ptr, H);
+  unsigned short *de = getRegister16(cpu_ptr, D);
+  unsigned short res = *hl + *de;
+   
+  setCF(cpu_ptr, res < *hl);
+  setHF(cpu_ptr,  ((*hl & 0xf) + (*de & 0xf)) & 0x10 );
+  setNF(cpu_ptr, false);
+
+  *hl = res;
+  // Provide the info for the instruction
+  info->cycles = 8;
+  info->size = 1;
 }
 
 // Add HL to HL
 void ADD_HL_HL(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu;
-  add_16_reg(cpu_ptr, info, H, H);
+  
+  unsigned short *hl = getRegister16(cpu_ptr, H);
+  unsigned short res = *hl + *hl;
+   
+  setCF(cpu_ptr, res < *hl);
+  setHF(cpu_ptr,  ((*hl & 0xf) + (*hl & 0xf)) & 0x10 );
+  setNF(cpu_ptr, false);
+
+  *hl = res;
+  // Provide the info for the instruction
+  info->cycles = 8;
+  info->size = 1;
 }
 
 // Add SP to HL
 void ADD_HL_SP(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu;
-  add_16_reg(cpu_ptr, info, H, SP);
+  
+  unsigned short *hl = getRegister16(cpu_ptr, H);
+  unsigned short *sp = getRegister16(cpu_ptr, SP);
+  unsigned short res = *hl + *sp;
+   
+  setCF(cpu_ptr, res < *hl);
+  setHF(cpu_ptr,  ((*hl & 0xf) + (*sp & 0xf)) & 0x10 );
+  setNF(cpu_ptr, false);
+
+  *hl = res;
+  // Provide the info for the instruction
+  info->cycles = 8;
+  info->size = 1;
 }
 
 // Load byte BC points to into A
 void LD_A_INDIR_BC(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu;
-  indir_n_load(cpu_ptr, info, A, B);
+  
+  unsigned short *bc = getRegister16(cpu_ptr, B);
+  unsigned char *a = getRegister(cpu_ptr, A);
+  
+  *a = cpu_ptr->mmu[*bc];
+
+  // Provide the info for the instruction
+  info->cycles = 8;
+  info->size = 1;
 }
 
 // Decrements BC
@@ -293,13 +300,39 @@ void DEC_BC(void *cpu, Op_info *info) {
 // Decrement C
 void DEC_C(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu;
-  dec_8_reg(cpu_ptr, info, C);
+  unsigned char *c = getRegister(cpu_ptr, C); 
+ 
+  // Provide the info for the instruction
+  info->cycles = 4;
+  info->size = 1;
+ 
+  // Check flag states
+  setZF(cpu_ptr, ((*c - 1) & 0xff) == 0);
+  setNF(cpu_ptr, true);
+  // [val] & 0xf gets rid of the upper nibble
+  setHF(cpu_ptr,  ((*c & 0xf) - (1 & 0xf)) < 0x00 );
+ 
+  // Carry out the operation
+  *c = *c - 1;
 } 
 
 // Increment C
 void INC_C(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu;
-  inc_8_reg(cpu_ptr, info, C);
+  unsigned char *c = getRegister(cpu_ptr, C); 
+ 
+  // Provide the info for the instruction
+  info->cycles = 4;
+  info->size = 1;
+ 
+  // Check flag states
+  setZF(cpu_ptr, ((*c + 1) & 0xff) == 0x00);
+  setNF(cpu_ptr, false);
+  // [val] & 0xf gets rid of the upper nibble
+  setHF(cpu_ptr,  ((*c & 0xf) + (1 & 0xf)) & 0x10 );
+ 
+  // Carry out the operation
+  *c = *c + 1;
 } 
 
 // Load immediate 8 bits into C
@@ -327,20 +360,35 @@ void RRCA(void *cpu, Op_info *info) {
 void LD_DE_d16(void *cpu, Op_info *info) {
   // Trick to pass cpu into instruction
   CPU *cpu_ptr = (CPU*) cpu; 
-  load_nn_to_reg(cpu_ptr, info, D);
+  // Get the next 16 bits from just after pc
+  unsigned int nn = getNN(cpu_ptr, cpu_ptr->pc + 1);
+  cpu_ptr->de = nn;
+  // Provide the info for the instruction
+  info->cycles = 12;
+  info->size = 3;
 }
 
 // Load the next 16 bits into HL
 void LD_HL_d16(void *cpu, Op_info *info) {
   // Trick to pass cpu into instruction
   CPU *cpu_ptr = (CPU*) cpu; 
-  load_nn_to_reg(cpu_ptr, info, H);
+  // Get the next 16 bits from just after pc
+  unsigned int nn = getNN(cpu_ptr, cpu_ptr->pc + 1);
+  cpu_ptr->hl = nn;
+  // Provide the info for the instruction
+  info->cycles = 12;
+  info->size = 3;
 }
 
 // Load a into addr in DE
 void LDINDR_DE_A(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu; 
-  loadindr_n_from_reg(cpu_ptr, info, D, A);
+  unsigned short *de = getRegister16(cpu_ptr, B);
+  unsigned char *a = getRegister(cpu_ptr, A);
+  cpu_ptr->mmu[*de] = *a;
+  // Provide the info for the instruction
+  info->cycles = 8;
+  info->size = 1;
 }
 
 // Load a into addr in HL and INC
@@ -370,31 +418,69 @@ void LDDEC_HL_A(void *cpu, Op_info *info) {
 // Increment DE
 void INC_DE(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu;
-  inc_16_reg(cpu_ptr, info, D);
+ 
+  cpu_ptr->de++;
+  // Provide the info for the instruction
+  info->cycles = 8;
+  info->size = 1;
 }
 
 // Increment HL
 void INC_HL(void *cpu, Op_info *info) {
- CPU *cpu_ptr = (CPU*) cpu;
-  inc_16_reg(cpu_ptr, info, H);
+  CPU *cpu_ptr = (CPU*) cpu;
+ 
+  cpu_ptr->hl++;
+  // Provide the info for the instruction
+  info->cycles = 8;
+  info->size = 1;
 }
 
 // Increment SP
 void INC_SP(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu;
-  inc_16_reg(cpu_ptr, info, SP);
+ 
+  cpu_ptr->sp++;
+  // Provide the info for the instruction
+  info->cycles = 8;
+  info->size = 1;
 }
 
 // Increment D
 void INC_D(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu;
-  inc_8_reg(cpu_ptr, info, D);
+  unsigned char *d = getRegister(cpu_ptr, D); 
+ 
+  // Provide the info for the instruction
+  info->cycles = 4;
+  info->size = 1;
+ 
+  // Check flag states
+  setZF(cpu_ptr, ((*d + 1) & 0xff) == 0x00);
+  setNF(cpu_ptr, false);
+  // [val] & 0xf gets rid of the upper nibble
+  setHF(cpu_ptr,  ((*d & 0xf) + (1 & 0xf)) & 0x10 );
+ 
+  // Carry out the operation
+  *d = *d + 1;
 } 
 
 // Increment H
 void INC_H(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu;
-  inc_8_reg(cpu_ptr, info, H);
+  unsigned char *h = getRegister(cpu_ptr, H); 
+ 
+  // Provide the info for the instruction
+  info->cycles = 4;
+  info->size = 1;
+ 
+  // Check flag states
+  setZF(cpu_ptr, ((*h + 1) & 0xff) == 0x00);
+  setNF(cpu_ptr, false);
+  // [val] & 0xf gets rid of the upper nibble
+  setHF(cpu_ptr,  ((*h & 0xf) + (1 & 0xf)) & 0x10 );
+ 
+  // Carry out the operation
+  *h = *h + 1;
 } 
 
 // Increment address in HL
@@ -420,13 +506,39 @@ void INCINDR_HL(void *cpu, Op_info *info) {
 // Decrement D
 void DEC_D(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu;
-  dec_8_reg(cpu_ptr, info, D);
+  unsigned char *d = getRegister(cpu_ptr, D); 
+
+  // Provide the info for the instruction
+  info->cycles = 4;
+  info->size = 1;
+
+  // Check flag states
+  setZF(cpu_ptr, ((*d - 1) & 0xff) == 0);
+  setNF(cpu_ptr, true);
+  // [val] & 0xf gets rid of the upper nibble
+  setHF(cpu_ptr,  ((*d & 0xf) - (1 & 0xf)) < 0x00 );
+
+  // Carry out the operation
+  *d = *d - 1;
 } 
 
 // Decrement H
 void DEC_H(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu;
-  dec_8_reg(cpu_ptr, info, H);
+  unsigned char *h = getRegister(cpu_ptr, H); 
+ 
+  // Provide the info for the instruction
+  info->cycles = 4;
+  info->size = 1;
+ 
+  // Check flag states
+  setZF(cpu_ptr, ((*h - 1) & 0xff) == 0);
+  setNF(cpu_ptr, true);
+  // [val] & 0xf gets rid of the upper nibble
+  setHF(cpu_ptr,  ((*h & 0xf) - (1 & 0xf)) < 0x00 );
+ 
+  // Carry out the operation
+  *h = *h - 1;
 } 
 
 // Decrement address at HL
@@ -574,71 +686,174 @@ void LD_A_INDR_DE(void *cpu, Op_info *info) {
 // Load byte HL points to into A
 void LDINC_A_INDR_HL(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu;
-  indir_n_load(cpu_ptr, info, A, H); 
+  
   unsigned short *hl = getRegister16(cpu_ptr, H);
+  unsigned char *a = getRegister(cpu_ptr, A);
+  
+  *a = cpu_ptr->mmu[*hl];
+  
   *hl = *hl + 1;
+
+  // Provide the info for the instruction
+  info->cycles = 8;
+  info->size = 1;
 }
 
 // Load byte HL points to into A
 void LDDEC_A_INDR_HL(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu;
-  indir_n_load(cpu_ptr, info, A, H); 
+  
   unsigned short *hl = getRegister16(cpu_ptr, H);
+  unsigned char *a = getRegister(cpu_ptr, A);
+  
+  *a = cpu_ptr->mmu[*hl];
+  
   *hl = *hl - 1;
+
+  // Provide the info for the instruction
+  info->cycles = 8;
+  info->size = 1;
 }
 
 // Decrements DE
 void DEC_DE(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu;
-  dec_16_reg(cpu_ptr, info, D);
+  cpu_ptr->de--;
+
+  info->cycles = 8;
+  info->size = 1;
 } 
 
 // Decrements HL
 void DEC_HL(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu;
-  dec_16_reg(cpu_ptr, info, H);
+  cpu_ptr->hl--;
+
+  info->cycles = 8;
+  info->size = 1;
 } 
 
 // Decrements SP
 void DEC_SP(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu;
-  dec_16_reg(cpu_ptr, info, SP);
+  cpu_ptr->sp--;
+
+  info->cycles = 8;
+  info->size = 1;
 } 
 
 // Increment E
 void INC_E(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu;
-  inc_8_reg(cpu_ptr, info, E);
+  unsigned char *e = getRegister(cpu_ptr, E); 
+ 
+  // Provide the info for the instruction
+  info->cycles = 4;
+  info->size = 1;
+ 
+  // Check flag states
+  setZF(cpu_ptr, ((*e + 1) & 0xff) == 0x00);
+  setNF(cpu_ptr, false);
+  // [val] & 0xf gets rid of the upper nibble
+  setHF(cpu_ptr,  ((*e & 0xf) + (1 & 0xf)) & 0x10 );
+ 
+  // Carry out the operation
+  *e = *e + 1;
 } 
 
 // Increment L
 void INC_L(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu;
-  inc_8_reg(cpu_ptr, info, L);
+  unsigned char *l = getRegister(cpu_ptr, L); 
+ 
+  // Provide the info for the instruction
+  info->cycles = 4;
+  info->size = 1;
+ 
+  // Check flag states
+  setZF(cpu_ptr, ((*l + 1) & 0xff) == 0x00);
+  setNF(cpu_ptr, false);
+  // [val] & 0xf gets rid of the upper nibble
+  setHF(cpu_ptr,  ((*l & 0xf) + (1 & 0xf)) & 0x10 );
+ 
+  // Carry out the operation
+  *l = *l + 1;
 } 
 
 // Increment A
 void INC_A(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu;
-  inc_8_reg(cpu_ptr, info, A);
+  unsigned char *a = getRegister(cpu_ptr, A); 
+ 
+  // Provide the info for the instruction
+  info->cycles = 4;
+  info->size = 1;
+ 
+  // Check flag states
+  setZF(cpu_ptr, ((*a + 1) & 0xff) == 0x00);
+  setNF(cpu_ptr, false);
+  // [val] & 0xf gets rid of the upper nibble
+  setHF(cpu_ptr,  ((*a & 0xf) + (1 & 0xf)) & 0x10 );
+ 
+  // Carry out the operation
+  *a = *a + 1;
 } 
 
 // Decrement E
 void DEC_E(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu;
-  dec_8_reg(cpu_ptr, info, E);
+  unsigned char *e = getRegister(cpu_ptr, E); 
+ 
+  // Provide the info for the instruction
+  info->cycles = 4;
+  info->size = 1;
+ 
+  // Check flag states
+  setZF(cpu_ptr, ((*e - 1) & 0xff) == 0);
+  setNF(cpu_ptr, true);
+  // [val] & 0xf gets rid of the upper nibble
+  setHF(cpu_ptr,  ((*e & 0xf) - (1 & 0xf)) < 0x00 );
+ 
+  // Carry out the operation
+  *e = *e - 1;
 } 
 
 // Decrement L
 void DEC_L(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu;
-  dec_8_reg(cpu_ptr, info, L);
+  unsigned char *l = getRegister(cpu_ptr, L); 
+ 
+  // Provide the info for the instruction
+  info->cycles = 4;
+  info->size = 1;
+ 
+  // Check flag states
+  setZF(cpu_ptr, ((*l - 1) & 0xff) == 0);
+  setNF(cpu_ptr, true);
+  // [val] & 0xf gets rid of the upper nibble
+  setHF(cpu_ptr,  ((*l & 0xf) - (1 & 0xf)) < 0x00 );
+ 
+  // Carry out the operation
+  *l = *l - 1;
 } 
 
 // Decrement A
 void DEC_A(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu;
-  dec_8_reg(cpu_ptr, info, A);
+  unsigned char *a = getRegister(cpu_ptr, A); 
+ 
+  // Provide the info for the instruction
+  info->cycles = 4;
+  info->size = 1;
+ 
+  // Check flag states
+  setZF(cpu_ptr, ((*a - 1) & 0xff) == 0);
+  setNF(cpu_ptr, true);
+  // [val] & 0xf gets rid of the upper nibble
+  setHF(cpu_ptr,  ((*a & 0xf) - (1 & 0xf)) < 0x00 );
+ 
+  // Carry out the operation
+  *a = *a - 1;
 } 
 
 // Lets u kno that this opcode is not implemented yet

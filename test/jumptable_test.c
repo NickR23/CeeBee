@@ -585,6 +585,7 @@ void test_JR_C_r8(void ** state) {
   assert_true(info.size == 2);
 }
 
+
 int main (void) {
   const struct CMUnitTest tests [] =
   {
