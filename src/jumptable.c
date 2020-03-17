@@ -53,11 +53,19 @@ bool check_flag(CPU *cpu, unsigned char flag) {
   return (flag_status == 1);
 }
 
+// Compares accumulator with val
+void comp(CPU *cpu, unsigned char val) {
+  setZF(cpu, cpu->a == val);
+  setNF(cpu, true);
+  setHF(cpu, ((cpu->a & 0xf) - (val & 0xf)) < 0x00 );
+  setCF(cpu, cpu->a < val);
+}
+
 // Pushes 16 bit register onto the stack
 void push_r16(CPU *cpu, Op_info *info, unsigned short dest_reg) {
-  unsigned char dest = read_r16(cpu, dest_reg);
+  unsigned short dest = read_r16(cpu, dest_reg);
   cpu->sp -= 2;
-  cpu->mmu[cpu->sp] = dest;
+  writeNN(cpu, cpu->sp, dest);
 
   // Provide the info for the instruction
   info->cycles = 16;
@@ -66,7 +74,7 @@ void push_r16(CPU *cpu, Op_info *info, unsigned short dest_reg) {
 
 // Pop 16 bit register off the stack
 void pop_r16(CPU *cpu, Op_info *info, unsigned short dest_reg) {
-  unsigned short src = getNN(cpu, cpu->sp);
+  unsigned short src = readNN(cpu, cpu->sp);
   cpu->sp += 2;
   
   write_r16(cpu, dest_reg, src);
@@ -119,7 +127,7 @@ void load_n_to_reg(CPU *cpu, Op_info *info, unsigned short reg) {
 // 16bit load from 16 bits after pc
 void load_nn_to_reg(CPU *cpu, Op_info *info, unsigned short reg) {
   // Get the next 16 bits from just after pc
-  unsigned short nn = getNN(cpu, cpu->pc + 1);
+  unsigned short nn = readNN(cpu, cpu->pc + 1);
 
   write_r16(cpu, reg, nn);
 
@@ -846,16 +854,38 @@ void LD_C_A(void *cpu, Op_info *info) {
   move(cpu_ptr, info, C, A);
 }
 
+void LD_A_E(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  move(cpu_ptr, info, A, E);
+}
+
+void CP_d8(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  unsigned char d8 = getByte(cpu_ptr, cpu_ptr->pc + 1);
+  comp(cpu_ptr, d8);
+  info->cycles = 8;
+  info->size = 2;
+}
+
 // Push next instruction onto stack and jump to nn
 void CALL_a16(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu;
   
   cpu_ptr->sp -= 2;
-  cpu_ptr->mmu[cpu_ptr->sp] = cpu_ptr->mmu[cpu_ptr->pc + 3];
+  writeNN(cpu_ptr, cpu_ptr->sp, cpu_ptr->pc + 3);
   
   // Get addr to jump to
   cpu_ptr->pc = getNN(cpu_ptr, cpu_ptr->pc + 1);
   info->cycles = 24;
+}
+
+// Pop two bytes off of stack & jump to that address
+void RET(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  unsigned short addr = readNN(cpu_ptr, cpu_ptr->sp);
+  cpu_ptr->pc = addr;
+  cpu_ptr->sp -= 2;
+  info->cycles = 8;
 }
 
 // Push BC on the stack
@@ -907,8 +937,6 @@ void BIT_7_H(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu;
   bit_n(cpu_ptr, info, 7, H);
 }
-
-  
 
 // Lets u kno that this opcode is not implemented yet
 void NOT_IMPL(void *cpu, Op_info *info) {
@@ -1004,6 +1032,7 @@ void init_jmp (func_ptr jumptable[0xF][0xF], func_ptr cb_jumptable[0xF][0xF]) {
   jumptable[0x4][0xF] = LD_C_A;
 
   jumptable[0x7][0x7] = LDINDR_HL_A;
+  jumptable[0x7][0xB] = LD_A_E;
   
   jumptable[0xA][0xF] = XOR_A;
   
@@ -1015,8 +1044,11 @@ void init_jmp (func_ptr jumptable[0xF][0xF], func_ptr cb_jumptable[0xF][0xF]) {
   jumptable[0xF][0x2] = LD_A_INDR_C;
   
   jumptable[0xC][0x1] = POP_BC;
+  jumptable[0xC][0x9] = RET;
   jumptable[0xC][0xB] = CB;
   jumptable[0xC][0xD] = CALL_a16;
+ 
+  jumptable[0xF][0xE] = CP_d8;
  
   /* CB JUMPTABLE */
   cb_jumptable[0x1][0x1] = RL_C;

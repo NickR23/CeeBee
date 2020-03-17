@@ -132,6 +132,16 @@ unsigned char* getRegister(CPU *cpu, int index) {
     }
 }
 
+// Writes 16 bit value to addr
+void writeNN(CPU *cpu, unsigned short addr, unsigned short val) {
+  *((short*)(cpu->mmu + addr)) = val; 
+}
+
+// Writes 16 bit value to addr
+unsigned short readNN(CPU *cpu, unsigned short addr) {
+  return *((short*)(cpu->mmu + addr)); 
+}
+
 //Gets the next 16 bits in little endian from addr
 //addr should be a pointer to the end of your op code.
 unsigned short getNN(CPU *cpu, unsigned short addr) {
@@ -184,7 +194,7 @@ void printCpu(CPU cpu) {
   printf(MAG "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n" RESET);
 }
 
-unsigned char* loadCart(char const *cartPath, unsigned int* cartSize) {
+unsigned char* loadCart(CPU *cpu, char const *cartPath, unsigned int* cartSize) {
   FILE *fp;
   unsigned char *buffer;
   long cartLength;
@@ -200,6 +210,14 @@ unsigned char* loadCart(char const *cartPath, unsigned int* cartSize) {
 
   buffer = (unsigned char*)malloc(cartLength * sizeof(unsigned char));
   fread(buffer, cartLength, 1, fp);
+  memcpy(cpu->mmu + 0x100, buffer + 0x100, 0x4F * sizeof(unsigned char));
+  for (int i = 0; i < 0x14F; i++) {
+    if (i % 0x10 == 0) printf(" %04x\n", i);
+    printf("%02x ", *(cpu->mmu + i));
+  } 
+  printf("\n");
+  printf("0x104: 0x%02x\n",*(cpu->mmu + 0x104));
+
   fclose(fp);
   return buffer;
 }

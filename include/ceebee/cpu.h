@@ -70,8 +70,10 @@ unsigned char* getRegister(CPU *cpu, int index);
 
 unsigned char getByte(CPU *cpu, unsigned short addr);
 unsigned short getNN(CPU *cpu, unsigned short addr);
+void writeNN(CPU *cpu, unsigned short addr, unsigned short val);
+unsigned short readNN(CPU *cpu, unsigned short addr);
 
 void printCpu(CPU cpu);
 Op_info run_cycle(CPU *cpu);
-unsigned char* loadCart(char const *cartPath, unsigned int* cartSize);
+unsigned char* loadCart(CPU *cpu, char const *cartPath, unsigned int* cartSize);
 #endif

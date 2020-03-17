@@ -99,15 +99,6 @@ void test_write_r16(void ** state) {
   assert_true(read_r16(&cpu,99) == 0x0000);
 }
 
-void test_loadCart(void ** state) {
-  unsigned int cartSize;
-  unsigned char *cart = loadCart(TESTCART, &cartSize);
-  assert_true(cart[0] == 0xFF);  
-  assert_true(cartSize == 1048576);
-
-  free((char *) cart);
-}
-
 void test_getNN(void ** state) {
   unsigned int nn = getNN(&cpu,0); 
   assert_true(nn == 0xfe31);
@@ -134,7 +125,6 @@ int main (void) {
   const struct CMUnitTest tests [] =
   {
     cmocka_unit_test(test_initCPU),
-    cmocka_unit_test(test_loadCart),
     cmocka_unit_test(test_runCycle),
     cmocka_unit_test(test_mmu_load_boot_rom),
     cmocka_unit_test_setup_teardown(test_getRegister,setup,teardown),

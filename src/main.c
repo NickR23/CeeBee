@@ -37,21 +37,21 @@ int main(int argc, char** argv) {
     printCard(TITLEPATH);
   #endif
 
-  //Load cart
-  unsigned int cartSize = 0;
-  const unsigned char *cart = loadCart(cartPath, &cartSize);
 
   //Make CPU
   CPU cpu = initCPU();
   cpu.sp = 0x0000;
   cpu.pc = 0x0000; 
+
+  //Load cart
+  unsigned int cartSize = 0;
+  const unsigned char *cart = loadCart(&cpu, cartPath, &cartSize);
   #ifdef DEBUG
     printf(CYN "Cart size:\n\t%d\n" RESET, cartSize);
   #endif
  
   bool stop_flag = false;
   while (1) {
-    if (cpu.pc == 0x0095) stop_flag = true;
     if (stop_flag) getchar();
     run_cycle(&cpu);
   }
