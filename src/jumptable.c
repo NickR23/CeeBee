@@ -53,6 +53,41 @@ bool check_flag(CPU *cpu, unsigned char flag) {
   return (flag_status == 1);
 }
 
+// Pushes 16 bit register onto the stack
+void push_r16(CPU *cpu, Op_info *info, unsigned short dest_reg) {
+  unsigned char dest = read_r16(cpu, dest_reg);
+  cpu->sp -= 2;
+  cpu->mmu[cpu->sp] = dest;
+
+  // Provide the info for the instruction
+  info->cycles = 16;
+  info->size = 1;
+}
+
+// Pop 16 bit register off the stack
+void pop_r16(CPU *cpu, Op_info *info, unsigned short dest_reg) {
+  unsigned short src = getNN(cpu, cpu->sp);
+  cpu->sp += 2;
+  
+  write_r16(cpu, dest_reg, src);
+  
+  // Provide the info for the instruction
+  info->cycles = 12;
+  info->size = 1;
+}
+
+// Moves 8bit register to 8bit register
+void move(CPU *cpu, Op_info *info, unsigned short dest_reg, unsigned short src_reg) {
+  unsigned char *dest = getRegister(cpu, dest_reg);
+  unsigned char *src = getRegister(cpu, src_reg);
+
+  *dest = *src;
+
+  // Provide the info for the instruction
+  info->cycles = 4;
+  info->size = 1;
+}
+
 void xor_reg(CPU *cpu, Op_info *info, unsigned short dest_reg, unsigned short src_reg) {
   unsigned char *dest = getRegister(cpu, dest_reg); 
   unsigned char *src = getRegister(cpu, src_reg); 
@@ -768,15 +803,31 @@ void JR_NZ_r8(void *cpu, Op_info *info) {
 void LDINDR_C_A(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu;
   
-  unsigned char *a = getRegister(cpu_ptr, A);
-  unsigned char *c = getRegister(cpu_ptr, C);
-
-  cpu_ptr->mmu[*c + 0xFF00] = *a;
+  cpu_ptr->mmu[cpu_ptr->c + 0xFF00] = cpu_ptr->a;
   
   info->cycles = 8;
   info->size = 2;
 }
 
+void LDH_a8_A(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+
+  unsigned char n = getByte(cpu_ptr, cpu_ptr->pc + 1);
+  
+  cpu_ptr->mmu[n + 0xFF00] = cpu_ptr->a;
+
+  info->cycles = 12;
+  info->size = 2;
+}
+  
+void LDINDR_HL_A(void *cpu, Op_info *info) {
+ CPU *cpu_ptr = (CPU*) cpu;
+ unsigned short hl_val = read_r16(cpu_ptr, HL); 
+ cpu_ptr->mmu[hl_val] = cpu_ptr->a;
+ info->cycles = 8;
+ info->size = 1;
+}
+  
 /* This LD puts (c + 0xFF00) into a*/
 void LD_A_INDR_C(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu;
@@ -789,6 +840,34 @@ void LD_A_INDR_C(void *cpu, Op_info *info) {
   info->cycles = 8;
   info->size = 2;
 }
+
+void LD_C_A(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  move(cpu_ptr, info, C, A);
+}
+
+// Push next instruction onto stack and jump to nn
+void CALL_a16(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  
+  cpu_ptr->sp -= 2;
+  cpu_ptr->mmu[cpu_ptr->sp] = cpu_ptr->mmu[cpu_ptr->pc + 3];
+  
+  // Get addr to jump to
+  cpu_ptr->pc = getNN(cpu_ptr, cpu_ptr->pc + 1);
+  info->cycles = 24;
+}
+
+// Push BC on the stack
+void PUSH_BC(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  push_r16(cpu_ptr, info, BC);
+} 
+
+void POP_BC(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  pop_r16(cpu_ptr, info, BC);
+}  
 
 /* CB PREFIX FUNCTIONS */
 
@@ -804,11 +883,31 @@ void bit_n(CPU *cpu, Op_info *info, unsigned char n, unsigned short reg) {
   info->size = 1;
 }
 
+void RL(CPU *cpu, Op_info *info, unsigned short reg) {
+  unsigned char *dest = getRegister(cpu, reg);
+  unsigned char *f = getRegister(cpu, F);
+  unsigned char cf = (*dest & 0x80) >> 7;
+  *dest = (*dest << 1) | ((*f & 0x10) >> 4);
+  
+  setCF(cpu, cf);
+  setNF(cpu,false);
+  setHF(cpu,false);
+
+  info->cycles = 8;
+  info->size = 1;
+}
+
+/* CB FUNCTIONS */
+void RL_C(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  RL(cpu_ptr, info, H);
+}
 
 void BIT_7_H(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu;
   bit_n(cpu_ptr, info, 7, H);
 }
+
   
 
 // Lets u kno that this opcode is not implemented yet
@@ -901,14 +1000,26 @@ void init_jmp (func_ptr jumptable[0xF][0xF], func_ptr cb_jumptable[0xF][0xF]) {
   jumptable[0x3][0xD] = DEC_A;
   jumptable[0x3][0xE] = LD_A_d8;
   jumptable[0x3][0xF] = CCF;
+
+  jumptable[0x4][0xF] = LD_C_A;
+
+  jumptable[0x7][0x7] = LDINDR_HL_A;
   
   jumptable[0xA][0xF] = XOR_A;
+  
+  jumptable[0xC][0x5] = PUSH_BC;
 
+  jumptable[0xE][0x0] = LDH_a8_A;
   jumptable[0xE][0x2] = LDINDR_C_A;
 
   jumptable[0xF][0x2] = LD_A_INDR_C;
   
+  jumptable[0xC][0x1] = POP_BC;
   jumptable[0xC][0xB] = CB;
-  
+  jumptable[0xC][0xD] = CALL_a16;
+ 
+  /* CB JUMPTABLE */
+  cb_jumptable[0x1][0x1] = RL_C;
+
   cb_jumptable[0x7][0xC] = BIT_7_H;
 }

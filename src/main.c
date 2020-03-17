@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include "ceebee/cpu.h"
 #include "ceebee/common.h"
 
@@ -48,10 +49,10 @@ int main(int argc, char** argv) {
     printf(CYN "Cart size:\n\t%d\n" RESET, cartSize);
   #endif
  
-  for (int i = 0; i < 10; i++) {
-    #ifndef DEBUG
-      printDebug(cpu);
-    #endif
+  bool stop_flag = false;
+  while (1) {
+    if (cpu.pc == 0x0095) stop_flag = true;
+    if (stop_flag) getchar();
     run_cycle(&cpu);
   }
 
