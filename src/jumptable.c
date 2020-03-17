@@ -1,9 +1,8 @@
 #include <stdio.h>
 #include <stdbool.h>
-#ifndef JMPTBL_H
-  #include "ceebee/jumptable.h"
-#endif
+#include "ceebee/jumptable.h"
 #include "ceebee/common.h"
+#include "ceebee/mmu.h"
 #include "ceebee/cpu.h"
 #include "ceebee/termColors.h"
 
@@ -11,7 +10,7 @@
   
 // Sets the carry flag
 void setCF(CPU *cpu, bool state) {
-  unsigned char *f = getRegister(cpu, F); 
+  uint8_t *f = getRegister(cpu, F); 
   if (state) 
     *f |= 0x10;
   else 
@@ -20,7 +19,7 @@ void setCF(CPU *cpu, bool state) {
 
 // Sets the half carry flag
 void setHF(CPU *cpu, bool state) {
-  unsigned char *f = getRegister(cpu, F); 
+  uint8_t *f = getRegister(cpu, F); 
   if (state) 
     *f |= 0x20;
   else
@@ -29,7 +28,7 @@ void setHF(CPU *cpu, bool state) {
 
 // Sets the sets the subraction flag
 void setNF(CPU *cpu, bool state) {
-  unsigned char *f = getRegister(cpu, F); 
+  uint8_t *f = getRegister(cpu, F); 
   if (state)
     *f |= 0x40;
   else
@@ -38,7 +37,7 @@ void setNF(CPU *cpu, bool state) {
 
 // Sets the sets the subraction flag
 void setZF(CPU *cpu, bool state) {
-  unsigned char *f = getRegister(cpu, F); 
+  uint8_t *f = getRegister(cpu, F); 
   if (state)
     *f |= 0x80;
   else 
@@ -46,15 +45,15 @@ void setZF(CPU *cpu, bool state) {
 }
 
 // Returns flag status
-bool check_flag(CPU *cpu, unsigned char flag) {
-  unsigned char flag_status = *getRegister(cpu, F);
+bool check_flag(CPU *cpu, uint8_t flag) {
+  uint8_t flag_status = *getRegister(cpu, F);
   flag_status = flag_status >> flag;
   flag_status = flag_status & 0x01;
   return (flag_status == 1);
 }
 
 // Compares accumulator with val
-void comp(CPU *cpu, unsigned char val) {
+void comp(CPU *cpu, uint8_t val) {
   setZF(cpu, cpu->a == val);
   setNF(cpu, true);
   setHF(cpu, ((cpu->a & 0xf) - (val & 0xf)) < 0x00 );
@@ -62,8 +61,8 @@ void comp(CPU *cpu, unsigned char val) {
 }
 
 // Pushes 16 bit register onto the stack
-void push_r16(CPU *cpu, Op_info *info, unsigned short dest_reg) {
-  unsigned short dest = read_r16(cpu, dest_reg);
+void push_r16(CPU *cpu, Op_info *info, uint16_t dest_reg) {
+  uint16_t dest = read_r16(cpu, dest_reg);
   cpu->sp -= 2;
   writeNN(cpu, cpu->sp, dest);
 
@@ -73,8 +72,8 @@ void push_r16(CPU *cpu, Op_info *info, unsigned short dest_reg) {
 }
 
 // Pop 16 bit register off the stack
-void pop_r16(CPU *cpu, Op_info *info, unsigned short dest_reg) {
-  unsigned short src = readNN(cpu, cpu->sp);
+void pop_r16(CPU *cpu, Op_info *info, uint16_t dest_reg) {
+  uint16_t src = readNN(cpu, cpu->sp);
   cpu->sp += 2;
   
   write_r16(cpu, dest_reg, src);
@@ -85,9 +84,9 @@ void pop_r16(CPU *cpu, Op_info *info, unsigned short dest_reg) {
 }
 
 // Moves 8bit register to 8bit register
-void move(CPU *cpu, Op_info *info, unsigned short dest_reg, unsigned short src_reg) {
-  unsigned char *dest = getRegister(cpu, dest_reg);
-  unsigned char *src = getRegister(cpu, src_reg);
+void move(CPU *cpu, Op_info *info, uint16_t dest_reg, uint16_t src_reg) {
+  uint8_t *dest = getRegister(cpu, dest_reg);
+  uint8_t *src = getRegister(cpu, src_reg);
 
   *dest = *src;
 
@@ -96,10 +95,10 @@ void move(CPU *cpu, Op_info *info, unsigned short dest_reg, unsigned short src_r
   info->size = 1;
 }
 
-void xor_reg(CPU *cpu, Op_info *info, unsigned short dest_reg, unsigned short src_reg) {
-  unsigned char *dest = getRegister(cpu, dest_reg); 
-  unsigned char *src = getRegister(cpu, src_reg); 
-  unsigned char result = *src ^ *dest;
+void xor_reg(CPU *cpu, Op_info *info, uint16_t dest_reg, uint16_t src_reg) {
+  uint8_t *dest = getRegister(cpu, dest_reg); 
+  uint8_t *src = getRegister(cpu, src_reg); 
+  uint8_t result = *src ^ *dest;
 
   setZF(cpu, result == 0);
   setNF(cpu, false);
@@ -114,20 +113,20 @@ void xor_reg(CPU *cpu, Op_info *info, unsigned short dest_reg, unsigned short sr
 }
 
 // 8bit load from 8 bits after pc
-void load_n_to_reg(CPU *cpu, Op_info *info, unsigned short reg) {
-  unsigned char *dest = getRegister(cpu, reg); 
+void load_n_to_reg(CPU *cpu, Op_info *info, uint16_t reg) {
+  uint8_t *dest = getRegister(cpu, reg); 
  
   // Provide the info for the instruction
   info->cycles = 8;
   info->size = 2;
    
-  *dest = getByte(cpu, cpu->pc + 1);
+  *dest = readN(cpu, cpu->pc + 1);
 }
 
 // 16bit load from 16 bits after pc
-void load_nn_to_reg(CPU *cpu, Op_info *info, unsigned short reg) {
+void load_nn_to_reg(CPU *cpu, Op_info *info, uint16_t reg) {
   // Get the next 16 bits from just after pc
-  unsigned short nn = readNN(cpu, cpu->pc + 1);
+  uint16_t nn = readNN(cpu, cpu->pc + 1);
 
   write_r16(cpu, reg, nn);
 
@@ -137,10 +136,10 @@ void load_nn_to_reg(CPU *cpu, Op_info *info, unsigned short reg) {
 }
 
 // Load 8 bits to address in dest
-void loadindr_n_from_reg(CPU *cpu, Op_info *info, unsigned short dest_reg, unsigned short src_reg) {
-  unsigned short dest = read_r16(cpu, dest_reg);
-  unsigned char *src = getRegister(cpu, src_reg);
-  cpu->mmu[dest] = *src;
+void loadindr_n_from_reg(CPU *cpu, Op_info *info, uint16_t dest_reg, uint16_t src_reg) {
+  uint16_t dest = read_r16(cpu, dest_reg);
+  uint8_t *src = getRegister(cpu, src_reg);
+  writeN(cpu, dest, *src);
   // Provide the info for the instruction
   info->cycles = 8;
   info->size = 1;
@@ -151,7 +150,7 @@ void cond_jmp_r8(CPU *cpu, Op_info *info, bool condition) {
   
   if (condition){
     // Get the next 8 bytes after pc
-    signed char r8 = getByte(cpu, cpu->pc + 1);
+    signed char r8 = readN(cpu, cpu->pc + 1);
     cpu->pc += r8;
     info->cycles = 12;
   } 
@@ -161,8 +160,8 @@ void cond_jmp_r8(CPU *cpu, Op_info *info, bool condition) {
   info->size = 2;
 }
 
-void inc_16_reg(CPU *cpu, Op_info *info, unsigned short reg) {
-  unsigned short dest_val = read_r16(cpu, reg); 
+void inc_16_reg(CPU *cpu, Op_info *info, uint16_t reg) {
+  uint16_t dest_val = read_r16(cpu, reg); 
   dest_val++;
   write_r16(cpu, reg, dest_val);
   // Provide the info for the instruction
@@ -170,8 +169,8 @@ void inc_16_reg(CPU *cpu, Op_info *info, unsigned short reg) {
   info->size = 1;
 }
 
-void dec_16_reg(CPU *cpu, Op_info *info, unsigned short reg) {
-  unsigned short dest_val = read_r16(cpu, reg); 
+void dec_16_reg(CPU *cpu, Op_info *info, uint16_t reg) {
+  uint16_t dest_val = read_r16(cpu, reg); 
   dest_val--;
   write_r16(cpu, reg, dest_val);
 
@@ -179,21 +178,21 @@ void dec_16_reg(CPU *cpu, Op_info *info, unsigned short reg) {
   info->size = 1;
 }
 
-void indir_n_load(CPU *cpu, Op_info *info, unsigned short dest_reg, unsigned short src_reg) {
-  unsigned short src_val = read_r16(cpu, src_reg);
-  unsigned char *dest = getRegister(cpu, dest_reg);
+void indir_n_load(CPU *cpu, Op_info *info, uint16_t dest_reg, uint16_t src_reg) {
+  uint16_t src_val = read_r16(cpu, src_reg);
+  uint8_t *dest = getRegister(cpu, dest_reg);
   
-  *dest = cpu->mmu[src_val];
+  *dest = readN(cpu, src_val);
 
   // Provide the info for the instruction
   info->cycles = 8;
   info->size = 1;
 }
 
-void add_16_reg(CPU *cpu, Op_info *info, unsigned short dest_reg, unsigned short src_reg) {
-  unsigned short dest = read_r16(cpu, dest_reg);
-  unsigned short src = read_r16(cpu, src_reg);
-  unsigned short val = dest + src;
+void add_16_reg(CPU *cpu, Op_info *info, uint16_t dest_reg, uint16_t src_reg) {
+  uint16_t dest = read_r16(cpu, dest_reg);
+  uint16_t src = read_r16(cpu, src_reg);
+  uint16_t val = dest + src;
    
   setCF(cpu, val < dest);
   setHF(cpu,  ((dest & 0xf) + (src & 0xf)) & 0x10 );
@@ -206,8 +205,8 @@ void add_16_reg(CPU *cpu, Op_info *info, unsigned short dest_reg, unsigned short
 }
 
 
-void inc_8_reg(CPU *cpu, Op_info *info, unsigned short reg) {
-  unsigned char *dest = getRegister(cpu, reg); 
+void inc_8_reg(CPU *cpu, Op_info *info, uint16_t reg) {
+  uint8_t *dest = getRegister(cpu, reg); 
  
   // Provide the info for the instruction
   info->cycles = 4;
@@ -223,8 +222,8 @@ void inc_8_reg(CPU *cpu, Op_info *info, unsigned short reg) {
   *dest = *dest + 1;
 }
 
-void dec_8_reg(CPU *cpu, Op_info *info, unsigned short reg) {
-  unsigned char *dest = getRegister(cpu, reg); 
+void dec_8_reg(CPU *cpu, Op_info *info, uint16_t reg) {
+  uint8_t *dest = getRegister(cpu, reg); 
  
   // Provide the info for the instruction
   info->cycles = 4;
@@ -314,8 +313,8 @@ void LD_A_d8(void *cpu, Op_info *info) {
 void RLCA(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu;
    
-  unsigned char *a = getRegister(cpu_ptr, A);
-  unsigned char cf = (*a & 0x80) >> 7;
+  uint8_t *a = getRegister(cpu_ptr, A);
+  uint8_t cf = (*a & 0x80) >> 7;
   *a = (*a << 1) | cf;
   
   setCF(cpu_ptr, cf);
@@ -329,9 +328,9 @@ void RLCA(void *cpu, Op_info *info) {
 void RLA(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu;
    
-  unsigned char *a = getRegister(cpu_ptr, A);
-  unsigned char *f = getRegister(cpu_ptr, F);
-  unsigned char cf = (*a & 0x80) >> 7;
+  uint8_t *a = getRegister(cpu_ptr, A);
+  uint8_t *f = getRegister(cpu_ptr, F);
+  uint8_t cf = (*a & 0x80) >> 7;
   *a = (*a << 1) | ((*f & 0x10) >> 4);
   
   setCF(cpu_ptr, cf);
@@ -345,9 +344,9 @@ void RLA(void *cpu, Op_info *info) {
 void RRA(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu;
    
-  unsigned char *a = getRegister(cpu_ptr, A);
-  unsigned char *f = getRegister(cpu_ptr, F);
-  unsigned char cf = (*a & 0x01) << 7;
+  uint8_t *a = getRegister(cpu_ptr, A);
+  uint8_t *f = getRegister(cpu_ptr, F);
+  uint8_t cf = (*a & 0x01) << 7;
   *a = (*a >> 1) | ((*f & 0x10) << 3);
   
   setCF(cpu_ptr, cf);
@@ -360,7 +359,7 @@ void RRA(void *cpu, Op_info *info) {
 // Compliment the A register
 void CPL(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu;
-  unsigned char *a = getRegister(cpu_ptr, A);
+  uint8_t *a = getRegister(cpu_ptr, A);
   *a = ~*a;
   
   setNF(cpu_ptr, true);
@@ -373,8 +372,8 @@ void CPL(void *cpu, Op_info *info) {
 // Compliment the carry flag
 void CCF(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu;
-  unsigned char *f = getRegister(cpu_ptr, F);
-  unsigned char cf = (*f & 0x10) >> 4;
+  uint8_t *f = getRegister(cpu_ptr, F);
+  uint8_t cf = (*f & 0x10) >> 4;
   if (cf) 
     setCF(cpu_ptr, false);
   else
@@ -391,10 +390,10 @@ void CCF(void *cpu, Op_info *info) {
 void LD_a16_SP(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu;
   
-  unsigned short sp_val = read_r16(cpu_ptr, SP);
-  unsigned short addr = getNN(cpu_ptr, cpu_ptr->pc + 1);
+  uint16_t sp_val = read_r16(cpu_ptr, SP);
+  uint16_t addr = readNN(cpu_ptr, cpu_ptr->pc + 1);
+  writeNN(cpu, addr, sp_val);
 
-  *((short*)(cpu_ptr->mmu + addr)) = sp_val;
   // Provide the info for the instruction
   info->cycles = 20;
   info->size = 3;
@@ -433,7 +432,7 @@ void LD_A_INDIR_BC(void *cpu, Op_info *info) {
 // Decrements BC
 void DEC_BC(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu;
-  unsigned short bc_val = read_r16(cpu_ptr, BC);
+  uint16_t bc_val = read_r16(cpu_ptr, BC);
   bc_val--;
   write_r16(cpu_ptr, BC, bc_val);
 
@@ -463,8 +462,8 @@ void LD_C_d8(void *cpu, Op_info *info) {
 void RRCA(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu;
    
-  unsigned char *a = getRegister(cpu_ptr, A);
-  unsigned char cf = (*a & 0x01) << 7;
+  uint8_t *a = getRegister(cpu_ptr, A);
+  uint8_t cf = (*a & 0x01) << 7;
   *a = (*a >> 1) | cf;
   
   setCF(cpu_ptr, cf >> 7);
@@ -497,9 +496,9 @@ void LDINDR_DE_A(void *cpu, Op_info *info) {
 // Load a into addr in HL and INC
 void LDINC_HL_A(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu; 
-  unsigned short hl_val = read_r16(cpu_ptr, HL);
-  unsigned char *a = getRegister(cpu_ptr, A);
-  cpu_ptr->mmu[hl_val] = *a;
+  uint16_t hl_val = read_r16(cpu_ptr, HL);
+  uint8_t *a = getRegister(cpu_ptr, A);
+  writeN(cpu_ptr, hl_val, *a);
   hl_val++;
   write_r16(cpu_ptr, HL, hl_val);
   // Provide the info for the instruction
@@ -510,9 +509,9 @@ void LDINC_HL_A(void *cpu, Op_info *info) {
 // Load a into addr in HL and INC
 void LDDEC_HL_A(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu; 
-  unsigned short hl_val = read_r16(cpu_ptr, HL);
-  unsigned char *a = getRegister(cpu_ptr, A);
-  cpu_ptr->mmu[hl_val] = *a;
+  uint16_t hl_val = read_r16(cpu_ptr, HL);
+  uint8_t *a = getRegister(cpu_ptr, A);
+  writeN(cpu_ptr, hl_val, *a);
   hl_val--;
   write_r16(cpu_ptr, HL, hl_val);
   // Provide the info for the instruction
@@ -553,8 +552,8 @@ void INC_H(void *cpu, Op_info *info) {
 // Increment address in HL
 void INCINDR_HL(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu;
-  unsigned short hl_val = read_r16(cpu_ptr, HL);
-  unsigned char val = cpu_ptr->mmu[hl_val];
+  uint16_t hl_val = read_r16(cpu_ptr, HL);
+  uint8_t val = readN(cpu_ptr, hl_val);
 
   // Provide the info for the instruction
   info->cycles = 12;
@@ -567,7 +566,7 @@ void INCINDR_HL(void *cpu, Op_info *info) {
   setHF(cpu_ptr,  ((val & 0xf) + (1 & 0xf)) & 0x10 );
 
   // Carry out the operation
-  cpu_ptr->mmu[hl_val]++;
+  writeN(cpu_ptr, hl_val, val + 1);
 } 
 
 // Decrement D
@@ -585,13 +584,13 @@ void DEC_H(void *cpu, Op_info *info) {
 // Decrement address at HL
 void DECINDR_HL(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu;
-  unsigned short hl_val = read_r16(cpu_ptr, HL); 
+  uint16_t hl_val = read_r16(cpu_ptr, HL); 
  
   // Provide the info for the instruction
   info->cycles = 12;
   info->size = 1;
-  
-  unsigned char val = cpu_ptr->mmu[hl_val]; 
+
+  uint8_t val = readN(cpu_ptr, hl_val); 
  
   // Check flag states
   setZF(cpu_ptr, ((val - 1) & 0xff) == 0);
@@ -600,7 +599,7 @@ void DECINDR_HL(void *cpu, Op_info *info) {
   setHF(cpu_ptr,  ((val & 0xf) - (1 & 0xf)) < 0x00 );
  
   // Carry out the operation
-  cpu_ptr->mmu[hl_val]--;
+  writeN(cpu_ptr, hl_val, val - 1);
 } 
 
 // Load immediate 8 bits into D
@@ -618,13 +617,13 @@ void LD_H_d8(void *cpu, Op_info *info) {
 // Load immediate 8 bits into address in HL 
 void LDINDR_HL_d8(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu;
-  unsigned short hl_val = read_r16(cpu_ptr, HL);
+  uint16_t hl_val = read_r16(cpu_ptr, HL);
  
   // Provide the info for the instruction
   info->cycles = 12;
   info->size = 2;
-   
-  cpu_ptr->mmu[hl_val] = getByte(cpu_ptr, cpu_ptr->pc + 1);
+  uint8_t d8 = readN(cpu_ptr, cpu_ptr->pc + 1);
+  writeN(cpu_ptr, hl_val, d8);
 }
 
 /* THIS DAA CODE COMES FROM: https://forums.nesdev.com/viewtopic.php?t=15944 */
@@ -632,11 +631,11 @@ void LDINDR_HL_d8(void *cpu, Op_info *info) {
 // Decimal Adjust
 void DAA(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu;
-  unsigned char *a = getRegister(cpu_ptr, A);
-  unsigned char *f = getRegister(cpu_ptr, F);
-  unsigned short n_flag = (*f & 0x40) >> 6;
-  unsigned short h_flag = (*f & 0x20) >> 5;
-  unsigned short c_flag = (*f & 0x10) >> 4;
+  uint8_t *a = getRegister(cpu_ptr, A);
+  uint8_t *f = getRegister(cpu_ptr, F);
+  uint16_t n_flag = (*f & 0x40) >> 6;
+  uint16_t h_flag = (*f & 0x20) >> 5;
+  uint16_t c_flag = (*f & 0x10) >> 4;
 
   // note: assumes a is a uint8_t and wraps from 0xff to 0
   if (!n_flag) {  // after an addition, adjust if (half-)carry occurred or if result is out of bounds
@@ -674,7 +673,7 @@ void SCF(void *cpu, Op_info *info) {
 void JR_r8(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu;
   
-  char offset = getByte(cpu_ptr, cpu_ptr->pc + 1);
+  char offset = readN(cpu_ptr, cpu_ptr->pc + 1);
   cpu_ptr->pc += offset;
 
   // Provide the info for the instruction
@@ -684,8 +683,8 @@ void JR_r8(void *cpu, Op_info *info) {
 
 void JR_Z_r8(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu;
-  unsigned char *f = getRegister(cpu_ptr, F); 
-  unsigned char zf = (*f & 0x80) >> 7;
+  uint8_t *f = getRegister(cpu_ptr, F); 
+  uint8_t zf = (*f & 0x80) >> 7;
   if (zf) {
     JR_r8(cpu_ptr, info);
   }
@@ -698,8 +697,8 @@ void JR_Z_r8(void *cpu, Op_info *info) {
 
 void JR_C_r8(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu;
-  unsigned char *f = getRegister(cpu_ptr, F); 
-  unsigned char cf = (*f & 0x10) >> 4;
+  uint8_t *f = getRegister(cpu_ptr, F); 
+  uint8_t cf = (*f & 0x10) >> 4;
   if (cf) {
     JR_r8(cpu_ptr, info);
   }
@@ -714,10 +713,10 @@ void JR_C_r8(void *cpu, Op_info *info) {
 void LD_A_INDR_DE(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu;
   
-  unsigned short de_val = read_r16(cpu_ptr, DE);
-  unsigned char *a = getRegister(cpu_ptr, A);
+  uint16_t de_val = read_r16(cpu_ptr, DE);
+  uint8_t *a = getRegister(cpu_ptr, A);
   
-  *a = cpu_ptr->mmu[de_val];
+  *a = readN(cpu_ptr, de_val);
 
   // Provide the info for the instruction
   info->cycles = 8;
@@ -728,7 +727,7 @@ void LD_A_INDR_DE(void *cpu, Op_info *info) {
 void LDINC_A_INDR_HL(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu;
   indir_n_load(cpu_ptr, info, A, HL); 
-  unsigned short hl_val = read_r16(cpu_ptr, HL);
+  uint16_t hl_val = read_r16(cpu_ptr, HL);
   hl_val++;
   write_r16(cpu_ptr, HL, hl_val);
 }
@@ -737,7 +736,7 @@ void LDINC_A_INDR_HL(void *cpu, Op_info *info) {
 void LDDEC_A_INDR_HL(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu;
   indir_n_load(cpu_ptr, info, A, HL); 
-  unsigned short hl_val = read_r16(cpu_ptr, HL);
+  uint16_t hl_val = read_r16(cpu_ptr, HL);
   hl_val++;
   write_r16(cpu_ptr, HL, hl_val);
 }
@@ -811,7 +810,7 @@ void JR_NZ_r8(void *cpu, Op_info *info) {
 void LDINDR_C_A(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu;
   
-  cpu_ptr->mmu[cpu_ptr->c + 0xFF00] = cpu_ptr->a;
+  writeN(cpu_ptr, cpu_ptr->c + 0xFF00, cpu_ptr->a);
   
   info->cycles = 8;
   info->size = 2;
@@ -819,19 +818,16 @@ void LDINDR_C_A(void *cpu, Op_info *info) {
 
 void LDH_a8_A(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu;
-
-  unsigned char n = getByte(cpu_ptr, cpu_ptr->pc + 1);
-  
-  cpu_ptr->mmu[n + 0xFF00] = cpu_ptr->a;
-
+  uint8_t n = readN(cpu_ptr, cpu_ptr->pc + 1);
+  writeN(cpu_ptr, n + 0xFF00, cpu_ptr->a);
   info->cycles = 12;
   info->size = 2;
 }
   
 void LDINDR_HL_A(void *cpu, Op_info *info) {
  CPU *cpu_ptr = (CPU*) cpu;
- unsigned short hl_val = read_r16(cpu_ptr, HL); 
- cpu_ptr->mmu[hl_val] = cpu_ptr->a;
+ uint16_t hl_val = read_r16(cpu_ptr, HL); 
+ writeN(cpu_ptr, hl_val, cpu_ptr->a);
  info->cycles = 8;
  info->size = 1;
 }
@@ -839,12 +835,9 @@ void LDINDR_HL_A(void *cpu, Op_info *info) {
 /* This LD puts (c + 0xFF00) into a*/
 void LD_A_INDR_C(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu;
-  
-  unsigned char *a = getRegister(cpu_ptr, A);
-  unsigned char *c = getRegister(cpu_ptr, C);
-
-  *a = cpu_ptr->mmu[*c + 0xFF00]; 
-  
+  uint8_t *a = getRegister(cpu_ptr, A);
+  uint8_t *c = getRegister(cpu_ptr, C);
+  *a = readN(cpu_ptr, *c + 0xFF00); 
   info->cycles = 8;
   info->size = 2;
 }
@@ -861,7 +854,7 @@ void LD_A_E(void *cpu, Op_info *info) {
 
 void CP_d8(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu;
-  unsigned char d8 = getByte(cpu_ptr, cpu_ptr->pc + 1);
+  uint8_t d8 = readN(cpu_ptr, cpu_ptr->pc + 1);
   comp(cpu_ptr, d8);
   info->cycles = 8;
   info->size = 2;
@@ -875,14 +868,14 @@ void CALL_a16(void *cpu, Op_info *info) {
   writeNN(cpu_ptr, cpu_ptr->sp, cpu_ptr->pc + 3);
   
   // Get addr to jump to
-  cpu_ptr->pc = getNN(cpu_ptr, cpu_ptr->pc + 1);
+  cpu_ptr->pc = readNN(cpu_ptr, cpu_ptr->pc + 1);
   info->cycles = 24;
 }
 
 // Pop two bytes off of stack & jump to that address
 void RET(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu;
-  unsigned short addr = readNN(cpu_ptr, cpu_ptr->sp);
+  uint16_t addr = readNN(cpu_ptr, cpu_ptr->sp);
   cpu_ptr->pc = addr;
   cpu_ptr->sp -= 2;
   info->cycles = 8;
@@ -903,9 +896,9 @@ void POP_BC(void *cpu, Op_info *info) {
 
 /* CB COMMON FUNCTIONS */
 // Set zero flag if bit n of register reg is 0.
-void bit_n(CPU *cpu, Op_info *info, unsigned char n, unsigned short reg) {
-  unsigned char *dest = getRegister(cpu, reg); 
-  unsigned char bit_n = (*dest >> n) & 0x01;
+void bit_n(CPU *cpu, Op_info *info, uint8_t n, uint16_t reg) {
+  uint8_t *dest = getRegister(cpu, reg); 
+  uint8_t bit_n = (*dest >> n) & 0x01;
   setZF(cpu, bit_n == 0);
   setNF(cpu, false);
   setHF(cpu, true);
@@ -913,10 +906,10 @@ void bit_n(CPU *cpu, Op_info *info, unsigned char n, unsigned short reg) {
   info->size = 1;
 }
 
-void RL(CPU *cpu, Op_info *info, unsigned short reg) {
-  unsigned char *dest = getRegister(cpu, reg);
-  unsigned char *f = getRegister(cpu, F);
-  unsigned char cf = (*dest & 0x80) >> 7;
+void RL(CPU *cpu, Op_info *info, uint16_t reg) {
+  uint8_t *dest = getRegister(cpu, reg);
+  uint8_t *f = getRegister(cpu, F);
+  uint8_t cf = (*dest & 0x80) >> 7;
   *dest = (*dest << 1) | ((*f & 0x10) >> 4);
   
   setCF(cpu, cf);

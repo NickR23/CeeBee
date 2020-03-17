@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include "ceebee/cpu.h"
+#include "ceebee/mmu.h"
 #include "ceebee/common.h"
 
 //Provides codes to set term colors.
@@ -29,7 +30,6 @@ void printCard(char* messagePath) {
 }
 
 int main(int argc, char** argv) {
-
   if (argc < 2)
     usage();
   char* cartPath = argv[1];
@@ -45,7 +45,7 @@ int main(int argc, char** argv) {
 
   //Load cart
   unsigned int cartSize = 0;
-  const unsigned char *cart = loadCart(&cpu, cartPath, &cartSize);
+  loadCart(&cpu, cartPath, &cartSize);
   #ifdef DEBUG
     printf(CYN "Cart size:\n\t%d\n" RESET, cartSize);
   #endif
@@ -56,7 +56,6 @@ int main(int argc, char** argv) {
     run_cycle(&cpu);
   }
 
-  free((char *) cart);
   freeCPU(&cpu);
   #ifndef DEBUG
     printCard(EXITPATH);
