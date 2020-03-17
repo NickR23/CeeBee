@@ -823,6 +823,14 @@ void LDH_a8_A(void *cpu, Op_info *info) {
   info->cycles = 12;
   info->size = 2;
 }
+
+void LDH_A_a8(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  uint8_t n = readN(cpu_ptr, cpu_ptr->pc + 1);
+  cpu_ptr->a = n;
+  info->cycles = 12;
+  info->size = 2;
+}
   
 void LDINDR_HL_A(void *cpu, Op_info *info) {
  CPU *cpu_ptr = (CPU*) cpu;
@@ -850,6 +858,26 @@ void LD_C_A(void *cpu, Op_info *info) {
 void LD_A_E(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu;
   move(cpu_ptr, info, A, E);
+}
+
+void LD_H_A(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  move(cpu_ptr, info, H, A);
+}
+
+void LD_D_A(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  move(cpu_ptr, info, D, A);
+}
+
+void LDINDR_a16_A(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  
+  uint16_t addr = readNN(cpu_ptr, cpu_ptr->pc + 1);
+  writeN(cpu_ptr, addr, cpu_ptr->a);
+
+  info->cycles = 16;
+  info->size = 3;
 }
 
 void CP_d8(void *cpu, Op_info *info) {
@@ -1024,6 +1052,10 @@ void init_jmp (func_ptr jumptable[0xF][0xF], func_ptr cb_jumptable[0xF][0xF]) {
 
   jumptable[0x4][0xF] = LD_C_A;
 
+  jumptable[0x5][0x7] = LD_D_A;
+
+  jumptable[0x6][0x7] = LD_H_A;
+
   jumptable[0x7][0x7] = LDINDR_HL_A;
   jumptable[0x7][0xB] = LD_A_E;
   
@@ -1040,7 +1072,10 @@ void init_jmp (func_ptr jumptable[0xF][0xF], func_ptr cb_jumptable[0xF][0xF]) {
   jumptable[0xC][0x9] = RET;
   jumptable[0xC][0xB] = CB;
   jumptable[0xC][0xD] = CALL_a16;
+
+  jumptable[0xE][0xA] = LDINDR_a16_A;
  
+  jumptable[0xF][0x0] = LDH_A_a8;
   jumptable[0xF][0xE] = CP_d8;
  
   /* CB JUMPTABLE */
