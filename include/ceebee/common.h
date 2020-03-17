@@ -1,8 +1,6 @@
-#ifndef CPU_H
-	#include "ceebee/cpu.h"
+#ifndef COMMON_H 
+#define COMMON_H
+  #define TITLEPATH "assets/title"
+  #define EXITPATH "assets/exit"
+  void panic(char const *message);
 #endif
-
-#define TITLEPATH "assets/title"
-#define EXITPATH "assets/exit"
-void panic(char const *message);
-void printDebug(CPU cpu);

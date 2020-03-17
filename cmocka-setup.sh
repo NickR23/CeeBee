@@ -14,6 +14,7 @@ cd ..
 make testing
 ./jumptable_test
 ./cpu_test
+./mmu_test
 
 # Generate coverage html
 #lcov --capture --directory . --output-file coverage.info
