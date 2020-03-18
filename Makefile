@@ -1,6 +1,6 @@
 C=gcc
-CFLAGS=-Wall -std=c99
-CCFLAGS=-c -Wall -std=c99
+CFLAGS=-Wall -std=c99 -g
+CCFLAGS=-c -Wall -std=c99 -g
 SRCPATH=./src/
 TESTPATH=./test/
 OBJECTS=cpu.o common.o jumptable.o mmu.o
@@ -41,8 +41,6 @@ mmu_test.o: $(TESTPATH)mmu_test.c $(SRCPATH)mmu.c
 
 debug: CFLAGS += -DDEBUG
 debug: CCFLAGS += -DDEBUG
-debug: CCFLAGS += -g
-debug: CFLAGS += -g 
 debug: output
 
 teardown:

@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <signal.h>
 #include "ceebee/cpu.h"
 #include "ceebee/mmu.h"
 #include "ceebee/common.h"
@@ -12,6 +13,12 @@ void usage() {
   printf(RED "Usage: gba \"CART_PATH\"\n" RESET);
   exit(EXIT_FAILURE);
 }
+
+bool continue_running = true;
+void intHandler(int dummy) {
+  continue_running = false;
+}
+  
 
 //Prints one of my cool title cards
 void printCard(char* messagePath) {
@@ -29,7 +36,15 @@ void printCard(char* messagePath) {
   fclose(fp);
 }
 
+void run_emulator(CPU *cpu) {
+  while (continue_running) {
+    run_cycle(cpu);
+  }
+}
+
 int main(int argc, char** argv) {
+  signal(SIGINT, intHandler);
+
   if (argc < 2)
     usage();
   char* cartPath = argv[1];
@@ -50,13 +65,10 @@ int main(int argc, char** argv) {
     printf(CYN "Cart size:\n\t%d\n" RESET, cartSize);
   #endif
  
-  bool stop_flag = false;
-  while (1) {
-    if (stop_flag) getchar();
-    run_cycle(&cpu);
-  }
+  run_emulator(&cpu);
 
   freeCPU(&cpu);
+  printf(":))))\n");
   #ifndef DEBUG
     printCard(EXITPATH);
   #endif

@@ -20,7 +20,7 @@ CPU initCPU() {
   
   init_jmp(cpu.jumptable, cpu.cb_jumptable);
   // Initialize into boot mode
-  cpu.mmu->finishedBIOS = (uint16_t*) cpu.mmu->ram + 0xFF50;
+  cpu.mmu->finishedBIOS = (uint8_t*) cpu.mmu->ram + 0xFF50;
   *cpu.mmu->finishedBIOS = 0;
   return cpu;
 }
