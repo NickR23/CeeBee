@@ -884,7 +884,7 @@ void RET(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu;
   unsigned short addr = readNN(cpu_ptr, cpu_ptr->sp);
   cpu_ptr->pc = addr;
-  cpu_ptr->sp -= 2;
+  cpu_ptr->sp += 2;
   info->cycles = 8;
 }
 
