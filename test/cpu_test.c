@@ -4,12 +4,10 @@
 #include <setjmp.h>
 #include <cmocka.h>
 #include <stdbool.h>
-
 #include "ceebee/jumptable_test.h"
 #include "ceebee/jumptable.h"
 #include "ceebee/cpu.h"
-
-#define TESTCART "PokemonRed.gb"
+#include "ceebee/mmu.h"
 
 CPU cpu;
 
@@ -47,16 +45,6 @@ void test_initCPU(void ** state) {
   assert_true(cpu.pc == 0x0000);
 
   freeCPU(&cpu);
-}
-
-void test_mmu_load_boot_rom(void ** state) {
-  unsigned char *mmu = (unsigned char*) malloc(sizeof(unsigned char) * (0x10000));
-  
-  mmu_load_boot_rom(mmu);
-  unsigned char expected = 0x31; 
-  
-  assert_true(mmu[0] == expected);
-
 }
 
 void test_getRegister(void ** state) {
@@ -99,16 +87,6 @@ void test_write_r16(void ** state) {
   assert_true(read_r16(&cpu,99) == 0x0000);
 }
 
-void test_getNN(void ** state) {
-  unsigned int nn = getNN(&cpu,0); 
-  assert_true(nn == 0xfe31);
-}
-
-void test_getByte(void ** state) {
-  unsigned int n = getByte(&cpu,0); 
-  assert_true(n == 0x31);
-}
-
 void test_runCycle(void ** state) {
   cpu = initCPU();
   cpu.pc = 0x0000;
@@ -126,12 +104,9 @@ int main (void) {
   {
     cmocka_unit_test(test_initCPU),
     cmocka_unit_test(test_runCycle),
-    cmocka_unit_test(test_mmu_load_boot_rom),
     cmocka_unit_test_setup_teardown(test_getRegister,setup,teardown),
     cmocka_unit_test_setup_teardown(test_read_r16,setup,teardown),
     cmocka_unit_test_setup_teardown(test_write_r16,setup,teardown),
-    cmocka_unit_test_setup_teardown(test_getNN,setup,teardown),
-    cmocka_unit_test_setup_teardown(test_getByte,setup,teardown),
   };
 
   int count_fail_tests = cmocka_run_group_tests (tests, NULL, NULL);
