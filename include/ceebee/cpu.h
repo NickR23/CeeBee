@@ -43,7 +43,7 @@ typedef struct MMU {
   /* When the BIOS is unmapped the flag is set */
   /* to true (1). The cartridge ram is now mapped*/
   /* from 0x0000 to 0x00FF. */
-  uint16_t *finishedBIOS;
+  uint8_t *finishedBIOS;
 } MMU;
 
 typedef void (*func_ptr)(void *, Op_info *);
