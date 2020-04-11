@@ -905,7 +905,7 @@ void RET(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu;
   uint16_t addr = readNN(cpu_ptr, cpu_ptr->sp);
   cpu_ptr->pc = addr;
-  cpu_ptr->sp -= 2;
+  cpu_ptr->sp += 2;
   info->cycles = 8;
 }
 
@@ -961,13 +961,13 @@ void BIT_7_H(void *cpu, Op_info *info) {
 
 // Lets u kno that this opcode is not implemented yet
 void NOT_IMPL(void *cpu, Op_info *info) {
-  panic(GRN "This instruction is not yet implemented ... Exiting :)\n" RESET);
+  panic(cpu, GRN "This instruction is not yet implemented ... Exiting :)\n" RESET);
 }
 
 // This should never be executed!
 // The run_cycle() handles this
 void CB(void *cpu, Op_info *info) {
-  panic(GRN "Run cycle was supposed to handle this :(\n" RESET);
+  panic(cpu, GRN "Run cycle was supposed to handle this :(\n" RESET);
 }
 
 void init_jmp (func_ptr jumptable[0xF][0xF], func_ptr cb_jumptable[0xF][0xF]) {

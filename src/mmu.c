@@ -33,15 +33,6 @@ void mmu_load_boot_rom(MMU *mmu) {
   memcpy(mmu->BIOS, BIOS, sizeof(BIOS));
 }
 
-// Writes 16 bit value to addr
-void writeNN(CPU *cpu, uint16_t addr, uint16_t val) {
-  bool BIOS_finished = *cpu->mmu->finishedBIOS;
-  if (!BIOS_finished && addr < 0x0100) {
-    *((uint16_t*)(cpu->mmu->BIOS + addr)) = val; 
-  }
-  *((uint16_t*)(cpu->mmu->ram + addr)) = val;
-}
-
 // Reads 16 bit value to addr
 uint16_t readNN(CPU *cpu, uint16_t addr) {
   bool BIOS_finished = *cpu->mmu->finishedBIOS;
@@ -60,6 +51,15 @@ uint8_t readN(CPU *cpu, uint16_t addr) {
   return *((uint8_t*)(cpu->mmu->ram + addr)); 
 }
 
+// Writes 16 bit value to addr
+void writeNN(CPU *cpu, uint16_t addr, uint16_t val) {
+  bool BIOS_finished = *cpu->mmu->finishedBIOS;
+  if (!BIOS_finished && addr < 0x0100) {
+    *((uint16_t*)(cpu->mmu->BIOS + addr)) = val; 
+  }
+  *((uint16_t*)(cpu->mmu->ram + addr)) = val;
+}
+
 // Writes 8 bit value to addr
 void writeN(CPU *cpu, uint16_t addr, uint8_t val) {
   bool BIOS_finished = *cpu->mmu->finishedBIOS;
@@ -76,7 +76,7 @@ void loadCart(CPU *cpu, char const *cartPath, unsigned int* cartSize) {
   
   fp = fopen(cartPath, "rb");
   if (fp == NULL) {
-    panic(RED "Could not load cart" RESET);
+    panic(cpu, RED "Could not load cart" RESET);
   }
   fseek(fp, 0, SEEK_END);
   cartLength = ftell(fp);

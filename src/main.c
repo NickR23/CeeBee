@@ -68,7 +68,11 @@ int main(int argc, char** argv) {
   run_emulator(&cpu);
 
   freeCPU(&cpu);
-  printf(":))))\n");
+
+  #ifdef DEBUG
+    dump_mem(&cpu);
+  #endif
+
   #ifndef DEBUG
     printCard(EXITPATH);
   #endif
