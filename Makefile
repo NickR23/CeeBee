@@ -67,4 +67,4 @@ clean: teardown
 	rm -f testing
 	rm -f jumptable_test cpu_test mmu_test
 	rm -f -r *.gcov *.gcda *.gcno *.info ./out
-	rm *.txt
+	rm -f *.txt

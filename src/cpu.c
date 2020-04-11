@@ -123,18 +123,18 @@ void printCpu(CPU cpu) {
   uint16_t pc = read_r16(&cpu, PC);
   uint16_t sp = read_r16(&cpu, SP);
   
-  printf(MAG "~~~~~~~~~~~~~REGISTERS~~~~~~~~~~~~~~~~~\n" RESET);
-  printf(GRN "\t\tb: 0x%02x\n", b);
-  printf(GRN "\t\tc: 0x%02x\n", c);
-  printf(GRN "\t\td: 0x%02x\n", d);
-  printf(GRN "\t\te: 0x%02x\n", e);
-  printf(GRN "\t\ta: 0x%02x\n", a);
-  printf(GRN "\t\tf: 0x%02x\n", f);
-  printf(GRN "\t\th: 0x%02x\n", h);
-  printf(GRN "\t\tl: 0x%02x\n", l);
-  printf(GRN "\t\tpc: 0x%04x\n", pc);
-  printf(GRN "\t\tsp: 0x%04x\n", sp);
-  printf(MAG "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n" RESET);
+  printf("~~~~~~~~~~~~~REGISTERS~~~~~~~~~~~~~~~~~\n");
+  printf("\t\tb: 0x%02x\n", b);
+  printf("\t\tc: 0x%02x\n", c);
+  printf("\t\td: 0x%02x\n", d);
+  printf("\t\te: 0x%02x\n", e);
+  printf("\t\ta: 0x%02x\n", a);
+  printf("\t\tf: 0x%02x\n", f);
+  printf("\t\th: 0x%02x\n", h);
+  printf("\t\tl: 0x%02x\n", l);
+  printf("\t\tpc: 0x%04x\n", pc);
+  printf("\t\tsp: 0x%04x\n", sp);
+  printf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
 }
 
 void printCart(int start, uint8_t const *cart) {
@@ -157,7 +157,7 @@ Op_info run_cycle(CPU *cpu) {
   info.cycles = 0; 
 
   #ifdef DEBUG
-    printf(YEL "PC: 0x%04hx\tCode: 0x%02x\n" RESET, cpu->pc, code);
+    printf("PC: 0x%04hx\tCode: 0x%02x\n", cpu->pc, code);
     printCpu(*cpu);
   #endif
 
@@ -172,8 +172,8 @@ Op_info run_cycle(CPU *cpu) {
     /* Get the new code */
     code = readN(cpu, cpu->pc);
     #ifdef DEBUG
-      printf(BLU "***********CB PREFIX********\n");
-      printf(YEL "PC: 0x%04hx\tCode: 0x%02x\n" RESET, cpu->pc, code);
+      printf("***********CB PREFIX********\n");
+      printf("PC: 0x%04hx\tCode: 0x%02x\n", cpu->pc, code);
       printCpu(*cpu);
     #endif
 
