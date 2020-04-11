@@ -2,5 +2,5 @@
 #define COMMON_H
   #define TITLEPATH "assets/title"
   #define EXITPATH "assets/exit"
-  void panic(char const *message);
+  void panic(void *cpu_ptr, char const *message);
 #endif

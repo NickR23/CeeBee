@@ -76,7 +76,7 @@ void loadCart(CPU *cpu, char const *cartPath, unsigned int* cartSize) {
   
   fp = fopen(cartPath, "rb");
   if (fp == NULL) {
-    panic(RED "Could not load cart" RESET);
+    panic(cpu, RED "Could not load cart" RESET);
   }
   fseek(fp, 0, SEEK_END);
   cartLength = ftell(fp);

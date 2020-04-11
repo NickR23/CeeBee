@@ -2,8 +2,8 @@ CC := gcc
 CFLAGS =-I./include -I./cmocka-1.1.2/include -Wall -std=c99 -g 
 SRCPATH :=./src/
 TESTPATH :=./test/
-OBJECTS=cpu.o common.o jumptable.o mmu.o
-TESTOBJECTS=mmu_test.o cpu_test.o jumptable_test.o
+OBJECTS =cpu.o common.o jumptable.o mmu.o
+TESTOBJECTS =mmu_test.o cpu_test.o jumptable_test.o
 
 #Look for .c files in ./src
 vpath %.c src
@@ -67,3 +67,4 @@ clean: teardown
 	rm -f testing
 	rm -f jumptable_test cpu_test mmu_test
 	rm -f -r *.gcov *.gcda *.gcno *.info ./out
+	rm *.txt

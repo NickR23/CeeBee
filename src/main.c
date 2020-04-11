@@ -36,6 +36,17 @@ void printCard(char* messagePath) {
   fclose(fp);
 }
 
+
+void dump_memory(CPU *cpu) {
+  printf("Memory:\n");
+  printf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+  for (int i = 0; i < 0xFFFF; i++) {
+    if (i % 10 == 0) printf("\n");
+    printf("%02x ", cpu->mmu->ram[i]);
+  }
+  printf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+}
+
 void run_emulator(CPU *cpu) {
   while (continue_running) {
     run_cycle(cpu);
