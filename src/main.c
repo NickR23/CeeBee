@@ -39,9 +39,10 @@ void printCard(char* messagePath) {
   fclose(fp);
 }
 
-void run_emulator(CPU *cpu) {
+void run_emulator(CPU *cpu, GPU *gpu) {
   while (continue_running) {
     run_cycle(cpu);
+    update_window(*gpu);
   }
 }
 
@@ -70,7 +71,7 @@ int main(int argc, char** argv) {
     printf(CYN "Cart size:\n\t%d\n" RESET, cartSize);
   #endif
  
-  run_emulator(&cpu);
+  run_emulator(&cpu, &gpu);
 
   freeCPU(&cpu);
   
