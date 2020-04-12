@@ -44,6 +44,7 @@ typedef struct MMU {
   /* to true (1). The cartridge ram is now mapped*/
   /* from 0x0000 to 0x00FF. */
   uint8_t *finishedBIOS;
+  
 } MMU;
 
 typedef void (*func_ptr)(void *, Op_info *);

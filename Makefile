@@ -27,7 +27,7 @@ vpath %.h include
 # (We’ll discuss how stems are computed later in the section “Pattern Rules.”) Its
 # use outside of pattern rules is discouraged.
 .PHONY: default
-default: ceebee teardown
+default: teardown ceebee
 
 ceebee: main.o $(OBJECTS) 
 	$(CC) $< $(OBJECTS) -o $@ -I/usr/includeSDL2 -lSDL -D_REENTRANT -pthread -lSDL2

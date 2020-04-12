@@ -43,7 +43,7 @@ void printCard(char* messagePath) {
 void run_emulator(CPU *cpu, GPU *gpu) {
   while (continue_running) {
     cycle_cpu(cpu);
-    cycle_ppu(gpu);
+    cycle_ppu(cpu, gpu);
     // Sleep for one second
     sleep(1);
   }
