@@ -19,9 +19,14 @@ CPU initCPU() {
   mmu_load_boot_rom(cpu.mmu);
   
   init_jmp(cpu.jumptable, cpu.cb_jumptable);
+  // Initialize the counter
+  cpu.cycle_count = (uint16_t*) cpu.mmu->ram + 0xFF05;
+  *cpu.cycle_count = 0;
   // Initialize into boot mode
   cpu.mmu->finishedBIOS = (uint8_t*) cpu.mmu->ram + 0xFF50;
   *cpu.mmu->finishedBIOS = 0;
+ 
+  cpu.cycles_left = 0;
   return cpu;
 }
 
@@ -148,46 +153,57 @@ void print_code_info(Op_info info) {
   printf(MAG "\tCycles: %d\n\tSize: %d\n" RESET, info.cycles, info.size);
 }
 
-Op_info cycle_cpu(CPU *cpu) {
-  uint8_t code = readN(cpu, cpu->pc);
-  struct Op_info info;
+void cycle_cpu(CPU *cpu) {
+  if (cpu->cycles_left > 0) {
+    cpu->cycles_left--;
+  }
+  else {
+    uint8_t code = readN(cpu, cpu->pc);
+    struct Op_info info;
 
-  // Initialize the info struct
-  info.size = 0;
-  info.cycles = 0; 
+    // Initialize the info struct
+    info.size = 0;
+    info.cycles = 0; 
 
-  #ifdef DEBUG
-    printf("PC: 0x%04hx\tCode: 0x%02x\n", cpu->pc, code);
-    printCpu(*cpu);
-  #endif
-
-  // Parse the code
-  int hi = code >> 4;
-  int lo = code & (0x0F);
-
-  // Handle CB prefix
-  if (code == 0xCB) {
-    /* Update the program counter */
-    cpu->pc += 1;
-    /* Get the new code */
-    code = readN(cpu, cpu->pc);
     #ifdef DEBUG
-      printf("***********CB PREFIX********\n");
       printf("PC: 0x%04hx\tCode: 0x%02x\n", cpu->pc, code);
       printCpu(*cpu);
     #endif
 
-    hi = code >> 4;
-    lo = code & (0x0F);
-    cpu->cb_jumptable[hi][lo](cpu, &info);
-  }
-  else {
-    // Run the opcode for the instruction
-    cpu->jumptable[hi][lo](cpu, &info);
-  }
+    // Parse the code
+    int hi = code >> 4;
+    int lo = code & (0x0F);
 
-  // Offset the pc register
-  cpu->pc += info.size;
- 
-  return info;
+    // Handle CB prefix
+    if (code == 0xCB) {
+      /* Update the program counter */
+      cpu->pc += 1;
+      /* Get the new code */
+      code = readN(cpu, cpu->pc);
+      #ifdef DEBUG
+        printf("***********CB PREFIX********\n");
+        printf("PC: 0x%04hx\tCode: 0x%02x\n", cpu->pc, code);
+        printCpu(*cpu);
+      #endif
+
+      hi = code >> 4;
+      lo = code & (0x0F);
+      cpu->cb_jumptable[hi][lo](cpu, &info);
+    }
+    else {
+      // Run the opcode for the instruction
+      cpu->jumptable[hi][lo](cpu, &info);
+    }
+
+    // Offset the pc register
+    cpu->pc += info.size;
+    cpu->cycles_left = info.cycles;
+  } 
+  if (*cpu->cycle_count == 0xFFFF) {
+    // Cycle overflow
+    *cpu->cycle_count = cpu->mmu->ram[0xFF06];  
+  } 
+  else {
+    (*cpu->cycle_count)++;
+  }
 }

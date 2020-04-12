@@ -32,13 +32,16 @@ GPU init_gpu() {
   
   // These are the actual pixels of the framebuffer
   int window_size = gpu.window_height * gpu.window_width;
-  gpu.pixels = (uint32_t*) malloc(window_size * (sizeof(uint32_t)));
+  gpu.pixels = (uint8_t*) malloc(window_size * (sizeof(uint8_t)));
+
+  // Initialize window 
+  update_window(gpu);
   
   return gpu;
 }
 
 void update_window(const GPU gpu) {
-  SDL_UpdateTexture(gpu.framebuffer, NULL, gpu.pixels, gpu.window_width * sizeof(uint32_t));
+  SDL_UpdateTexture(gpu.framebuffer, NULL, gpu.pixels, gpu.window_width * sizeof(uint8_t));
   SDL_RenderClear(gpu.rend);
   SDL_RenderCopy(gpu.rend, gpu.framebuffer, NULL, NULL);
   SDL_RenderPresent(gpu.rend); 

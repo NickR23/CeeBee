@@ -40,12 +40,12 @@ void printCard(char* messagePath) {
   fclose(fp);
 }
 
-void run_emulator(CPU *cpu, GPU *gpu) {
+void run_emulator(CPU *cpu, GPU *gpu, PPU *ppu) {
   while (continue_running) {
     cycle_cpu(cpu);
-    cycle_ppu(cpu, gpu);
+    cycle_ppu(cpu, gpu, ppu);
     // Sleep for one second
-    sleep(1);
+    //sleep(1);
   }
 }
 
@@ -61,11 +61,15 @@ int main(int argc, char** argv) {
 
   // Make gpu
   GPU gpu = init_gpu(); 
+  
 
   //Make CPU
   CPU cpu = initCPU();
   cpu.sp = 0x0000;
   cpu.pc = 0x0000; 
+
+  // Make ppu
+  PPU ppu = init_ppu(&cpu);
 
   //Load cart
   unsigned int cartSize = 0;
@@ -74,7 +78,7 @@ int main(int argc, char** argv) {
     printf(CYN "Cart size:\n\t%d\n" RESET, cartSize);
   #endif
  
-  run_emulator(&cpu, &gpu);
+  run_emulator(&cpu, &gpu, &ppu);
 
   freeCPU(&cpu);
   

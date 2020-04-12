@@ -64,12 +64,18 @@ typedef struct CPU {
   uint16_t pc;
   //Stack pointer
   uint16_t sp;
+  
+  // Special timer register
+  uint16_t *cycle_count;
   //Memory
   MMU *mmu;
   // Opcode jumptable
   func_ptr jumptable[0xF][0xF];
   // Extended opcode jumptable (CB prefix)
   func_ptr cb_jumptable[0xF][0xF];
+  /* How many more cycles the cpu has in it */
+  /* it's current instruction. */
+  uint8_t cycles_left;
 } CPU;
 
 CPU initCPU();
@@ -81,5 +87,5 @@ void write_r16(CPU *cpu, int index, uint16_t val);
 uint8_t* getRegister(CPU *cpu, int index);
 
 void printCpu(CPU cpu);
-Op_info cycle_cpu(CPU *cpu);
+void cycle_cpu(CPU *cpu);
 #endif

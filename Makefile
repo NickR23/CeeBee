@@ -30,7 +30,7 @@ vpath %.h include
 default: teardown ceebee
 
 ceebee: main.o $(OBJECTS) 
-	$(CC) $< $(OBJECTS) -o $@ -I/usr/includeSDL2 -lSDL -D_REENTRANT -pthread -lSDL2
+	$(CC) $< $(OBJECTS) -o $@ -g -I/usr/includeSDL2 -lSDL -D_REENTRANT -pthread -lSDL2
 
 
 # Compiling .o files is handled implicitly by the built in rule
