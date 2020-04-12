@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <signal.h>
+#include <unistd.h>
 #include <SDL2/SDL.h>
 #include "ceebee/cpu.h"
 #include "ceebee/mmu.h"
@@ -41,8 +42,10 @@ void printCard(char* messagePath) {
 
 void run_emulator(CPU *cpu, GPU *gpu) {
   while (continue_running) {
-    run_cycle(cpu);
-    update_window(*gpu);
+    cycle_cpu(cpu);
+    cycle_ppu(gpu);
+    // Sleep for one second
+    sleep(1);
   }
 }
 

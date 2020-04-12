@@ -80,5 +80,5 @@ void write_r16(CPU *cpu, int index, uint16_t val);
 uint8_t* getRegister(CPU *cpu, int index);
 
 void printCpu(CPU cpu);
-Op_info run_cycle(CPU *cpu);
+Op_info cycle_cpu(CPU *cpu);
 #endif

@@ -45,6 +45,7 @@ void update_window(const GPU gpu) {
 }
 
 void destroy_gpu(GPU *gpu) {
+  SDL_DestroyRenderer(gpu->rend);
   SDL_DestroyWindow(gpu->window);
   free(gpu->pixels);
 }

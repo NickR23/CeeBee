@@ -148,7 +148,7 @@ void print_code_info(Op_info info) {
   printf(MAG "\tCycles: %d\n\tSize: %d\n" RESET, info.cycles, info.size);
 }
 
-Op_info run_cycle(CPU *cpu) {
+Op_info cycle_cpu(CPU *cpu) {
   uint8_t code = readN(cpu, cpu->pc);
   struct Op_info info;
 
