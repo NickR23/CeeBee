@@ -2,9 +2,12 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <signal.h>
+#include <SDL2/SDL.h>
 #include "ceebee/cpu.h"
 #include "ceebee/mmu.h"
 #include "ceebee/common.h"
+#include "ceebee/ppu.h"
+#include "ceebee/gpu.h"
 
 //Provides codes to set term colors.
 #include "ceebee/termColors.h"
@@ -52,6 +55,8 @@ int main(int argc, char** argv) {
     printCard(TITLEPATH);
   #endif
 
+  // Make gpu
+  GPU gpu = init_gpu(); 
 
   //Make CPU
   CPU cpu = initCPU();
@@ -68,6 +73,8 @@ int main(int argc, char** argv) {
   run_emulator(&cpu);
 
   freeCPU(&cpu);
+  
+  destroy_gpu(&gpu);
 
   #ifdef DEBUG
     dump_mem(&cpu);

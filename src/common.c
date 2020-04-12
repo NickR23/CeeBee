@@ -22,8 +22,10 @@ void dump_mem(CPU *cpu) {
 void panic(void *cpu_ptr, char const *message) {
   fprintf(stderr, "%s\n", message); 
   #ifdef DEBUG
-    CPU *cpu = (CPU *) cpu_ptr;
-    dump_mem(cpu);
+    if (cpu_ptr != NULL) {
+      CPU *cpu = (CPU *) cpu_ptr;
+      dump_mem(cpu);
+    }
   #endif
   exit(1);
 }

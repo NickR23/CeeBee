@@ -1,8 +1,8 @@
 CC := gcc
-CFLAGS =-I./include -I./cmocka-1.1.2/include -Wall -std=c99 -g 
+CFLAGS =-I./include -I./cmocka-1.1.2/include -I/usr/includeSDL2 -Wall -std=c99 -g -lSDL -D_REENTRANT -pthread -lSDL2
 SRCPATH :=./src/
 TESTPATH :=./test/
-OBJECTS =cpu.o common.o jumptable.o mmu.o
+OBJECTS =cpu.o common.o jumptable.o mmu.o ppu.o gpu.o
 TESTOBJECTS =mmu_test.o cpu_test.o jumptable_test.o
 
 #Look for .c files in ./src
@@ -30,11 +30,11 @@ vpath %.h include
 default: ceebee teardown
 
 ceebee: main.o $(OBJECTS) 
-	$(CC) $< $(OBJECTS) -o $@
+	$(CC) $< $(OBJECTS) -o $@ -I/usr/includeSDL2 -lSDL -D_REENTRANT -pthread -lSDL2
 
 
 # Compiling .o files is handled implicitly by the built in rule
-*.o: cpu.h common.h jumptable.h mmu.h termColors.h
+*.o: cpu.h common.h jumptable.h mmu.h termColors.h ppu.h gpu.h
 
 .PHONY: testing
 # Test build
