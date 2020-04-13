@@ -1,5 +1,6 @@
 #include <SDL2/SDL.h>
 #include <stdbool.h> 
+#include <unistd.h> 
 #include "ceebee/ppu.h"
 #include "ceebee/gpu.h"
 #include "ceebee/common.h"
@@ -26,7 +27,6 @@ PPU init_ppu(CPU *cpu) {
   PPU ppu;
 
   ppu.mode = 0x00;
-  ppu.cycles_left = OAM_T;
    
   // Initialize LCD IO registers 
   ppu.LCDCONT = (uint8_t *) cpu->mmu->ram + 0xFF40;
@@ -50,58 +50,80 @@ bool lcd_enabled(PPU *ppu) {
   return enabled;
 }
 
-void render(CPU *cpu, GPU *gpu, PPU *ppu) {
+bool background_enabled(PPU *ppu) {
+  bool enabled = (*ppu->LCDCONT) & 0x01;
+  return enabled;
+}
+
+uint16_t background_addr(PPU *ppu) {
+  bool flag = ((*ppu->LCDCONT) >> 3) & 0x01;
+  uint16_t addr = flag ? 0x9C00 : 0x9FFF;
+  return addr;
+}
+
+uint16_t tilepattern_addr(PPU *ppu) {
+  bool flag = ((*ppu->LCDCONT) >> 4) & 0x01;
+  uint16_t addr = flag ? 0x8000 : 0x8800;
+  return addr;
+}
+
+void renderScan(CPU *cpu, GPU *gpu, PPU *ppu) {
 
   if (lcd_enabled(ppu)) {
-    int window_size = gpu->window_height * gpu->window_width;
-    for (int i = 0; i < window_size; i++) {
-      gpu->pixels[i] = rand();
-    } 
-    update_window(*gpu);
-  }
-  
+    if (background_enabled(ppu)) {
+      int window_size = gpu->window_height * gpu->window_width;
+      for (int i = 0; i < window_size; i++) {
+        gpu->pixels[i] = rand();
+      } 
+        
+    }
+  } 
 
+  update_window(gpu);
 }
 
 void cycle_ppu(CPU *cpu, GPU *gpu, PPU *ppu) {
-  if (ppu->cycles_left != 0) {
-    ppu->cycles_left--;
-  }
-
+  ppu->modeclock += cpu->t;
+  /* printf("cpu_t: %04d modeclock: %04d mode: %02x\n", cpu->t, ppu->modeclock, ppu->mode); */
   switch(ppu->mode) {
     case OAM:
       // Check if OAM had enough time to finish
-      if (ppu->cycles_left == 0) {
+      if (ppu->modeclock >= OAM_T) {
         ppu->mode = VRAM;
-        ppu->cycles_left = VRAM_T;
+        ppu->modeclock = 0;
       } 
       break;
     
     case VRAM:
-      if (ppu->cycles_left == 0) {
+      if (ppu->modeclock >= VRAM_T) {
         ppu->mode = HBLANK;
-        ppu->cycles_left = HBLANK_T;
-        render(cpu, gpu, ppu);
+        ppu->modeclock = 0;
+        renderScan(cpu, gpu, ppu);
       }
       break;
     
     case HBLANK:
-      if (ppu->cycles_left == 0) {
-        if (*ppu->CURLINE == PIXELS_H - 1) {
+      if (ppu->modeclock >= HBLANK_T) {
+        *ppu->CURLINE += 1;
+        ppu->modeclock = 0;
+        if (*ppu->CURLINE == 143) {
           ppu->mode = VBLANK;
-          ppu->cycles_left = VBLANK_T;
         }
         else {
           ppu->mode = OAM;
-          ppu->cycles_left = OAM_T;
         }
       }
       break;
   
     case VBLANK:
-      if (ppu->cycles_left == 0) {
-        ppu->mode = OAM;
-        ppu->cycles_left = OAM_T;
+      if (ppu->modeclock >= 456) {
+        *ppu->CURLINE += 1;
+        ppu->modeclock = 0;
+        if (*ppu->CURLINE > 153) {
+          printf("VBLANK!\n");
+          ppu->mode = OAM;
+          *ppu->CURLINE = 0;
+        }
       }
       break;
   }

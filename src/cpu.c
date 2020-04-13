@@ -26,7 +26,7 @@ CPU initCPU() {
   cpu.mmu->finishedBIOS = (uint8_t*) cpu.mmu->ram + 0xFF50;
   *cpu.mmu->finishedBIOS = 0;
  
-  cpu.cycles_left = 0;
+  cpu.t = 0;
   return cpu;
 }
 
@@ -154,56 +154,43 @@ void print_code_info(Op_info info) {
 }
 
 void cycle_cpu(CPU *cpu) {
-  if (cpu->cycles_left > 0) {
-    cpu->cycles_left--;
-  }
-  else {
-    uint8_t code = readN(cpu, cpu->pc);
-    struct Op_info info;
+  uint8_t code = readN(cpu, cpu->pc);
+  struct Op_info info;
 
-    // Initialize the info struct
-    info.size = 0;
-    info.cycles = 0; 
+  // Initialize the info struct
+  info.size = 0;
+  info.cycles = 0; 
+  #ifdef DEBUG
+    printf("PC: 0x%04hx\tCode: 0x%02x CurrentLine: %02x\n", cpu->pc, code, cpu->mmu->ram[0xff44]);
+    printCpu(*cpu);
+  #endif
 
+  // Parse the code
+  int hi = code >> 4;
+  int lo = code & (0x0F);
+
+  // Handle CB prefix
+  if (code == 0xCB) {
+    /* Update the program counter */
+    cpu->pc += 1;
+    /* Get the new code */
+    code = readN(cpu, cpu->pc);
     #ifdef DEBUG
+      printf("***********CB PREFIX********\n");
       printf("PC: 0x%04hx\tCode: 0x%02x\n", cpu->pc, code);
       printCpu(*cpu);
     #endif
 
-    // Parse the code
-    int hi = code >> 4;
-    int lo = code & (0x0F);
-
-    // Handle CB prefix
-    if (code == 0xCB) {
-      /* Update the program counter */
-      cpu->pc += 1;
-      /* Get the new code */
-      code = readN(cpu, cpu->pc);
-      #ifdef DEBUG
-        printf("***********CB PREFIX********\n");
-        printf("PC: 0x%04hx\tCode: 0x%02x\n", cpu->pc, code);
-        printCpu(*cpu);
-      #endif
-
-      hi = code >> 4;
-      lo = code & (0x0F);
-      cpu->cb_jumptable[hi][lo](cpu, &info);
-    }
-    else {
-      // Run the opcode for the instruction
-      cpu->jumptable[hi][lo](cpu, &info);
-    }
-
-    // Offset the pc register
-    cpu->pc += info.size;
-    cpu->cycles_left = info.cycles;
-  } 
-  if (*cpu->cycle_count == 0xFFFF) {
-    // Cycle overflow
-    *cpu->cycle_count = cpu->mmu->ram[0xFF06];  
-  } 
-  else {
-    (*cpu->cycle_count)++;
+    hi = code >> 4;
+    lo = code & (0x0F);
+    cpu->cb_jumptable[hi][lo](cpu, &info);
   }
+  else {
+    // Run the opcode for the instruction
+    cpu->jumptable[hi][lo](cpu, &info);
+  }
+
+  // Offset the pc register
+  cpu->pc += info.size;
+  cpu->t = info.cycles;
 }

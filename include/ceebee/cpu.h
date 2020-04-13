@@ -73,9 +73,8 @@ typedef struct CPU {
   func_ptr jumptable[0xF][0xF];
   // Extended opcode jumptable (CB prefix)
   func_ptr cb_jumptable[0xF][0xF];
-  /* How many more cycles the cpu has in it */
-  /* it's current instruction. */
-  uint8_t cycles_left;
+  /* Number of cycles of the last instruction */
+  uint16_t t;
 } CPU;
 
 CPU initCPU();

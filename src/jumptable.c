@@ -826,7 +826,8 @@ void LDH_a8_A(void *cpu, Op_info *info) {
 
 void LDH_A_a8(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu;
-  uint8_t n = readN(cpu_ptr, cpu_ptr->pc + 1);
+  uint8_t addr = readN(cpu_ptr, cpu_ptr->pc + 1);
+  uint8_t n = readN(cpu_ptr, addr + 0xFF00);
   cpu_ptr->a = n;
   info->cycles = 12;
   info->size = 2;
