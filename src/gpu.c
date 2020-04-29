@@ -11,14 +11,14 @@ GPU init_gpu() {
 
   GPU gpu;
 
-  gpu.window_height = PIXELS_H * 4;
-  gpu.window_width = PIXELS_W * 4;
+  gpu.window_height = PIXELS_H;
+  gpu.window_width = PIXELS_W;
 
   gpu.window = SDL_CreateWindow("CeeBee",
     SDL_WINDOWPOS_UNDEFINED, 
     SDL_WINDOWPOS_UNDEFINED,
-    gpu.window_height,
-    gpu.window_width,
+    gpu.window_width * 4,
+    gpu.window_height * 4,
     SDL_WINDOW_SHOWN);
 
   gpu.rend = SDL_CreateRenderer(gpu.window, -1, SDL_RENDERER_ACCELERATED);
@@ -29,6 +29,8 @@ GPU init_gpu() {
     SDL_TEXTUREACCESS_STREAMING,
     gpu.window_width,
     gpu.window_height);
+
+  SDL_RenderSetLogicalSize(gpu.rend, gpu.window_width, gpu.window_height);
   
   // These are the actual pixels of the framebuffer
   int window_size = gpu.window_height * gpu.window_width;

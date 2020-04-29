@@ -8,7 +8,7 @@ TESTOBJECTS =mmu_test.o cpu_test.o jumptable_test.o
 #Look for .c files in ./src
 vpath %.c src
 #Look for .h files in ./include
-vpath %.h include
+vpath %.h include 
 
 # Automatic Variables:
 # $@ The filename representing the target.
@@ -29,12 +29,11 @@ vpath %.h include
 .PHONY: default
 default: teardown ceebee
 
-ceebee: main.o $(OBJECTS) 
+ceebee: main.o $(OBJECTS)
 	$(CC) $< $(OBJECTS) -o $@ -g -I/usr/includeSDL2 -lSDL -D_REENTRANT -pthread -lSDL2
 
 
 # Compiling .o files is handled implicitly by the built in rule
-*.o: cpu.h common.h jumptable.h mmu.h termColors.h ppu.h gpu.h
 
 .PHONY: testing
 # Test build
