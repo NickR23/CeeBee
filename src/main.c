@@ -2,9 +2,13 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <signal.h>
+#include <unistd.h>
+#include <SDL2/SDL.h>
 #include "ceebee/cpu.h"
 #include "ceebee/mmu.h"
 #include "ceebee/common.h"
+#include "ceebee/ppu.h"
+#include "ceebee/gpu.h"
 
 //Provides codes to set term colors.
 #include "ceebee/termColors.h"
@@ -36,9 +40,11 @@ void printCard(char* messagePath) {
   fclose(fp);
 }
 
-void run_emulator(CPU *cpu) {
+void run_emulator(CPU *cpu, GPU *gpu, PPU *ppu) {
+  int lockup = 0;
   while (continue_running) {
-    run_cycle(cpu);
+    cycle_cpu(cpu);
+    cycle_ppu(cpu, gpu, ppu);
   }
 }
 
@@ -52,11 +58,17 @@ int main(int argc, char** argv) {
     printCard(TITLEPATH);
   #endif
 
+  // Make gpu
+  GPU gpu = init_gpu(); 
+  
 
   //Make CPU
   CPU cpu = initCPU();
   cpu.sp = 0x0000;
   cpu.pc = 0x0000; 
+
+  // Make ppu
+  PPU ppu = init_ppu(&cpu);
 
   //Load cart
   unsigned int cartSize = 0;
@@ -65,9 +77,11 @@ int main(int argc, char** argv) {
     printf(CYN "Cart size:\n\t%d\n" RESET, cartSize);
   #endif
  
-  run_emulator(&cpu);
+  run_emulator(&cpu, &gpu, &ppu);
 
   freeCPU(&cpu);
+  
+  destroy_gpu(&gpu);
 
   #ifdef DEBUG
     dump_mem(&cpu);

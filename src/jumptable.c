@@ -239,6 +239,24 @@ void dec_8_reg(CPU *cpu, Op_info *info, uint16_t reg) {
   *dest = *dest - 1;
 }
 
+// Subtracts n from A.
+void sub_n(CPU *cpu, Op_info *info, uint8_t n) {
+  // Provide the info for the instruction
+  info->cycles = 4;
+  info->size = 1;
+ 
+  uint8_t *a = getRegister(cpu, A); 
+  uint8_t res = *a - n;
+
+  setZF(cpu, res == 0);
+  setNF(cpu, true);
+  setHF(cpu, ((*a & 0xf) - (n & 0xf)) < 0x00 );
+  setCF(cpu, *a < n);
+  
+  *a = res;
+}
+
+
 /* JUMPTABLE FUNCTIONS */
 
 void NOP(void *cpu, Op_info *info) {
@@ -265,6 +283,12 @@ void LD_BC_d16(void *cpu, Op_info *info) {
 void LDINDR_BC_A(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu; 
   loadindr_n_from_reg(cpu_ptr, info, BC, A);
+}
+
+void SUB_B(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  uint8_t *b = getRegister(cpu, B);
+  sub_n(cpu_ptr, info, *b); 
 }
 
 // Increment BC
@@ -813,7 +837,7 @@ void LDINDR_C_A(void *cpu, Op_info *info) {
   writeN(cpu_ptr, cpu_ptr->c + 0xFF00, cpu_ptr->a);
   
   info->cycles = 8;
-  info->size = 2;
+  info->size = 1;
 }
 
 void LDH_a8_A(void *cpu, Op_info *info) {
@@ -826,7 +850,8 @@ void LDH_a8_A(void *cpu, Op_info *info) {
 
 void LDH_A_a8(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu;
-  uint8_t n = readN(cpu_ptr, cpu_ptr->pc + 1);
+  uint8_t addr = readN(cpu_ptr, cpu_ptr->pc + 1);
+  uint8_t n = readN(cpu_ptr, addr + 0xFF00);
   cpu_ptr->a = n;
   info->cycles = 12;
   info->size = 2;
@@ -847,7 +872,12 @@ void LD_A_INDR_C(void *cpu, Op_info *info) {
   uint8_t *c = getRegister(cpu_ptr, C);
   *a = readN(cpu_ptr, *c + 0xFF00); 
   info->cycles = 8;
-  info->size = 2;
+  info->size = 1;
+}
+
+void LD_A_H(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  move(cpu_ptr, info, A, H);
 }
 
 void LD_C_A(void *cpu, Op_info *info) {
@@ -951,7 +981,7 @@ void RL(CPU *cpu, Op_info *info, uint16_t reg) {
 /* CB FUNCTIONS */
 void RL_C(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu;
-  RL(cpu_ptr, info, H);
+  RL(cpu_ptr, info, C);
 }
 
 void BIT_7_H(void *cpu, Op_info *info) {
@@ -1058,7 +1088,11 @@ void init_jmp (func_ptr jumptable[0xF][0xF], func_ptr cb_jumptable[0xF][0xF]) {
 
   jumptable[0x7][0x7] = LDINDR_HL_A;
   jumptable[0x7][0xB] = LD_A_E;
-  
+  jumptable[0x7][0xC] = LD_A_H;
+
+
+  jumptable[0x9][0x0] = SUB_B;
+
   jumptable[0xA][0xF] = XOR_A;
   
   jumptable[0xC][0x5] = PUSH_BC;

@@ -1,14 +1,14 @@
 CC := gcc
-CFLAGS =-I./include -I./cmocka-1.1.2/include -Wall -std=c99 -g 
+CFLAGS =-I./include -I./cmocka-1.1.2/include -I/usr/includeSDL2 -Wall -std=c99 -g -lSDL -D_REENTRANT -pthread -lSDL2
 SRCPATH :=./src/
 TESTPATH :=./test/
-OBJECTS =cpu.o common.o jumptable.o mmu.o
+OBJECTS =cpu.o common.o jumptable.o mmu.o ppu.o gpu.o
 TESTOBJECTS =mmu_test.o cpu_test.o jumptable_test.o
 
 #Look for .c files in ./src
 vpath %.c src
 #Look for .h files in ./include
-vpath %.h include
+vpath %.h include 
 
 # Automatic Variables:
 # $@ The filename representing the target.
@@ -27,14 +27,13 @@ vpath %.h include
 # (We’ll discuss how stems are computed later in the section “Pattern Rules.”) Its
 # use outside of pattern rules is discouraged.
 .PHONY: default
-default: ceebee teardown
+default: teardown ceebee
 
-ceebee: main.o $(OBJECTS) 
-	$(CC) $< $(OBJECTS) -o $@
+ceebee: main.o $(OBJECTS)
+	$(CC) $< $(OBJECTS) -o $@ -g -I/usr/includeSDL2 -lSDL -D_REENTRANT -pthread -lSDL2
 
 
 # Compiling .o files is handled implicitly by the built in rule
-*.o: cpu.h common.h jumptable.h mmu.h termColors.h
 
 .PHONY: testing
 # Test build
@@ -42,8 +41,8 @@ testing: teardown $(OBJECTS) $(TESTOBJECTS)
 
 #Look for .c testing files in ./test
 vpath %.c test
-jumptable_test.o: jumptable_test.c jumptable.c
-	$(CC) --coverage $(SRCPATH)jumptable.c $(CFLAGS) mmu.o cpu.o common.o $< -L./cmocka-build/src -lcmocka -o $@ 
+jumptable_test.o: $(TESTPATH)jumptable_test.c jumptable.c
+	$(CC) --coverage $(SRCPATH)jumptable.c $(CFLAGS) mmu.o cpu.o common.o $< -L./cmocka-build/src -lcmocka -o $*
 
 cpu_test.o: $(TESTPATH)cpu_test.c cpu.c
 	$(CC) --coverage $(SRCPATH)cpu.c $(CFLAGS) mmu.o jumptable.o common.o $< -L./cmocka-build/src -lcmocka -o cpu_test 

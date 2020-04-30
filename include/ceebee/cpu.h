@@ -44,6 +44,7 @@ typedef struct MMU {
   /* to true (1). The cartridge ram is now mapped*/
   /* from 0x0000 to 0x00FF. */
   uint8_t *finishedBIOS;
+  
 } MMU;
 
 typedef void (*func_ptr)(void *, Op_info *);
@@ -63,12 +64,17 @@ typedef struct CPU {
   uint16_t pc;
   //Stack pointer
   uint16_t sp;
+  
+  // Special timer register
+  uint16_t *cycle_count;
   //Memory
   MMU *mmu;
   // Opcode jumptable
   func_ptr jumptable[0xF][0xF];
   // Extended opcode jumptable (CB prefix)
   func_ptr cb_jumptable[0xF][0xF];
+  /* Number of cycles of the last instruction */
+  uint16_t t;
 } CPU;
 
 CPU initCPU();
@@ -80,5 +86,5 @@ void write_r16(CPU *cpu, int index, uint16_t val);
 uint8_t* getRegister(CPU *cpu, int index);
 
 void printCpu(CPU cpu);
-Op_info run_cycle(CPU *cpu);
+void cycle_cpu(CPU *cpu);
 #endif

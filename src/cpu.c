@@ -19,9 +19,14 @@ CPU initCPU() {
   mmu_load_boot_rom(cpu.mmu);
   
   init_jmp(cpu.jumptable, cpu.cb_jumptable);
+  // Initialize the counter
+  cpu.cycle_count = (uint16_t*) cpu.mmu->ram + 0xFF05;
+  *cpu.cycle_count = 0;
   // Initialize into boot mode
   cpu.mmu->finishedBIOS = (uint8_t*) cpu.mmu->ram + 0xFF50;
   *cpu.mmu->finishedBIOS = 0;
+ 
+  cpu.t = 0;
   return cpu;
 }
 
@@ -148,16 +153,21 @@ void print_code_info(Op_info info) {
   printf(MAG "\tCycles: %d\n\tSize: %d\n" RESET, info.cycles, info.size);
 }
 
-Op_info run_cycle(CPU *cpu) {
+void cycle_cpu(CPU *cpu) {
+  // Skip boot copyright check
+  if (cpu->pc >= 0x00E0 && cpu->pc <= 0x00FA) {
+    printf("Skipping boot checksum");
+    cpu->pc = 0x00FC;
+  } 
+
   uint8_t code = readN(cpu, cpu->pc);
   struct Op_info info;
 
   // Initialize the info struct
   info.size = 0;
   info.cycles = 0; 
-
   #ifdef DEBUG
-    printf("PC: 0x%04hx\tCode: 0x%02x\n", cpu->pc, code);
+    printf("PC: 0x%04hx\tCode: 0x%02x CurrentLine: %02x\n", cpu->pc, code, cpu->mmu->ram[0xff44]);
     printCpu(*cpu);
   #endif
 
@@ -188,6 +198,5 @@ Op_info run_cycle(CPU *cpu) {
 
   // Offset the pc register
   cpu->pc += info.size;
- 
-  return info;
+  cpu->t = info.cycles;
 }

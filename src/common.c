@@ -20,10 +20,12 @@ void dump_mem(CPU *cpu) {
 }
 
 void panic(void *cpu_ptr, char const *message) {
-  fprintf(stderr, "%s\n", message); 
+  CPU *cpu = (CPU *) cpu_ptr;
+  fprintf(stderr, "%s ** pc 0x%04x\n", message, cpu->pc); 
   #ifdef DEBUG
-    CPU *cpu = (CPU *) cpu_ptr;
-    dump_mem(cpu);
+    if (cpu_ptr != NULL) {
+      dump_mem(cpu);
+    }
   #endif
   exit(1);
 }

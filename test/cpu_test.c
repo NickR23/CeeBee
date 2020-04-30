@@ -90,11 +90,8 @@ void test_write_r16(void ** state) {
 void test_runCycle(void ** state) {
   cpu = initCPU();
   cpu.pc = 0x0000;
-  Op_info info = run_cycle(&cpu);
-   
+  cycle_cpu(&cpu); 
   assert_true(cpu.pc == 0x03);
-  assert_true(info.size == 3);
-  assert_true(info.cycles == 12);
 
   freeCPU(&cpu);
 }
