@@ -41,7 +41,6 @@ void printCard(char* messagePath) {
 }
 
 void run_emulator(CPU *cpu, GPU *gpu, PPU *ppu) {
-  int lockup = 0;
   while (continue_running) {
     cycle_cpu(cpu);
     cycle_ppu(cpu, gpu, ppu);

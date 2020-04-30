@@ -81,8 +81,6 @@ uint16_t window_map_addr(PPU *ppu) {
 uint16_t tilepattern_addr(PPU *ppu) {
   bool flag = ((*ppu->LCDCONT) >> 4) & 0x01;
   uint16_t addr = flag ? 0x8000 : 0x8800;
-  if (addr == 0x8800)
-    printf("tile block is signed!\n");
   return addr;
 }
 
@@ -125,7 +123,6 @@ void renderScan(CPU *cpu, GPU *gpu, PPU *ppu) {
   
   bool usingWindow = false;
 
-  bool stop = false;
   if (window_enabled(ppu)) {
     if (windowY <= (*ppu->CURLINE))
       usingWindow = true;
@@ -144,8 +141,6 @@ void renderScan(CPU *cpu, GPU *gpu, PPU *ppu) {
   else {
     backgroundMem = window_map_addr(ppu);
   }
-  
-  /* printf("Background Memory: 0x%04x\n", backgroundMem); */
   
   uint8_t yPos = 0;
   
@@ -202,9 +197,9 @@ void renderScan(CPU *cpu, GPU *gpu, PPU *ppu) {
     
     switch(col) {
       case WHITE:
-        red = 255;
-        green = 255;
-        blue = 255;
+        red = 0xFF;
+        green = 0xFF;
+        blue = 0xFF;
         break;
       case LIGHT_GREY:
         red = 0xCC;
@@ -212,9 +207,9 @@ void renderScan(CPU *cpu, GPU *gpu, PPU *ppu) {
         blue = 0xCC;
         break;
       case DARK_GREY:
-        red = 0x77;
-        green = 0x77;
-        blue = 0x77;
+        red = 0x22;
+        green = 0x22;
+        blue = 0x22;
         break;
       case BLACK:
         red = 0x00;
@@ -233,7 +228,7 @@ void renderScan(CPU *cpu, GPU *gpu, PPU *ppu) {
   }
 
   update_window(gpu);
-  /* sleep(1); */
+  /* msleep(5); */
 }
 
   
