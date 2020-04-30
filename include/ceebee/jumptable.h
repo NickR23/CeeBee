@@ -27,6 +27,9 @@ void LD_C_d8(void *cpu, Op_info *info);
 void RRCA(void *cpu, Op_info *info);
 void RRA(void *cpu, Op_info *info);
 void RLA(void *cpu, Op_info *info);
+
+void RL(CPU *cpu, Op_info *info, uint16_t reg);
+
 void LD_DE_d16(void *cpu, Op_info *info);
 void LD_HL_d16(void *cpu, Op_info *info);
 void LD_SP_d16(void *cpu, Op_info *info);

@@ -981,7 +981,7 @@ void RL(CPU *cpu, Op_info *info, uint16_t reg) {
 /* CB FUNCTIONS */
 void RL_C(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu;
-  RL(cpu_ptr, info, H);
+  RL(cpu_ptr, info, C);
 }
 
 void BIT_7_H(void *cpu, Op_info *info) {

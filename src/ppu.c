@@ -66,13 +66,13 @@ bool background_enabled(PPU *ppu) {
   return enabled;
 }
 
-uint16_t background_addr(PPU *ppu) {
+uint16_t background_map_addr(PPU *ppu) {
   bool flag = ((*ppu->LCDCONT) >> 3) & 0x01;
   uint16_t addr = flag ? 0x9C00 : 0x9800;
   return addr;
 }
 
-uint16_t window_addr(PPU *ppu) {
+uint16_t window_map_addr(PPU *ppu) {
   bool flag = ((*ppu->LCDCONT) >> 6) & 0x01;
   uint16_t addr = flag ? 0x9C00 : 0x9800;
   return addr;
@@ -81,6 +81,8 @@ uint16_t window_addr(PPU *ppu) {
 uint16_t tilepattern_addr(PPU *ppu) {
   bool flag = ((*ppu->LCDCONT) >> 4) & 0x01;
   uint16_t addr = flag ? 0x8000 : 0x8800;
+  if (addr == 0x8800)
+    printf("tile block is signed!\n");
   return addr;
 }
 
@@ -137,10 +139,10 @@ void renderScan(CPU *cpu, GPU *gpu, PPU *ppu) {
   }
 
   if (usingWindow == false) {
-    backgroundMem = background_addr(ppu);
+    backgroundMem = background_map_addr(ppu);
   }
   else {
-    backgroundMem = window_addr(ppu);
+    backgroundMem = window_map_addr(ppu);
   }
   
   /* printf("Background Memory: 0x%04x\n", backgroundMem); */

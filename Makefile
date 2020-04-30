@@ -41,8 +41,8 @@ testing: teardown $(OBJECTS) $(TESTOBJECTS)
 
 #Look for .c testing files in ./test
 vpath %.c test
-jumptable_test.o: jumptable_test.c jumptable.c
-	$(CC) --coverage $(SRCPATH)jumptable.c $(CFLAGS) mmu.o cpu.o common.o $< -L./cmocka-build/src -lcmocka -o $@ 
+jumptable_test.o: $(TESTPATH)jumptable_test.c jumptable.c
+	$(CC) --coverage $(SRCPATH)jumptable.c $(CFLAGS) mmu.o cpu.o common.o $< -L./cmocka-build/src -lcmocka -o $*
 
 cpu_test.o: $(TESTPATH)cpu_test.c cpu.c
 	$(CC) --coverage $(SRCPATH)cpu.c $(CFLAGS) mmu.o jumptable.o common.o $< -L./cmocka-build/src -lcmocka -o cpu_test 
