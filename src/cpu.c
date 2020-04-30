@@ -154,6 +154,12 @@ void print_code_info(Op_info info) {
 }
 
 void cycle_cpu(CPU *cpu) {
+  // Skip boot copyright check
+  if (cpu->pc >= 0x00E0 && cpu->pc <= 0x00FA) {
+    printf("Skipping boot checksum");
+    cpu->pc = 0x00FC;
+  } 
+
   uint8_t code = readN(cpu, cpu->pc);
   struct Op_info info;
 

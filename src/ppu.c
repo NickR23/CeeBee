@@ -175,7 +175,7 @@ void renderScan(CPU *cpu, GPU *gpu, PPU *ppu) {
     uint16_t tileLocation = tileData;
    
     if (unsig)
-      tileLocation += (tileNum *16);
+      tileLocation += (tileNum * 16);
     else
       tileLocation += ((tileNum + 128) * 16);
   
@@ -183,10 +183,6 @@ void renderScan(CPU *cpu, GPU *gpu, PPU *ppu) {
     line *= 2;
     uint8_t data1 = readN(cpu, tileLocation + line);
     uint8_t data2 = readN(cpu, tileLocation + line + 1);
-    /* if (data1 > 0 || data2 > 0){ */
-    /*   printf("@ 0x%04x data1: %02x data2: %02x\n", tileLocation + line, data1, data2); */
-    /*   stop = true; */
-    /* } */
   
     int colourBit = xPos % 8;
     colourBit -= 7;
@@ -230,9 +226,6 @@ void renderScan(CPU *cpu, GPU *gpu, PPU *ppu) {
     final_color |= (red << 24); 
     final_color |= (green << 16); 
     final_color |= (blue << 8); 
-    if (stop && (data1 > 0 || data2 > 0)){
-      printf("Final Color: %08x\n", final_color);
-    }
     
     gpu->pixels[pixel + finalY * PIXELS_W] = final_color;
   }

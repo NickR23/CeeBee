@@ -25,7 +25,7 @@ GPU init_gpu() {
   
   gpu.framebuffer = SDL_CreateTexture(
     gpu.rend,
-    SDL_PIXELFORMAT_ARGB8888,
+    SDL_PIXELFORMAT_RGBA8888,
     SDL_TEXTUREACCESS_STREAMING,
     gpu.window_width,
     gpu.window_height);
