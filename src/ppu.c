@@ -57,7 +57,7 @@ bool lcd_enabled(PPU *ppu) {
 }
 
 bool window_enabled(PPU *ppu) {
-  bool enabled = ((*ppu->LCDCONT) >> 5) * 0x01;
+  bool enabled = ((*ppu->LCDCONT) >> 5) & 0x01;
   return enabled;
 }
 
@@ -78,11 +78,9 @@ uint16_t window_map_addr(PPU *ppu) {
   return addr;
 }
 
-uint16_t tilepattern_addr(PPU *ppu) {
+uint16_t tile_pattern_table_addr(PPU *ppu) {
   bool flag = ((*ppu->LCDCONT) >> 4) & 0x01;
   uint16_t addr = flag ? 0x8000 : 0x8800;
-  if (addr == 0x8800)
-    printf("tile block is signed!\n");
   return addr;
 }
 
@@ -113,6 +111,7 @@ enum COLOR getColor(uint8_t colorNum, CPU *cpu, PPU *ppu) {
   return res;
 }
 
+
 void renderScan(CPU *cpu, GPU *gpu, PPU *ppu) {
   uint16_t tileData = 0;
   uint16_t backgroundMem = 0;
@@ -123,20 +122,20 @@ void renderScan(CPU *cpu, GPU *gpu, PPU *ppu) {
   uint8_t windowX = *ppu->WNDPOSX;
   uint8_t windowY = *ppu->WNDPOSY;
   
-  bool usingWindow = false;
+  bool usingWindow = window_enabled(ppu);
 
-  bool stop = false;
-  if (window_enabled(ppu)) {
-    if (windowY <= (*ppu->CURLINE))
-      usingWindow = true;
+  if (usingWindow) {
+    if (windowY > (*ppu->CURLINE))
+      usingWindow = false;
   }
   
-  if (tilepattern_addr(ppu) == 0x8000) {
+  if (tile_pattern_table_addr(ppu) == 0x8000) {
     tileData = 0x8000;
   } else {
     tileData = 0x8800;
     unsig = false;
   }
+  /* printf("tiledata: %04x\n",tileData); */
 
   if (usingWindow == false) {
     backgroundMem = background_map_addr(ppu);
@@ -144,8 +143,7 @@ void renderScan(CPU *cpu, GPU *gpu, PPU *ppu) {
   else {
     backgroundMem = window_map_addr(ppu);
   }
-  
-  /* printf("Background Memory: 0x%04x\n", backgroundMem); */
+  /* printf("backgroundMapAddr: %04x\n", backgroundMem); */
   
   uint8_t yPos = 0;
   
@@ -155,6 +153,7 @@ void renderScan(CPU *cpu, GPU *gpu, PPU *ppu) {
     yPos = (*ppu->CURLINE) - windowY;
  
   uint16_t tileRow = (((uint8_t) (yPos/8))*32);
+  /* printf("Tile: %04x", tileRow); */
   
   for (int pixel = 0; pixel < 160; pixel++) {
     uint8_t xPos = pixel + scrollX;
@@ -202,9 +201,9 @@ void renderScan(CPU *cpu, GPU *gpu, PPU *ppu) {
     
     switch(col) {
       case WHITE:
-        red = 255;
-        green = 255;
-        blue = 255;
+        red = 0xFF;
+        green = 0xFF;
+        blue = 0xFF;
         break;
       case LIGHT_GREY:
         red = 0xCC;
@@ -212,9 +211,9 @@ void renderScan(CPU *cpu, GPU *gpu, PPU *ppu) {
         blue = 0xCC;
         break;
       case DARK_GREY:
-        red = 0x77;
-        green = 0x77;
-        blue = 0x77;
+        red = 0x22;
+        green = 0x22;
+        blue = 0x22;
         break;
       case BLACK:
         red = 0x00;
@@ -223,17 +222,23 @@ void renderScan(CPU *cpu, GPU *gpu, PPU *ppu) {
         break;
     }
     
-    int finalY = *ppu->CURLINE;
+    // If off screen then don't write
+    if (yPos < 0 || yPos > 143) {
+      continue;
+    }
+
     uint32_t final_color = 0x000000FF;
     final_color |= (red << 24); 
     final_color |= (green << 16); 
     final_color |= (blue << 8); 
     
-    gpu->pixels[pixel + finalY * PIXELS_W] = final_color;
+    /* printf("yPos: %02x\n",yPos); */
+    
+    gpu->pixels[pixel + (*ppu->CURLINE) * PIXELS_W] = final_color;
   }
 
   update_window(gpu);
-  /* sleep(1); */
+  /* msleep(5); */
 }
 
   
@@ -262,7 +267,7 @@ void cycle_ppu(CPU *cpu, GPU *gpu, PPU *ppu) {
       if (ppu->modeclock >= HBLANK_T) {
         *ppu->CURLINE += 1;
         ppu->modeclock = 0;
-        if (*ppu->CURLINE == 143) {
+        if (*ppu->CURLINE == PIXELS_H) {
           ppu->mode = VBLANK;
         }
         else {
@@ -275,7 +280,7 @@ void cycle_ppu(CPU *cpu, GPU *gpu, PPU *ppu) {
       if (ppu->modeclock >= 456) {
         *ppu->CURLINE += 1;
         ppu->modeclock = 0;
-        if (*ppu->CURLINE > 153) {
+        if (*ppu->CURLINE > 159) {
           ppu->mode = OAM;
           *ppu->CURLINE = 0;
         }

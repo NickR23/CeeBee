@@ -1,8 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 #include "ceebee/termColors.h"
 #include "ceebee/common.h"
 #include "ceebee/cpu.h"
+#include "ceebee/mmu.h"
 
 #define MEMDUMPLOC "./memorydump.txt"
 
@@ -21,11 +23,26 @@ void dump_mem(CPU *cpu) {
 
 void panic(void *cpu_ptr, char const *message) {
   CPU *cpu = (CPU *) cpu_ptr;
-  fprintf(stderr, "%s ** pc 0x%04x\n", message, cpu->pc); 
+  uint8_t code = readN(cpu, cpu->pc);
+  
+  printf("%s\n", message);
+  printf("PC: 0x%04hx\tCode: 0x%02x\n", cpu->pc, code);
+  printCpu(*cpu); 
+  
   #ifdef DEBUG
     if (cpu_ptr != NULL) {
       dump_mem(cpu);
     }
   #endif
   exit(1);
+}
+
+void msleep(long msec) {
+  struct timespec ts;
+  ts.tv_sec = msec / 1000;
+  ts.tv_nsec = (msec % 1000) * 1000000;
+  int res; 
+  do {
+    res = nanosleep(&ts, &ts);
+  } while(res);
 }
