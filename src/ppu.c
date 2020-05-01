@@ -78,7 +78,7 @@ uint16_t window_map_addr(PPU *ppu) {
   return addr;
 }
 
-uint16_t tilepattern_addr(PPU *ppu) {
+uint16_t tile_pattern_table_addr(PPU *ppu) {
   bool flag = ((*ppu->LCDCONT) >> 4) & 0x01;
   uint16_t addr = flag ? 0x8000 : 0x8800;
   return addr;
@@ -111,6 +111,7 @@ enum COLOR getColor(uint8_t colorNum, CPU *cpu, PPU *ppu) {
   return res;
 }
 
+
 void renderScan(CPU *cpu, GPU *gpu, PPU *ppu) {
   uint16_t tileData = 0;
   uint16_t backgroundMem = 0;
@@ -128,12 +129,14 @@ void renderScan(CPU *cpu, GPU *gpu, PPU *ppu) {
       usingWindow = false;
   }
   
-  if (tilepattern_addr(ppu) == 0x8000) {
+  if (tile_pattern_table_addr(ppu) == 0x8000) {
     tileData = 0x8000;
   } else {
     tileData = 0x8800;
     unsig = false;
   }
+  /* printf("tiledata: %04x\n",tileData); */
+  printf("SCROLL: %02x\n", scrollY);
 
   if (usingWindow == false) {
     backgroundMem = background_map_addr(ppu);
@@ -141,11 +144,9 @@ void renderScan(CPU *cpu, GPU *gpu, PPU *ppu) {
   else {
     backgroundMem = window_map_addr(ppu);
   }
+  /* printf("backgroundMapAddr: %04x\n", backgroundMem); */
   
   uint8_t yPos = 0;
-  printf("SCROLL: %02x, %02x\n", scrollX, scrollY);
-  printf("WINDOW: %02x, %02x\n", windowX, windowY);
-  printf("using window? %d\n", usingWindow);
   
   if (!usingWindow)
     yPos = scrollY + (*ppu->CURLINE);
@@ -153,6 +154,7 @@ void renderScan(CPU *cpu, GPU *gpu, PPU *ppu) {
     yPos = (*ppu->CURLINE) - windowY;
  
   uint16_t tileRow = (((uint8_t) (yPos/8))*32);
+  /* printf("Tile: %04x", tileRow); */
   
   for (int pixel = 0; pixel < 160; pixel++) {
     uint8_t xPos = pixel + scrollX;
@@ -231,9 +233,9 @@ void renderScan(CPU *cpu, GPU *gpu, PPU *ppu) {
     final_color |= (green << 16); 
     final_color |= (blue << 8); 
     
-    printf("yPos: %02x\n",yPos);
+    /* printf("yPos: %02x\n",yPos); */
     
-    gpu->pixels[pixel + yPos * PIXELS_W] = final_color;
+    gpu->pixels[pixel + (*ppu->CURLINE) * PIXELS_W] = final_color;
   }
 
   update_window(gpu);
@@ -266,7 +268,7 @@ void cycle_ppu(CPU *cpu, GPU *gpu, PPU *ppu) {
       if (ppu->modeclock >= HBLANK_T) {
         *ppu->CURLINE += 1;
         ppu->modeclock = 0;
-        if (*ppu->CURLINE == 143) {
+        if (*ppu->CURLINE == PIXELS_H) {
           ppu->mode = VBLANK;
         }
         else {
@@ -279,7 +281,7 @@ void cycle_ppu(CPU *cpu, GPU *gpu, PPU *ppu) {
       if (ppu->modeclock >= 456) {
         *ppu->CURLINE += 1;
         ppu->modeclock = 0;
-        if (*ppu->CURLINE > 153) {
+        if (*ppu->CURLINE > 159) {
           ppu->mode = OAM;
           *ppu->CURLINE = 0;
         }
