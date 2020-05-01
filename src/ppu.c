@@ -57,7 +57,7 @@ bool lcd_enabled(PPU *ppu) {
 }
 
 bool window_enabled(PPU *ppu) {
-  bool enabled = ((*ppu->LCDCONT) >> 5) * 0x01;
+  bool enabled = ((*ppu->LCDCONT) >> 5) & 0x01;
   return enabled;
 }
 
@@ -121,11 +121,11 @@ void renderScan(CPU *cpu, GPU *gpu, PPU *ppu) {
   uint8_t windowX = *ppu->WNDPOSX;
   uint8_t windowY = *ppu->WNDPOSY;
   
-  bool usingWindow = false;
+  bool usingWindow = window_enabled(ppu);
 
-  if (window_enabled(ppu)) {
-    if (windowY <= (*ppu->CURLINE))
-      usingWindow = true;
+  if (usingWindow) {
+    if (windowY > (*ppu->CURLINE))
+      usingWindow = false;
   }
   
   if (tilepattern_addr(ppu) == 0x8000) {
@@ -143,6 +143,9 @@ void renderScan(CPU *cpu, GPU *gpu, PPU *ppu) {
   }
   
   uint8_t yPos = 0;
+  printf("SCROLL: %02x, %02x\n", scrollX, scrollY);
+  printf("WINDOW: %02x, %02x\n", windowX, windowY);
+  printf("using window? %d\n", usingWindow);
   
   if (!usingWindow)
     yPos = scrollY + (*ppu->CURLINE);
@@ -218,13 +221,19 @@ void renderScan(CPU *cpu, GPU *gpu, PPU *ppu) {
         break;
     }
     
-    int finalY = *ppu->CURLINE;
+    // If off screen then don't write
+    if (yPos < 0 || yPos > 143) {
+      continue;
+    }
+
     uint32_t final_color = 0x000000FF;
     final_color |= (red << 24); 
     final_color |= (green << 16); 
     final_color |= (blue << 8); 
     
-    gpu->pixels[pixel + finalY * PIXELS_W] = final_color;
+    printf("yPos: %02x\n",yPos);
+    
+    gpu->pixels[pixel + yPos * PIXELS_W] = final_color;
   }
 
   update_window(gpu);

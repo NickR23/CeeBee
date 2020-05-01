@@ -899,7 +899,7 @@ void LDDEC_A_INDR_HL(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu;
   indir_n_load(cpu_ptr, info, A, HL); 
   uint16_t hl_val = read_r16(cpu_ptr, HL);
-  hl_val++;
+  hl_val--;
   write_r16(cpu_ptr, HL, hl_val);
 }
 
