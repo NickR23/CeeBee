@@ -136,7 +136,6 @@ void renderScan(CPU *cpu, GPU *gpu, PPU *ppu) {
     unsig = false;
   }
   /* printf("tiledata: %04x\n",tileData); */
-  printf("SCROLL: %02x\n", scrollY);
 
   if (usingWindow == false) {
     backgroundMem = background_map_addr(ppu);
