@@ -155,7 +155,7 @@ void print_code_info(Op_info info) {
 
 void cycle_cpu(CPU *cpu) {
   // Skip boot copyright check
-  if (cpu->pc >= 0x00E0 && cpu->pc <= 0x00FA) {
+  if (cpu->pc >= 0x00E0 && cpu->pc <= 0x00FA && !*cpu->mmu->finishedBIOS) {
     printf("Skipping boot checksum\n");
     cpu->pc = 0x00FC;
   } 
