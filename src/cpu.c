@@ -19,9 +19,14 @@ CPU initCPU() {
   mmu_load_boot_rom(cpu.mmu);
   
   init_jmp(cpu.jumptable, cpu.cb_jumptable);
+  // Initialize the counter
+  cpu.cycle_count = (uint16_t*) cpu.mmu->ram + 0xFF05;
+  *cpu.cycle_count = 0;
   // Initialize into boot mode
   cpu.mmu->finishedBIOS = (uint8_t*) cpu.mmu->ram + 0xFF50;
   *cpu.mmu->finishedBIOS = 0;
+ 
+  cpu.t = 0;
   return cpu;
 }
 
@@ -123,18 +128,18 @@ void printCpu(CPU cpu) {
   uint16_t pc = read_r16(&cpu, PC);
   uint16_t sp = read_r16(&cpu, SP);
   
-  printf(MAG "~~~~~~~~~~~~~REGISTERS~~~~~~~~~~~~~~~~~\n" RESET);
-  printf(GRN "\t\tb: 0x%02x\n", b);
-  printf(GRN "\t\tc: 0x%02x\n", c);
-  printf(GRN "\t\td: 0x%02x\n", d);
-  printf(GRN "\t\te: 0x%02x\n", e);
-  printf(GRN "\t\ta: 0x%02x\n", a);
-  printf(GRN "\t\tf: 0x%02x\n", f);
-  printf(GRN "\t\th: 0x%02x\n", h);
-  printf(GRN "\t\tl: 0x%02x\n", l);
-  printf(GRN "\t\tpc: 0x%04x\n", pc);
-  printf(GRN "\t\tsp: 0x%04x\n", sp);
-  printf(MAG "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n" RESET);
+  printf("~~~~~~~~~~~~~REGISTERS~~~~~~~~~~~~~~~~~\n");
+  printf("\t\tb: 0x%02x\n", b);
+  printf("\t\tc: 0x%02x\n", c);
+  printf("\t\td: 0x%02x\n", d);
+  printf("\t\te: 0x%02x\n", e);
+  printf("\t\ta: 0x%02x\n", a);
+  printf("\t\tf: 0x%02x\n", f);
+  printf("\t\th: 0x%02x\n", h);
+  printf("\t\tl: 0x%02x\n", l);
+  printf("\t\tpc: 0x%04x\n", pc);
+  printf("\t\tsp: 0x%04x\n", sp);
+  printf("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
 }
 
 void printCart(int start, uint8_t const *cart) {
@@ -148,16 +153,21 @@ void print_code_info(Op_info info) {
   printf(MAG "\tCycles: %d\n\tSize: %d\n" RESET, info.cycles, info.size);
 }
 
-Op_info run_cycle(CPU *cpu) {
+void cycle_cpu(CPU *cpu) {
+  // Skip boot copyright check
+  if (cpu->pc >= 0x00E0 && cpu->pc <= 0x00FA) {
+    printf("Skipping boot checksum\n");
+    cpu->pc = 0x00FC;
+  } 
+
   uint8_t code = readN(cpu, cpu->pc);
   struct Op_info info;
 
   // Initialize the info struct
   info.size = 0;
   info.cycles = 0; 
-
   #ifdef DEBUG
-    printf(YEL "PC: 0x%04hx\tCode: 0x%02x\n" RESET, cpu->pc, code);
+    printf("PC: 0x%04hx\tCode: 0x%02x CurrentLine: %02x\n", cpu->pc, code, cpu->mmu->ram[0xff44]);
     printCpu(*cpu);
   #endif
 
@@ -172,8 +182,8 @@ Op_info run_cycle(CPU *cpu) {
     /* Get the new code */
     code = readN(cpu, cpu->pc);
     #ifdef DEBUG
-      printf(BLU "***********CB PREFIX********\n");
-      printf(YEL "PC: 0x%04hx\tCode: 0x%02x\n" RESET, cpu->pc, code);
+      printf("***********CB PREFIX********\n");
+      printf("PC: 0x%04hx\tCode: 0x%02x\n", cpu->pc, code);
       printCpu(*cpu);
     #endif
 
@@ -188,6 +198,5 @@ Op_info run_cycle(CPU *cpu) {
 
   // Offset the pc register
   cpu->pc += info.size;
- 
-  return info;
+  cpu->t = info.cycles;
 }

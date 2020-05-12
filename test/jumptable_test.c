@@ -54,6 +54,22 @@ void test_setZF(void ** state) {
   assert_true(*f == 0x00);
 }
 
+void test_RL(void ** state) {
+  Op_info info;
+  cpu.a = 0x01;
+  RL(&cpu, &info, A);
+  uint8_t expected = 0x02;
+  assert_true(cpu.a == expected);
+
+  cpu.a = 0xFF;
+  uint8_t expected_flag = 0x10;
+  expected = 0xFE;
+  RL(&cpu, &info, A);
+  assert_true(cpu.a == expected);
+  assert_true(cpu.f == expected_flag);
+}
+
+
 void test_NOP(void ** state) {
   Op_info info;
   NOP(&cpu, &info);
@@ -711,6 +727,7 @@ int main (void) {
     cmocka_unit_test_setup_teardown(test_JR_C_r8,setup,teardown),
     cmocka_unit_test_setup_teardown(test_CCF,setup,teardown),
     cmocka_unit_test_setup_teardown(test_XOR_A,setup,teardown),
+    cmocka_unit_test_setup_teardown(test_RL,setup,teardown),
   };
 
   int count_fail_tests = cmocka_run_group_tests (tests, NULL, NULL);

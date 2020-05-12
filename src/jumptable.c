@@ -7,6 +7,14 @@
 #include "ceebee/termColors.h"
 
 /* SUPER RAD COMMON FUNCTIONS FOR ALL OPS */
+
+
+bool getCF(CPU *cpu) {
+  uint8_t *f = getRegister(cpu, F); 
+  
+  bool cf = (*f >> 4) & 0x01;
+  return cf;
+} 
   
 // Sets the carry flag
 void setCF(CPU *cpu, bool state) {
@@ -44,6 +52,13 @@ void setZF(CPU *cpu, bool state) {
     *f &= 0x7F;
 }
 
+// Set bit b in 16bit register r
+void set(CPU *cpu, uint8_t b, uint16_t r) {
+  uint16_t reg = read_r16(cpu, r);
+  reg = reg | (0x01 << b);
+  write_r16(cpu, r, reg);
+}
+
 // Returns flag status
 bool check_flag(CPU *cpu, uint8_t flag) {
   uint8_t flag_status = *getRegister(cpu, F);
@@ -58,6 +73,22 @@ void comp(CPU *cpu, uint8_t val) {
   setNF(cpu, true);
   setHF(cpu, ((cpu->a & 0xf) - (val & 0xf)) < 0x00 );
   setCF(cpu, cpu->a < val);
+}
+
+  /* Restarts */
+  /* Push present address onto stack. */
+  /* Jump to address $0000 + n. */
+void restarts(CPU *cpu, Op_info *info, uint8_t n) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  
+  cpu_ptr->sp -= 2;
+  writeNN(cpu_ptr, cpu_ptr->sp, cpu_ptr->pc);
+  
+  cpu_ptr->pc = n;
+
+  // Provide the info for the instruction
+  info->cycles = 16;
+  info->size = 1;
 }
 
 // Pushes 16 bit register onto the stack
@@ -106,6 +137,23 @@ void xor_reg(CPU *cpu, Op_info *info, uint16_t dest_reg, uint16_t src_reg) {
   setCF(cpu, false);
   
   *dest = result;  
+  
+  // Provide the info for the instruction
+  info->cycles = 4;
+  info->size = 1;
+}
+
+void or_reg(CPU *cpu, Op_info *info, uint16_t dest_reg, uint16_t src_reg) {
+  uint8_t *dest = getRegister(cpu, dest_reg); 
+  uint8_t *src = getRegister(cpu, src_reg); 
+  uint8_t result = *src | *dest;
+
+  setZF(cpu, result == 0);
+  setNF(cpu, false);
+  setHF(cpu, false);
+  setCF(cpu, false);
+  
+  *dest = result;
   
   // Provide the info for the instruction
   info->cycles = 4;
@@ -239,6 +287,24 @@ void dec_8_reg(CPU *cpu, Op_info *info, uint16_t reg) {
   *dest = *dest - 1;
 }
 
+// Subtracts n from A.
+void sub_n(CPU *cpu, Op_info *info, uint8_t n) {
+  // Provide the info for the instruction
+  info->cycles = 4;
+  info->size = 1;
+ 
+  uint8_t *a = getRegister(cpu, A); 
+  uint8_t res = *a - n;
+
+  setZF(cpu, res == 0);
+  setNF(cpu, true);
+  setHF(cpu, ((*a & 0xf) - (n & 0xf)) < 0x00 );
+  setCF(cpu, *a < n);
+  
+  *a = res;
+}
+
+
 /* JUMPTABLE FUNCTIONS */
 
 void NOP(void *cpu, Op_info *info) {
@@ -267,6 +333,23 @@ void LDINDR_BC_A(void *cpu, Op_info *info) {
   loadindr_n_from_reg(cpu_ptr, info, BC, A);
 }
 
+void SUB_d8(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu; 
+  uint8_t val = readN(cpu_ptr, cpu_ptr->pc + 1);
+  sub_n(cpu_ptr, info, val);
+
+  // Provide the info for the instruction
+  info->cycles = 8;
+  info->size = 2;
+} 
+
+
+void SUB_B(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  uint8_t *b = getRegister(cpu, B);
+  sub_n(cpu_ptr, info, *b); 
+}
+
 // Increment BC
 void INC_BC(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu;
@@ -291,6 +374,24 @@ void LD_B_d8(void *cpu, Op_info *info) {
   load_n_to_reg(cpu_ptr, info, B);
 }
 
+void LD_B_INDRHL(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  uint16_t addr = read_r16(cpu_ptr, HL);
+  cpu_ptr->b = readN(cpu_ptr, addr);
+
+  info->cycles = 8;
+  info->size = 1;
+}
+
+void LD_A_INDRHL(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  uint16_t addr = read_r16(cpu_ptr, HL);
+  cpu_ptr->a = readN(cpu_ptr, addr);
+
+  info->cycles = 8;
+  info->size = 1;
+}
+
 // Load immediate 8 bits into E
 void LD_E_d8(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu;
@@ -307,6 +408,44 @@ void LD_L_d8(void *cpu, Op_info *info) {
 void LD_A_d8(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu;
   load_n_to_reg(cpu_ptr, info, A);
+}
+
+// Load A into E
+void LD_E_A(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  move(cpu_ptr, info, E, A);
+}
+
+void LD_A_B(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  move(cpu_ptr, info, A, B);
+}
+
+void LD_A_C(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  move(cpu_ptr, info, A, C);
+}
+
+void LD_A_D(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  move(cpu_ptr, info, A, D);
+}
+
+// Shift A right with carry. MSB set to 0
+void SRL_A(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  uint8_t *a = getRegister(cpu_ptr, A);
+  uint8_t cf = *a & 0x01;
+  setCF(cpu_ptr, cf);
+  
+  *a = *a >> 1;
+  
+  if (*a == 0)
+    setZF(cpu_ptr, true);
+
+  // Provide the info for the instruction
+  info->cycles = 8;
+  info->size = 2;
 }
  
 // Rotate A left (with wrapping) and save into cf
@@ -364,23 +503,6 @@ void CPL(void *cpu, Op_info *info) {
   
   setNF(cpu_ptr, true);
   setHF(cpu_ptr, true);
-
-  info->cycles = 4;
-  info->size = 1;
-}
-
-// Compliment the carry flag
-void CCF(void *cpu, Op_info *info) {
-  CPU *cpu_ptr = (CPU*) cpu;
-  uint8_t *f = getRegister(cpu_ptr, F);
-  uint8_t cf = (*f & 0x10) >> 4;
-  if (cf) 
-    setCF(cpu_ptr, false);
-  else
-    setCF(cpu_ptr, true);
-  
-  setNF(cpu_ptr, false);
-  setHF(cpu_ptr, false);
 
   info->cycles = 4;
   info->size = 1;
@@ -655,6 +777,24 @@ void DAA(void *cpu, Op_info *info) {
   info->size = 1;
 
 }
+
+// Complement the carry flag
+void CCF(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+
+  setNF(cpu_ptr, false);
+  setHF(cpu_ptr, false);
+  
+  if (getCF(cpu_ptr))
+    setCF(cpu_ptr, false);
+  else
+    setCF(cpu_ptr, true);
+
+  // Provide the info for the instruction
+  info->cycles = 4;
+  info->size = 1;
+}
+  
  
 // Set the carry flag
 void SCF(void *cpu, Op_info *info) {
@@ -680,6 +820,28 @@ void JR_r8(void *cpu, Op_info *info) {
   info->cycles = 12;
   info->size = 2;
 }
+
+void JP_a16(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  uint16_t addr = readNN(cpu_ptr, cpu_ptr->pc + 1);
+  cpu_ptr->pc = addr;
+
+  // Provide the info for the instruction
+  info->cycles = 16;
+  info->size = 3;
+}
+
+void JP_INDRHL(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  uint16_t hlptr = read_r16(cpu_ptr, HL);
+  uint16_t addr = readNN(cpu_ptr, hlptr);
+  cpu_ptr->pc = addr;
+
+  // Provide the info for the instruction
+  info->cycles = 4;
+  info->size = 1;
+}
+  
 
 void JR_Z_r8(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu;
@@ -737,7 +899,7 @@ void LDDEC_A_INDR_HL(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu;
   indir_n_load(cpu_ptr, info, A, HL); 
   uint16_t hl_val = read_r16(cpu_ptr, HL);
-  hl_val++;
+  hl_val--;
   write_r16(cpu_ptr, HL, hl_val);
 }
 
@@ -801,6 +963,16 @@ void XOR_A(void *cpu, Op_info *info) {
   xor_reg(cpu_ptr, info, A, A);
 }
 
+void OR_B(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  or_reg(cpu_ptr, info, A, B);
+}
+
+void OR_C(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  or_reg(cpu_ptr, info, A, C);
+}
+
 void JR_NZ_r8(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu;
   cond_jmp_r8(cpu_ptr, info, !check_flag(cpu_ptr, ZF));
@@ -813,7 +985,7 @@ void LDINDR_C_A(void *cpu, Op_info *info) {
   writeN(cpu_ptr, cpu_ptr->c + 0xFF00, cpu_ptr->a);
   
   info->cycles = 8;
-  info->size = 2;
+  info->size = 1;
 }
 
 void LDH_a8_A(void *cpu, Op_info *info) {
@@ -826,7 +998,8 @@ void LDH_a8_A(void *cpu, Op_info *info) {
 
 void LDH_A_a8(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu;
-  uint8_t n = readN(cpu_ptr, cpu_ptr->pc + 1);
+  uint8_t addr = readN(cpu_ptr, cpu_ptr->pc + 1);
+  uint8_t n = readN(cpu_ptr, addr + 0xFF00);
   cpu_ptr->a = n;
   info->cycles = 12;
   info->size = 2;
@@ -847,7 +1020,12 @@ void LD_A_INDR_C(void *cpu, Op_info *info) {
   uint8_t *c = getRegister(cpu_ptr, C);
   *a = readN(cpu_ptr, *c + 0xFF00); 
   info->cycles = 8;
-  info->size = 2;
+  info->size = 1;
+}
+
+void LD_A_H(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  move(cpu_ptr, info, A, H);
 }
 
 void LD_C_A(void *cpu, Op_info *info) {
@@ -858,6 +1036,11 @@ void LD_C_A(void *cpu, Op_info *info) {
 void LD_A_E(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu;
   move(cpu_ptr, info, A, E);
+}
+
+void LD_A_L(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  move(cpu_ptr, info, A, L);
 }
 
 void LD_H_A(void *cpu, Op_info *info) {
@@ -886,6 +1069,54 @@ void CP_d8(void *cpu, Op_info *info) {
   comp(cpu_ptr, d8);
   info->cycles = 8;
   info->size = 2;
+}
+
+void AND_B(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  bool res = cpu_ptr->a & cpu_ptr->b;
+  setZF(cpu_ptr, res == 0);
+  setNF(cpu_ptr, false); 
+  setHF(cpu_ptr, true); 
+  setCF(cpu_ptr, false); 
+  
+  info->cycles = 4;
+  info->size = 1;
+}
+
+void AND_d8(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  
+  uint8_t d8 = readN(cpu_ptr, cpu_ptr->pc + 1);
+  
+  bool res = cpu_ptr->a & d8;
+
+  setZF(cpu_ptr, res == 0);
+  setNF(cpu_ptr, false); 
+  setHF(cpu_ptr, true); 
+  setCF(cpu_ptr, false); 
+
+  info->cycles = 8;
+  info->size = 2;
+}
+
+void RST_38H(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  restarts(cpu_ptr, info, 0x38);
+}
+
+void RST_28H(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  restarts(cpu_ptr, info, 0x28);
+}
+
+void RST_18H(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  restarts(cpu_ptr, info, 0x18);
+}
+
+void RST_08H(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  restarts(cpu_ptr, info, 0x08);
 }
 
 // Push next instruction onto stack and jump to nn
@@ -920,6 +1151,12 @@ void POP_BC(void *cpu, Op_info *info) {
   pop_r16(cpu_ptr, info, BC);
 }  
 
+void DI(void *cpu, Op_info *info) {
+  printf("Interrupts are not implemented yet...\nContinuing...\n");
+  info->cycles = 4;
+  info->size = 1;
+}
+
 /* CB PREFIX FUNCTIONS */
 
 /* CB COMMON FUNCTIONS */
@@ -951,7 +1188,7 @@ void RL(CPU *cpu, Op_info *info, uint16_t reg) {
 /* CB FUNCTIONS */
 void RL_C(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu;
-  RL(cpu_ptr, info, H);
+  RL(cpu_ptr, info, C);
 }
 
 void BIT_7_H(void *cpu, Op_info *info) {
@@ -959,15 +1196,23 @@ void BIT_7_H(void *cpu, Op_info *info) {
   bit_n(cpu_ptr, info, 7, H);
 }
 
-// Lets u kno that this opcode is not implemented yet
-void NOT_IMPL(void *cpu, Op_info *info) {
-  panic(GRN "This instruction is not yet implemented ... Exiting :)\n" RESET);
+void BIT_3_A(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  bit_n(cpu_ptr, info, 3, A);
 }
 
-// This should never be executed!
-// The run_cycle() handles this
-void CB(void *cpu, Op_info *info) {
-  panic(GRN "Run cycle was supposed to handle this :(\n" RESET);
+void SET_7_INDRHL(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  set(cpu_ptr, 7, HL);
+
+  info->cycles = 16;
+  info->size = 2;
+}
+
+
+// Lets u kno that this opcode is not implemented yet
+void NOT_IMPL(void *cpu, Op_info *info) {
+  panic(cpu, GRN "This instruction is not yet implemented ... Exiting :)\n" RESET);
 }
 
 void init_jmp (func_ptr jumptable[0xF][0xF], func_ptr cb_jumptable[0xF][0xF]) {
@@ -1050,36 +1295,62 @@ void init_jmp (func_ptr jumptable[0xF][0xF], func_ptr cb_jumptable[0xF][0xF]) {
   jumptable[0x3][0xE] = LD_A_d8;
   jumptable[0x3][0xF] = CCF;
 
+  jumptable[0x4][0x6] = LD_B_INDRHL;
   jumptable[0x4][0xF] = LD_C_A;
 
   jumptable[0x5][0x7] = LD_D_A;
+  jumptable[0x5][0xF] = LD_E_A;
 
   jumptable[0x6][0x7] = LD_H_A;
 
   jumptable[0x7][0x7] = LDINDR_HL_A;
+  jumptable[0x7][0x8] = LD_A_B;
+  jumptable[0x7][0x9] = LD_A_C;
+  jumptable[0x7][0xA] = LD_A_D;
   jumptable[0x7][0xB] = LD_A_E;
-  
+  jumptable[0x7][0xC] = LD_A_H;
+  jumptable[0x7][0xD] = LD_A_L;
+  jumptable[0x7][0xE] = LD_A_INDRHL;
+
+
+  jumptable[0x9][0x0] = SUB_B;
+
+  jumptable[0xA][0x0] = AND_B;
   jumptable[0xA][0xF] = XOR_A;
-  
-  jumptable[0xC][0x5] = PUSH_BC;
 
-  jumptable[0xE][0x0] = LDH_a8_A;
-  jumptable[0xE][0x2] = LDINDR_C_A;
-
-  jumptable[0xF][0x2] = LD_A_INDR_C;
+  jumptable[0xB][0x0] = OR_B;
+  jumptable[0xB][0x1] = OR_C;
   
   jumptable[0xC][0x1] = POP_BC;
+  jumptable[0xC][0x3] = JP_a16;
+  jumptable[0xC][0x5] = PUSH_BC;
   jumptable[0xC][0x9] = RET;
-  jumptable[0xC][0xB] = CB;
   jumptable[0xC][0xD] = CALL_a16;
+  jumptable[0xC][0xF] = RST_08H;
 
+  jumptable[0xD][0x6] = SUB_d8;
+  jumptable[0xD][0xF] = RST_18H;
+  
+  jumptable[0xE][0x0] = LDH_a8_A;
+  jumptable[0xE][0x2] = LDINDR_C_A;
+  jumptable[0xE][0x6] = AND_d8;
+  jumptable[0xE][0x9] = JP_INDRHL;
   jumptable[0xE][0xA] = LDINDR_a16_A;
- 
+  jumptable[0xE][0xF] = RST_28H;
+
   jumptable[0xF][0x0] = LDH_A_a8;
+  jumptable[0xF][0x2] = LD_A_INDR_C;
+  jumptable[0xF][0x3] = DI;
   jumptable[0xF][0xE] = CP_d8;
+  jumptable[0xF][0xF] = RST_38H;
  
   /* CB JUMPTABLE */
   cb_jumptable[0x1][0x1] = RL_C;
 
   cb_jumptable[0x7][0xC] = BIT_7_H;
+
+  cb_jumptable[0x3][0xF] = SRL_A;
+
+  cb_jumptable[0x5][0xF] = BIT_3_A;
+  cb_jumptable[0xF][0xE] = SET_7_INDRHL;
 }
