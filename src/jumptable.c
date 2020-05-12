@@ -252,6 +252,21 @@ void add_16_reg(CPU *cpu, Op_info *info, uint16_t dest_reg, uint16_t src_reg) {
   info->size = 1;
 }
 
+void add_8_reg(CPU *cpu, Op_info *info, uint16_t dest_reg, uint16_t src_reg) {
+  uint8_t *dest = getRegister(cpu, dest_reg);
+  uint8_t *src = getRegister(cpu, dest_reg);
+  uint8_t val = *dest + *src;
+
+  setZF(cpu, val == 0);
+  setCF(cpu, val < *dest);
+  setHF(cpu,  ((*dest & 0xf) + (*src & 0xf)) & 0x10 );
+  setNF(cpu, false);
+  
+  *dest = val;
+  
+  info->cycles = 4;
+  info->size = 1;
+}
 
 void inc_8_reg(CPU *cpu, Op_info *info, uint16_t reg) {
   uint8_t *dest = getRegister(cpu, reg); 
@@ -494,6 +509,61 @@ void RRA(void *cpu, Op_info *info) {
   info->cycles = 4;
   info->size = 1;
 } 
+
+
+void ADD_A_B(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  add_8_reg(cpu_ptr, info, A, B);
+}
+
+void ADD_A_C(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  add_8_reg(cpu_ptr, info, A, C);
+}
+
+void ADD_A_D(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  add_8_reg(cpu_ptr, info, A, D);
+}
+
+void ADD_A_E(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  add_8_reg(cpu_ptr, info, A, E);
+}
+
+void ADD_A_H(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  add_8_reg(cpu_ptr, info, A, H);
+}
+
+void ADD_A_L(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  add_8_reg(cpu_ptr, info, A, L);
+}
+
+void ADD_A_A(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  add_8_reg(cpu_ptr, info, A, A);
+}
+
+void ADD_A_INDRHL(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+
+  uint16_t addr = read_r16(cpu, HL);
+  uint8_t data = readN(cpu_ptr, addr);
+  uint8_t *a = getRegister(cpu_ptr, A);
+  uint8_t val = *a + data;
+
+  setZF(cpu, val == 0);
+  setCF(cpu, val < *a);
+  setHF(cpu,  ((*a & 0xf) + (data & 0xf)) & 0x10 );
+  setNF(cpu, false);
+  
+  *a = val;
+
+  info->cycles = 8;
+  info->size = 1;
+}
 
 // Compliment the A register
 void CPL(void *cpu, Op_info *info) {
@@ -1012,6 +1082,60 @@ void LDINDR_HL_A(void *cpu, Op_info *info) {
  info->cycles = 8;
  info->size = 1;
 }
+
+void LDINDR_HL_B(void *cpu, Op_info *info) {
+ CPU *cpu_ptr = (CPU*) cpu;
+ uint16_t hl_val = read_r16(cpu_ptr, HL); 
+ writeN(cpu_ptr, hl_val, cpu_ptr->b);
+ info->cycles = 8;
+ info->size = 1;
+}
+
+void LDINDR_HL_C(void *cpu, Op_info *info) {
+ CPU *cpu_ptr = (CPU*) cpu;
+ uint16_t hl_val = read_r16(cpu_ptr, HL); 
+ writeN(cpu_ptr, hl_val, cpu_ptr->c);
+ info->cycles = 8;
+ info->size = 1;
+}
+
+void LDINDR_HL_D(void *cpu, Op_info *info) {
+ CPU *cpu_ptr = (CPU*) cpu;
+ uint16_t hl_val = read_r16(cpu_ptr, HL); 
+ writeN(cpu_ptr, hl_val, cpu_ptr->c);
+ info->cycles = 8;
+ info->size = 1;
+}
+
+void LDINDR_HL_E(void *cpu, Op_info *info) {
+ CPU *cpu_ptr = (CPU*) cpu;
+ uint16_t hl_val = read_r16(cpu_ptr, HL); 
+ writeN(cpu_ptr, hl_val, cpu_ptr->e);
+ info->cycles = 8;
+ info->size = 1;
+}
+
+void LDINDR_HL_H(void *cpu, Op_info *info) {
+ CPU *cpu_ptr = (CPU*) cpu;
+ uint16_t hl_val = read_r16(cpu_ptr, HL); 
+ writeN(cpu_ptr, hl_val, cpu_ptr->h);
+ info->cycles = 8;
+ info->size = 1;
+}
+
+void LDINDR_HL_L(void *cpu, Op_info *info) {
+ CPU *cpu_ptr = (CPU*) cpu;
+ uint16_t hl_val = read_r16(cpu_ptr, HL); 
+ writeN(cpu_ptr, hl_val, cpu_ptr->l);
+ info->cycles = 8;
+ info->size = 1;
+}
+
+void HALT(void *cpu, Op_info *info) {
+ printf("HALT\n");
+ info->cycles = 4;
+ info->size = 1;
+}
   
 /* This LD puts (c + 0xFF00) into a*/
 void LD_A_INDR_C(void *cpu, Op_info *info) {
@@ -1043,9 +1167,237 @@ void LD_A_L(void *cpu, Op_info *info) {
   move(cpu_ptr, info, A, L);
 }
 
+void LD_A_A(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  move(cpu_ptr, info, A, A);
+}
+
 void LD_H_A(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu;
   move(cpu_ptr, info, H, A);
+}
+
+void LD_D_B(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  move(cpu_ptr, info, D, B);
+}
+
+void LD_D_C(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  move(cpu_ptr, info, D, C);
+}
+
+void LD_D_D(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  move(cpu_ptr, info, D, D);
+}
+
+void LD_D_E(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  move(cpu_ptr, info, D, E);
+}
+
+void LD_D_H(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  move(cpu_ptr, info, D, H);
+}
+
+void LD_D_L(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  move(cpu_ptr, info, D, L);
+}
+
+void LD_E_B(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  move(cpu_ptr, info, E, B);
+}
+
+void LD_E_C(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  move(cpu_ptr, info, E, C);
+}
+
+void LD_E_D(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  move(cpu_ptr, info, E, D);
+}
+
+void LD_E_E(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  move(cpu_ptr, info, E, E);
+}
+
+void LD_E_H(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  move(cpu_ptr, info, E, H);
+}
+
+void LD_E_L(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  move(cpu_ptr, info, E, L);
+}
+
+void LD_B_B(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  move(cpu_ptr, info, B, B);
+}
+
+void LD_B_C(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  move(cpu_ptr, info, B, C);
+}
+
+void LD_B_D(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  move(cpu_ptr, info, B, D);
+}
+
+void LD_B_E(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  move(cpu_ptr, info, B, E);
+}
+
+void LD_B_H(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  move(cpu_ptr, info, B, H);
+}
+
+void LD_B_L(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  move(cpu_ptr, info, B, L);
+}
+
+void LD_B_A(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  move(cpu_ptr, info, B, A);
+}
+
+void LD_C_B(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  move(cpu_ptr, info, C, B);
+}
+
+void LD_C_C(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  move(cpu_ptr, info, C, C);
+}
+
+void LD_C_D(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  move(cpu_ptr, info, C, D);
+}
+
+void LD_C_E(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  move(cpu_ptr, info, C, E);
+}
+
+void LD_C_H(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  move(cpu_ptr, info, C, H);
+}
+
+void LD_C_L(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  move(cpu_ptr, info, C, L);
+}
+
+void LD_H_B(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  move(cpu_ptr, info, H, B);
+}
+
+void LD_H_C(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  move(cpu_ptr, info, H, C);
+}
+
+void LD_H_D(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  move(cpu_ptr, info, H, D);
+}
+
+void LD_H_E(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  move(cpu_ptr, info, H, E);
+}
+
+void LD_H_H(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  move(cpu_ptr, info, H, H);
+}
+
+void LD_H_L(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  move(cpu_ptr, info, H, L);
+}
+
+void LD_L_B(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  move(cpu_ptr, info, L, B);
+}
+
+void LD_L_C(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  move(cpu_ptr, info, L, C);
+}
+
+void LD_L_D(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  move(cpu_ptr, info, L, D);
+}
+
+void LD_L_E(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  move(cpu_ptr, info, L, E);
+}
+
+void LD_L_H(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  move(cpu_ptr, info, L, H);
+}
+
+void LD_L_L(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  move(cpu_ptr, info, L, L);
+}
+
+void LD_L_A(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  move(cpu_ptr, info, L, A);
+}
+
+void LD_D_INDRHL(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  uint16_t data = read_r16(cpu_ptr, HL);
+  uint8_t *dest = getRegister(cpu, D);
+  
+  *dest = data;
+
+  info->cycles = 8;
+  info->size = 1;
+}
+
+void LD_E_INDRHL(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  uint16_t data = read_r16(cpu_ptr, HL);
+  uint8_t *dest = getRegister(cpu, E);
+  
+  *dest = data;
+
+  info->cycles = 8;
+  info->size = 1;
+}
+
+void LD_C_INDRHL(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  uint16_t data = read_r16(cpu_ptr, HL);
+  uint8_t *dest = getRegister(cpu, C);
+  
+  *dest = data;
+
+  info->cycles = 8;
+  info->size = 1;
 }
 
 void LD_D_A(void *cpu, Op_info *info) {
@@ -1061,6 +1413,28 @@ void LDINDR_a16_A(void *cpu, Op_info *info) {
 
   info->cycles = 16;
   info->size = 3;
+}
+
+void LD_H_INDRHL(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  uint16_t data = read_r16(cpu_ptr, HL);
+  uint8_t *dest = getRegister(cpu, H);
+  
+  *dest = data;
+
+  info->cycles = 8;
+  info->size = 1;
+}
+
+void LD_L_INDRHL(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  uint16_t data = read_r16(cpu_ptr, HL);
+  uint8_t *dest = getRegister(cpu, L);
+  
+  *dest = data;
+
+  info->cycles = 8;
+  info->size = 1;
 }
 
 void CP_d8(void *cpu, Op_info *info) {
@@ -1287,7 +1661,7 @@ void init_jmp (func_ptr jumptable[0xF][0xF], func_ptr cb_jumptable[0xF][0xF]) {
   jumptable[0x3][0x6] = LDINDR_HL_d8;
   jumptable[0x3][0x7] = SCF;
   jumptable[0x3][0x8] = JR_C_r8;
-  jumptable[0x3][0x8] = ADD_HL_SP;
+  jumptable[0x3][0x9] = ADD_HL_SP;
   jumptable[0x3][0xA] = LDDEC_A_INDR_HL;
   jumptable[0x3][0xB] = DEC_SP;
   jumptable[0x3][0xC] = INC_A;
@@ -1295,13 +1669,66 @@ void init_jmp (func_ptr jumptable[0xF][0xF], func_ptr cb_jumptable[0xF][0xF]) {
   jumptable[0x3][0xE] = LD_A_d8;
   jumptable[0x3][0xF] = CCF;
 
+
+  jumptable[0x4][0x0] = LD_B_B;
+  jumptable[0x4][0x1] = LD_B_C;
+  jumptable[0x4][0x2] = LD_B_D;
+  jumptable[0x4][0x3] = LD_B_E;
+  jumptable[0x4][0x4] = LD_B_H;
+  jumptable[0x4][0x5] = LD_B_L;
   jumptable[0x4][0x6] = LD_B_INDRHL;
+  jumptable[0x4][0x7] = LD_B_A;
+  jumptable[0x4][0x8] = LD_C_B;
+  jumptable[0x4][0x9] = LD_C_C;
+  jumptable[0x4][0xA] = LD_C_D;
+  jumptable[0x4][0xB] = LD_C_E;
+  jumptable[0x4][0xC] = LD_C_H;
+  jumptable[0x4][0xD] = LD_C_L;
+  jumptable[0x4][0xE] = LD_C_INDRHL;
   jumptable[0x4][0xF] = LD_C_A;
 
+  jumptable[0x5][0x0] = LD_D_B;
+  jumptable[0x5][0x1] = LD_D_C;
+  jumptable[0x5][0x2] = LD_D_D;
+  jumptable[0x5][0x3] = LD_D_E;
+  jumptable[0x5][0x4] = LD_D_H;
+  jumptable[0x5][0x5] = LD_D_L;
+  jumptable[0x5][0x6] = LD_D_INDRHL;
   jumptable[0x5][0x7] = LD_D_A;
+  jumptable[0x5][0x8] = LD_E_B;
+  jumptable[0x5][0x9] = LD_E_C;
+  jumptable[0x5][0xA] = LD_E_D;
+  jumptable[0x5][0xB] = LD_E_E;
+  jumptable[0x5][0xC] = LD_E_H;
+  jumptable[0x5][0xD] = LD_E_L;
+  jumptable[0x5][0xE] = LD_E_INDRHL;
   jumptable[0x5][0xF] = LD_E_A;
 
+  jumptable[0x6][0x0] = LD_H_B;
+  jumptable[0x6][0x1] = LD_H_C;
+  jumptable[0x6][0x2] = LD_H_D;
+  jumptable[0x6][0x3] = LD_H_E;
+  jumptable[0x6][0x4] = LD_H_H;
+  jumptable[0x6][0x5] = LD_H_L;
+  jumptable[0x6][0x6] = LD_H_INDRHL;
   jumptable[0x6][0x7] = LD_H_A;
+  jumptable[0x6][0x8] = LD_L_B;
+  jumptable[0x6][0x9] = LD_L_C;
+  jumptable[0x6][0xA] = LD_L_D;
+  jumptable[0x6][0xB] = LD_L_E;
+  jumptable[0x6][0xC] = LD_L_H;
+  jumptable[0x6][0xD] = LD_L_L;
+  jumptable[0x6][0xE] = LD_L_INDRHL;
+  jumptable[0x6][0xF] = LD_L_A;
+
+
+  jumptable[0x7][0x0] = LDINDR_HL_B;
+  jumptable[0x7][0x1] = LDINDR_HL_C;
+  jumptable[0x7][0x2] = LDINDR_HL_D;
+  jumptable[0x7][0x3] = LDINDR_HL_E;
+  jumptable[0x7][0x4] = LDINDR_HL_H;
+  jumptable[0x7][0x5] = LDINDR_HL_L;
+  jumptable[0x7][0x6] = HALT;
 
   jumptable[0x7][0x7] = LDINDR_HL_A;
   jumptable[0x7][0x8] = LD_A_B;
@@ -1311,7 +1738,16 @@ void init_jmp (func_ptr jumptable[0xF][0xF], func_ptr cb_jumptable[0xF][0xF]) {
   jumptable[0x7][0xC] = LD_A_H;
   jumptable[0x7][0xD] = LD_A_L;
   jumptable[0x7][0xE] = LD_A_INDRHL;
+  jumptable[0x7][0xF] = LD_A_A;
 
+  jumptable[0x8][0x0] = ADD_A_B;
+  jumptable[0x8][0x1] = ADD_A_C;
+  jumptable[0x8][0x2] = ADD_A_D;
+  jumptable[0x8][0x3] = ADD_A_E;
+  jumptable[0x8][0x4] = ADD_A_H;
+  jumptable[0x8][0x5] = ADD_A_L;
+  jumptable[0x8][0x6] = ADD_A_INDRHL;
+  jumptable[0x8][0x7] = ADD_A_A;
 
   jumptable[0x9][0x0] = SUB_B;
 
