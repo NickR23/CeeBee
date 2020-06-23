@@ -10,6 +10,7 @@ vpath %.c src
 #Look for .h files in ./include
 vpath %.h include 
 
+# This exerpt is from https://makefiletutorial.com/
 # Automatic Variables:
 # $@ The filename representing the target.
 # $% The filename element of an archive member specification.
