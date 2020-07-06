@@ -1,5 +1,5 @@
 CC := gcc
-CFLAGS =-I./include -I./cmocka-1.1.2/include -I/usr/includeSDL2 -Wall -std=c99 -g -lSDL -D_REENTRANT -pthread -lSDL2
+CFLAGS =-I./include -I./cmocka-1.1.2/include -I/usr/includeSDL2 -Wall -std=c99 -g -D_REENTRANT -pthread -lSDL2
 SRCPATH :=./src/
 TESTPATH :=./test/
 OBJECTS =cpu.o common.o jumptable.o mmu.o ppu.o gpu.o
@@ -31,7 +31,7 @@ vpath %.h include
 default: teardown ceebee
 
 ceebee: main.o $(OBJECTS)
-	$(CC) $< $(OBJECTS) -o $@ -g -I/usr/includeSDL2 -lSDL -D_REENTRANT -pthread -lSDL2
+	$(CC) $< $(OBJECTS) -o $@ -g -I/usr/includeSDL2 -D_REENTRANT -pthread -lSDL2
 
 
 # Compiling .o files is handled implicitly by the built in rule
