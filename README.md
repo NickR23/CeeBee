@@ -10,12 +10,6 @@ A gameboy emulator built in C
 ## References
 [Pandocs](http://bgb.bircd.org/pandocs.htm)
 
-## Demo
-```bash
-make
-./ceebee tetris.gb
-```
-
 ## Usage
 ```bash
 make
