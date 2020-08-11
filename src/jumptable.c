@@ -266,6 +266,14 @@ void add_8_reg(CPU *cpu, Op_info *info, uint16_t dest_reg, uint16_t src_reg) {
   info->size = 1;
 }  
 
+void load_indir_hl_n(CPU *cpu, Op_info *info, uint8_t n) {
+  uint16_t addr = read_r16(cpu, HL);
+  writeN(cpu, addr, n);
+  info->cycles = 8;
+  info->size = 1;
+}
+
+
 void adc_8_reg(CPU *cpu, Op_info *info, uint16_t dest_reg, uint16_t src_reg) {
   uint8_t *dest = getRegister(cpu, dest_reg);
   uint8_t *src = getRegister(cpu, src_reg);
@@ -316,6 +324,18 @@ void dec_8_reg(CPU *cpu, Op_info *info, uint16_t reg) {
   // Carry out the operation
   *dest = *dest - 1;
 }
+
+void comp_n(CPU *cpu, Op_info *info, uint8_t n) {
+  uint8_t *a = getRegister(cpu, A);
+  uint8_t res = *a - n;
+  setZF(cpu, res == 0);
+  setNF(cpu, true);
+  setHF(cpu, ((*a & 0xf) - (n & 0xf)) < 0x00 );
+  setCF(cpu, *a < n);
+  info->cycles = 4;
+  info->size = 1;
+}
+
 
 // Subtracts n from A.
 void sub_n(CPU *cpu, Op_info *info, uint8_t n) {
@@ -380,6 +400,59 @@ void SUB_B(void *cpu, Op_info *info) {
   sub_n(cpu_ptr, info, *b); 
 }
 
+void SUB_C(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  uint8_t *c = getRegister(cpu, C);
+  sub_n(cpu_ptr, info, *c); 
+}
+
+void SUB_D(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  uint8_t *d = getRegister(cpu, D);
+  sub_n(cpu_ptr, info, *d); 
+}
+
+void SUB_E(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  uint8_t *e = getRegister(cpu, E);
+  sub_n(cpu_ptr, info, *e); 
+}
+
+void SUB_H(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  uint8_t *h = getRegister(cpu, H);
+  sub_n(cpu_ptr, info, *h); 
+}
+
+void SUB_L(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  uint8_t *l = getRegister(cpu, L);
+  sub_n(cpu_ptr, info, *l); 
+}
+
+void SUB_A(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  uint8_t *a = getRegister(cpu, A);
+  sub_n(cpu_ptr, info, *a); 
+}
+
+void SUB_HL(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  uint16_t addr = read_r16(cpu_ptr, HL);
+  uint8_t val = readN(cpu_ptr, addr);
+  sub_n(cpu_ptr, info, val); 
+  info->cycles = 8;
+  info->size = 1;
+}
+
+void SBC_A_C(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  uint8_t *c = getRegister(cpu, C);
+  uint8_t carry = ((*getRegister(cpu, F) > 4) & 0x01);
+  uint8_t val = *c + carry;
+  sub_n(cpu_ptr, info, val); 
+}
+
 // Increment BC
 void INC_BC(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu;
@@ -438,6 +511,11 @@ void LD_L_d8(void *cpu, Op_info *info) {
 void LD_A_d8(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu;
   load_n_to_reg(cpu_ptr, info, A);
+}
+
+void LD_E_E(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  move(cpu_ptr, info, E, E);
 }
 
 // Load A into E
@@ -1003,6 +1081,50 @@ void OR_C(void *cpu, Op_info *info) {
   or_reg(cpu_ptr, info, A, C);
 }
 
+void OR_D(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  or_reg(cpu_ptr, info, A, D);
+}
+
+void OR_E(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  or_reg(cpu_ptr, info, A, E);
+}
+
+void OR_H(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  or_reg(cpu_ptr, info, A, H);
+}
+
+void OR_L(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  or_reg(cpu_ptr, info, A, L);
+}
+
+void OR_A(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  or_reg(cpu_ptr, info, A, A);
+}
+
+void OR_HL(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  uint16_t addr = read_r16(cpu_ptr, HL); 
+  uint8_t val = readN(cpu_ptr, addr);
+  uint8_t *dest = getRegister(cpu, A); 
+  uint8_t result = *dest | val;
+
+  setZF(cpu, result == 0);
+  setNF(cpu, false);
+  setHF(cpu, false);
+  setCF(cpu, false);
+  
+  *dest = result;
+  
+  // Provide the info for the instruction
+  info->cycles = 8;
+  info->size = 1;
+}
+
 void JR_NZ_r8(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu;
   cond_jmp_r8(cpu_ptr, info, !check_flag(cpu_ptr, ZF));
@@ -1034,6 +1156,43 @@ void LDH_A_a8(void *cpu, Op_info *info) {
   info->cycles = 12;
   info->size = 2;
 }
+
+void LDINDR_INDRHL_B(void *cpu, Op_info *info) {
+ CPU *cpu_ptr = (CPU*) cpu;
+ uint8_t *b = getRegister(cpu_ptr, B);
+ load_indir_hl_n(cpu_ptr, info, *b);
+}
+
+void LDINDR_INDRHL_C(void *cpu, Op_info *info) {
+ CPU *cpu_ptr = (CPU*) cpu;
+ uint8_t *c = getRegister(cpu_ptr, C);
+ load_indir_hl_n(cpu_ptr, info, *c);
+}
+
+void LDINDR_INDRHL_D(void *cpu, Op_info *info) {
+ CPU *cpu_ptr = (CPU*) cpu;
+ uint8_t *d = getRegister(cpu_ptr, D);
+ load_indir_hl_n(cpu_ptr, info, *d);
+}
+
+void LDINDR_INDRHL_E(void *cpu, Op_info *info) {
+ CPU *cpu_ptr = (CPU*) cpu;
+ uint8_t *e = getRegister(cpu_ptr, E);
+ load_indir_hl_n(cpu_ptr, info, *e);
+}
+
+void LDINDR_INDRHL_H(void *cpu, Op_info *info) {
+ CPU *cpu_ptr = (CPU*) cpu;
+ uint8_t *h = getRegister(cpu_ptr, H);
+ load_indir_hl_n(cpu_ptr, info, *h);
+}
+
+void LDINDR_INDRHL_L(void *cpu, Op_info *info) {
+ CPU *cpu_ptr = (CPU*) cpu;
+ uint8_t *l = getRegister(cpu_ptr, L);
+ load_indir_hl_n(cpu_ptr, info, *l);
+}
+
   
 void LDINDR_HL_A(void *cpu, Op_info *info) {
  CPU *cpu_ptr = (CPU*) cpu;
@@ -1058,6 +1217,16 @@ void LD_A_H(void *cpu, Op_info *info) {
   move(cpu_ptr, info, A, H);
 }
 
+void LD_B_C(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  move(cpu_ptr, info, B, C);
+}
+
+void LD_C_E(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  move(cpu_ptr, info, C, E);
+}
+
 void LD_C_A(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu;
   move(cpu_ptr, info, C, A);
@@ -1073,9 +1242,24 @@ void LD_A_L(void *cpu, Op_info *info) {
   move(cpu_ptr, info, A, L);
 }
 
+void LD_A_A(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  move(cpu_ptr, info, A, A);
+}
+
+void LD_H_L(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  move(cpu_ptr, info, H, L);
+}
+
 void LD_H_A(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu;
   move(cpu_ptr, info, H, A);
+}
+
+void LD_L_A(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  move(cpu_ptr, info, L, A);
 }
 
 void LD_D_B(void *cpu, Op_info *info) {
@@ -1314,6 +1498,11 @@ void ADC_A_A(void *cpu, Op_info *info) {
   adc_8_reg(cpu_ptr, info, A, A);
 }
 
+void HALT(void *cpu, Op_info *info) {
+  info->cycles = 4;
+  info->size = 1;
+}
+
 void ADC_A_HL(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu;
   uint16_t addr = read_r16(cpu_ptr, HL);
@@ -1471,11 +1660,13 @@ void init_jmp (func_ptr jumptable[0xF][0xF], func_ptr cb_jumptable[0xF][0xF]) {
   jumptable[0x3][0xE] = LD_A_d8;
   jumptable[0x3][0xF] = CCF;
 
+  jumptable[0x4][0x1] = LD_B_C;
   jumptable[0x4][0x6] = LD_B_INDRHL;
+  jumptable[0x4][0xB] = LD_C_E;
   jumptable[0x4][0xF] = LD_C_A;
 
 
-  /* jumptable[0x5][0x0] = LD_D_A; */
+  /* jumptable[0x5][0x0] = LD_D_C; */
   jumptable[0x5][0x1] = LD_D_C;
   jumptable[0x5][0x2] = LD_D_D;
   jumptable[0x5][0x3] = LD_D_E;
@@ -1483,10 +1674,21 @@ void init_jmp (func_ptr jumptable[0xF][0xF], func_ptr cb_jumptable[0xF][0xF]) {
   jumptable[0x5][0x5] = LD_D_L;
   jumptable[0x5][0x6] = LD_D_HL;
   jumptable[0x5][0x7] = LD_D_A;
+  jumptable[0x5][0xB] = LD_E_E;
   jumptable[0x5][0xF] = LD_E_A;
 
+  jumptable[0x6][0x5] = LD_H_L;
   jumptable[0x6][0x7] = LD_H_A;
+  jumptable[0x6][0xF] = LD_L_A;
 
+
+  jumptable[0x7][0x0] = LDINDR_INDRHL_B;
+  jumptable[0x7][0x1] = LDINDR_INDRHL_C;
+  jumptable[0x7][0x2] = LDINDR_INDRHL_D;
+  jumptable[0x7][0x3] = LDINDR_INDRHL_E;
+  jumptable[0x7][0x4] = LDINDR_INDRHL_H;
+  jumptable[0x7][0x5] = LDINDR_INDRHL_L;
+  jumptable[0x7][0x6] = HALT;
   jumptable[0x7][0x7] = LDINDR_HL_A;
   jumptable[0x7][0x8] = LD_A_B;
   jumptable[0x7][0x9] = LD_A_C;
@@ -1495,6 +1697,7 @@ void init_jmp (func_ptr jumptable[0xF][0xF], func_ptr cb_jumptable[0xF][0xF]) {
   jumptable[0x7][0xC] = LD_A_H;
   jumptable[0x7][0xD] = LD_A_L;
   jumptable[0x7][0xE] = LD_A_INDRHL;
+  jumptable[0x7][0xE] = LD_A_A;
 
   jumptable[0x8][0x0] = ADD_A_B;
   jumptable[0x8][0x1] = ADD_A_C;
@@ -1515,12 +1718,26 @@ void init_jmp (func_ptr jumptable[0xF][0xF], func_ptr cb_jumptable[0xF][0xF]) {
   
 
   jumptable[0x9][0x0] = SUB_B;
+  jumptable[0x9][0x1] = SUB_C;
+  jumptable[0x9][0x2] = SUB_D;
+  jumptable[0x9][0x3] = SUB_E;
+  jumptable[0x9][0x4] = SUB_H;
+  jumptable[0x9][0x5] = SUB_L;
+  jumptable[0x9][0x6] = SUB_HL;
+  jumptable[0x9][0x7] = SUB_A;
+  jumptable[0x9][0x9] = SBC_A_C;
 
   jumptable[0xA][0x0] = AND_B;
   jumptable[0xA][0xF] = XOR_A;
 
   jumptable[0xB][0x0] = OR_B;
   jumptable[0xB][0x1] = OR_C;
+  jumptable[0xB][0x2] = OR_D;
+  jumptable[0xB][0x3] = OR_E;
+  jumptable[0xB][0x4] = OR_H;
+  jumptable[0xB][0x5] = OR_L;
+  jumptable[0xB][0x6] = OR_HL;
+  jumptable[0xB][0x7] = OR_A;
   
   jumptable[0xC][0x1] = POP_BC;
   jumptable[0xC][0x3] = JP_a16;
