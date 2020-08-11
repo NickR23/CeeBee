@@ -5,6 +5,7 @@
 void init_jmp(func_ptr jumptable[0xF][0xF],func_ptr cb_jumptable[0xF][0xF]); 
 
 #ifdef JMPTBL_TEST
+bool check_flag(CPU *cpu, uint8_t flag);
 void setCF(CPU *cpu, bool state);
 void setHF(CPU *cpu, bool state);
 void setZF(CPU *cpu, bool state);
@@ -58,6 +59,7 @@ void ADD_HL_SP(void *cpu, Op_info *info);
 void CPL(void *cpu, Op_info *info);
 void CCF(void *cpu, Op_info *info);
 void XOR_A(void *cpu, Op_info *info);
+void ADD_A_B(void *cpu, Op_info *info);
 #endif
 
 #endif 

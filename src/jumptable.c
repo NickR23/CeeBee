@@ -75,9 +75,9 @@ void comp(CPU *cpu, uint8_t val) {
   setCF(cpu, cpu->a < val);
 }
 
-  /* Restarts */
-  /* Push present address onto stack. */
-  /* Jump to address $0000 + n. */
+/* Restarts */
+/* Push present address onto stack. */
+/* Jump to address $0000 + n. */
 void restarts(CPU *cpu, Op_info *info, uint8_t n) {
   CPU *cpu_ptr = (CPU*) cpu;
   
@@ -251,6 +251,20 @@ void add_16_reg(CPU *cpu, Op_info *info, uint16_t dest_reg, uint16_t src_reg) {
   info->cycles = 8;
   info->size = 1;
 }
+
+void add_8_reg(CPU *cpu, Op_info *info, uint16_t dest_reg, uint16_t src_reg) {
+  uint8_t *dest = getRegister(cpu, dest_reg);
+  uint8_t *src = getRegister(cpu, src_reg);
+  setZF(cpu, ((*dest + *src) & 0xff) == 0x00);
+  setNF(cpu, false);
+  setHF(cpu, ((*dest & 0xf) + (*src & 0xf)) & 0x10);
+  setCF(cpu, *dest + *src < *dest);
+
+  *dest = *dest + *src;
+  
+  info->cycles = 4;
+  info->size = 1;
+}  
 
 
 void inc_8_reg(CPU *cpu, Op_info *info, uint16_t reg) {
@@ -1157,6 +1171,11 @@ void DI(void *cpu, Op_info *info) {
   info->size = 1;
 }
 
+void ADD_A_B(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  add_8_reg(cpu_ptr, info, A, B);
+}
+
 /* CB PREFIX FUNCTIONS */
 
 /* CB COMMON FUNCTIONS */
@@ -1312,6 +1331,7 @@ void init_jmp (func_ptr jumptable[0xF][0xF], func_ptr cb_jumptable[0xF][0xF]) {
   jumptable[0x7][0xD] = LD_A_L;
   jumptable[0x7][0xE] = LD_A_INDRHL;
 
+  jumptable[0x8][0x0] = ADD_A_B;
 
   jumptable[0x9][0x0] = SUB_B;
 

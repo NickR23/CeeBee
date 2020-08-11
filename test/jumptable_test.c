@@ -210,6 +210,29 @@ void test_ADD_HL_BC(void ** state) {
   assert_true(info.size == 1);
 }
 
+void test_ADD_A_B(void ** state) {
+  Op_info info;
+  uint8_t *a = getRegister(&cpu,A);
+  uint8_t *b = getRegister(&cpu,B);
+  *a = 0xFE;
+  *b = 0x01;
+  ADD_A_B(&cpu, &info);
+
+  uint16_t expected = 0xFF;
+  assert_true(*a == expected);
+  bool NFlag = check_flag(&cpu, NF);
+  bool HFlag = check_flag(&cpu, HF);
+  assert_true(NFlag == false);
+  assert_true(HFlag == false);
+  ADD_A_B(&cpu, &info);
+  expected = 0x00;
+  bool CFlag = check_flag(&cpu, HF);
+  assert_true(*a == expected);
+  assert_true(CFlag == true);
+  assert_true(info.cycles == 4);
+  assert_true(info.size == 1);
+}
+
 void test_LD_A_INDIR_BC(void ** state) {
   Op_info info;
   
@@ -728,6 +751,9 @@ int main (void) {
     cmocka_unit_test_setup_teardown(test_CCF,setup,teardown),
     cmocka_unit_test_setup_teardown(test_XOR_A,setup,teardown),
     cmocka_unit_test_setup_teardown(test_RL,setup,teardown),
+
+
+    cmocka_unit_test_setup_teardown(test_ADD_A_B,setup,teardown),
   };
 
   int count_fail_tests = cmocka_run_group_tests (tests, NULL, NULL);
