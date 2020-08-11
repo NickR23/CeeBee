@@ -453,6 +453,65 @@ void SBC_A_C(void *cpu, Op_info *info) {
   sub_n(cpu_ptr, info, val); 
 }
 
+void SBC_A_B(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  uint8_t *b = getRegister(cpu, B);
+  uint8_t carry = ((*getRegister(cpu, F) > 4) & 0x01);
+  uint8_t val = *b + carry;
+  sub_n(cpu_ptr, info, val); 
+}
+
+void SBC_A_D(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  uint8_t *d = getRegister(cpu, D);
+  uint8_t carry = ((*getRegister(cpu, F) > 4) & 0x01);
+  uint8_t val = *d + carry;
+  sub_n(cpu_ptr, info, val); 
+}
+
+void SBC_A_E(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  uint8_t *e = getRegister(cpu, E);
+  uint8_t carry = ((*getRegister(cpu, F) > 4) & 0x01);
+  uint8_t val = *e + carry;
+  sub_n(cpu_ptr, info, val); 
+}
+
+void SBC_A_H(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  uint8_t *h = getRegister(cpu, H);
+  uint8_t carry = ((*getRegister(cpu, F) > 4) & 0x01);
+  uint8_t val = *h + carry;
+  sub_n(cpu_ptr, info, val); 
+}
+
+void SBC_A_L(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  uint8_t *l = getRegister(cpu, L);
+  uint8_t carry = ((*getRegister(cpu, F) > 4) & 0x01);
+  uint8_t val = *l + carry;
+  sub_n(cpu_ptr, info, val); 
+}
+
+void SBC_A_A(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  uint8_t *a = getRegister(cpu, A);
+  uint8_t carry = ((*getRegister(cpu, F) > 4) & 0x01);
+  uint8_t val = *a + carry;
+  sub_n(cpu_ptr, info, val); 
+}
+
+void SBC_A_HL(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  uint16_t addr = read_r16(cpu_ptr, HL);
+  uint8_t hl_val = readN(cpu_ptr, addr);
+  uint8_t carry = ((*getRegister(cpu, F) > 4) & 0x01);
+  uint8_t val = hl_val + carry;
+  sub_n(cpu_ptr, info, val); 
+  info->cycles = 8;
+  info->size = 1;
+}
+
 // Increment BC
 void INC_BC(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu;
@@ -522,6 +581,31 @@ void LD_E_E(void *cpu, Op_info *info) {
 void LD_E_A(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu;
   move(cpu_ptr, info, E, A);
+}
+
+void LD_E_D(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  move(cpu_ptr, info, E, D);
+}
+
+void LD_E_H(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  move(cpu_ptr, info, E, H);
+}
+
+void LD_E_L(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  move(cpu_ptr, info, E, L);
+}
+
+void LD_E_HL(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  uint16_t addr = read_r16(cpu_ptr, HL);
+  uint8_t val = readN(cpu_ptr, addr);
+  cpu_ptr->e = val;
+
+  info->cycles = 8;
+  info->size = 1;
 }
 
 void LD_A_B(void *cpu, Op_info *info) {
@@ -1674,7 +1758,11 @@ void init_jmp (func_ptr jumptable[0xF][0xF], func_ptr cb_jumptable[0xF][0xF]) {
   jumptable[0x5][0x5] = LD_D_L;
   jumptable[0x5][0x6] = LD_D_HL;
   jumptable[0x5][0x7] = LD_D_A;
+  jumptable[0x5][0xA] = LD_E_D;
   jumptable[0x5][0xB] = LD_E_E;
+  jumptable[0x5][0xC] = LD_E_H;
+  jumptable[0x5][0xD] = LD_E_L;
+  jumptable[0x5][0xE] = LD_E_HL;
   jumptable[0x5][0xF] = LD_E_A;
 
   jumptable[0x6][0x5] = LD_H_L;
@@ -1725,7 +1813,14 @@ void init_jmp (func_ptr jumptable[0xF][0xF], func_ptr cb_jumptable[0xF][0xF]) {
   jumptable[0x9][0x5] = SUB_L;
   jumptable[0x9][0x6] = SUB_HL;
   jumptable[0x9][0x7] = SUB_A;
+  jumptable[0x9][0x8] = SBC_A_B;
   jumptable[0x9][0x9] = SBC_A_C;
+  jumptable[0x9][0xA] = SBC_A_D;
+  jumptable[0x9][0xB] = SBC_A_E;
+  jumptable[0x9][0xC] = SBC_A_H;
+  jumptable[0x9][0xD] = SBC_A_L;
+  jumptable[0x9][0xE] = SBC_A_HL;
+  jumptable[0x9][0xF] = SBC_A_A;
 
   jumptable[0xA][0x0] = AND_B;
   jumptable[0xA][0xF] = XOR_A;
