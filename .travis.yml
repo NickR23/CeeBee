@@ -5,6 +5,7 @@ notifications:
   email: false
 
 before_install:
+  - sudo apt install libsdl2-dev libsdl2-2.0-0 -y
   - pip install --user cpp-coveralls
 
 script:
