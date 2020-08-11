@@ -1098,6 +1098,31 @@ void LD_D_A(void *cpu, Op_info *info) {
   move(cpu_ptr, info, D, A);
 }
 
+void LD_D_L(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  move(cpu_ptr, info, D, L);
+}
+
+void LD_D_H(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  move(cpu_ptr, info, D, H);
+}
+
+void LD_D_E(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  move(cpu_ptr, info, D, E);
+}
+
+void LD_D_D(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  move(cpu_ptr, info, D, D);
+}
+
+void LD_D_C(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  move(cpu_ptr, info, D, C);
+}
+
 void LDINDR_a16_A(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu;
   
@@ -1451,6 +1476,11 @@ void init_jmp (func_ptr jumptable[0xF][0xF], func_ptr cb_jumptable[0xF][0xF]) {
 
 
   /* jumptable[0x5][0x0] = LD_D_A; */
+  jumptable[0x5][0x1] = LD_D_C;
+  jumptable[0x5][0x2] = LD_D_D;
+  jumptable[0x5][0x3] = LD_D_E;
+  jumptable[0x5][0x4] = LD_D_H;
+  jumptable[0x5][0x5] = LD_D_L;
   jumptable[0x5][0x6] = LD_D_HL;
   jumptable[0x5][0x7] = LD_D_A;
   jumptable[0x5][0xF] = LD_E_A;
