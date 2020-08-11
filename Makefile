@@ -38,6 +38,7 @@ ceebee: main.o $(OBJECTS)
 
 .PHONY: testing
 # Test build
+testing: CFLAGS += -DTESTING
 testing: teardown $(OBJECTS) $(TESTOBJECTS)
 
 #Look for .c testing files in ./test

@@ -37,6 +37,7 @@ void panic(void *cpu_ptr, char const *message) {
   exit(1);
 }
 
+#ifndef TESTING
 void msleep(long msec) {
   struct timespec ts;
   ts.tv_sec = msec / 1000;
@@ -46,3 +47,4 @@ void msleep(long msec) {
     res = nanosleep(&ts, &ts);
   } while(res);
 }
+#endif
