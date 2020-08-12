@@ -1337,6 +1337,21 @@ void XOR_HL(void *cpu, Op_info *info) {
   info->size = 1;
 }
 
+void OR_d8(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  uint8_t val = readN(cpu_ptr, cpu_ptr->pc + 1);
+  uint8_t *dest = getRegister(cpu_ptr, A); 
+  uint8_t result = val | *dest;
+
+  setZF(cpu, result == 0);
+  setNF(cpu, false);
+  setHF(cpu, false);
+  setCF(cpu, false);
+
+  info->cycles = 8;
+  info->size = 2;
+}
+
 void OR_B(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu;
   or_reg(cpu_ptr, info, A, B);
@@ -2021,6 +2036,11 @@ void PUSH_HL(void *cpu, Op_info *info) {
   push_r16(cpu_ptr, info, HL);
 } 
 
+void PUSH_AF(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  push_r16(cpu_ptr, info, AF);
+} 
+
 void POP_BC(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu;
   pop_r16(cpu_ptr, info, BC);
@@ -2034,6 +2054,11 @@ void POP_DE(void *cpu, Op_info *info) {
 void POP_HL(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu;
   pop_r16(cpu_ptr, info, HL);
+}  
+
+void POP_AF(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  pop_r16(cpu_ptr, info, AF);
 }  
 
 void DI(void *cpu, Op_info *info) {
@@ -2471,8 +2496,11 @@ void init_jmp (func_ptr jumptable[0xF][0xF], func_ptr cb_jumptable[0xF][0xF]) {
   jumptable[0xE][0xF] = RST_28H;
 
   jumptable[0xF][0x0] = LDH_A_a8;
+  jumptable[0xF][0x1] = POP_AF;
   jumptable[0xF][0x2] = LD_A_INDR_C;
   jumptable[0xF][0x3] = DI;
+  jumptable[0xF][0x5] = PUSH_AF;
+  jumptable[0xF][0x6] = OR_d8;
   jumptable[0xF][0x7] = RST_30H;
   jumptable[0xF][0xE] = CP_d8;
   jumptable[0xF][0xF] = RST_38H;
