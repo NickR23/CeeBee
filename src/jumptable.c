@@ -53,10 +53,18 @@ void setZF(CPU *cpu, bool state) {
 }
 
 // Set bit b in 16bit register r
-void set(CPU *cpu, uint8_t b, uint16_t r) {
-  uint16_t reg = read_r16(cpu, r);
+void set16(CPU *cpu, uint8_t b, uint16_t dst) {
+  uint16_t reg = read_r16(cpu, dst);
   reg = reg | (0x01 << b);
-  write_r16(cpu, r, reg);
+  write_r16(cpu, dst, reg);
+}
+
+// Set bit b in 8bit register r
+void set8(CPU *cpu, Op_info *info, uint8_t b, uint16_t r) {
+  uint8_t *reg = getRegister(cpu, r);
+  *reg = *reg | (0x01 << b);
+  info->cycles = 8;
+  info->size = 1;
 }
 
 void callCC(CPU *cpu, Op_info *info, bool condition) {
@@ -913,11 +921,12 @@ void LDINC_HL_A(void *cpu, Op_info *info) {
   info->size = 1;
 }
 
-// Load a into addr in HL and INC
+// Load a into addr in HL and DEC
 void LDDEC_HL_A(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu; 
   uint16_t hl_val = read_r16(cpu_ptr, HL);
   uint8_t *a = getRegister(cpu_ptr, A);
+
   writeN(cpu_ptr, hl_val, *a);
   hl_val--;
   write_r16(cpu_ptr, HL, hl_val);
@@ -2367,10 +2376,21 @@ void BIT_3_A(void *cpu, Op_info *info) {
 
 void SET_7_INDRHL(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu;
-  set(cpu_ptr, 7, HL);
+  
+  uint16_t addr = read_r16(cpu_ptr, HL);
+  uint8_t val = readN(cpu_ptr, addr);
+
+  val = val | (0x01 << 7);
+
+  writeN(cpu_ptr, addr, val);
 
   info->cycles = 16;
   info->size = 2;
+}
+
+void SET_4_H(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  set8(cpu_ptr, info, 4, H);
 }
 
 
@@ -2665,6 +2685,8 @@ void init_jmp (func_ptr jumptable[0xF][0xF], func_ptr cb_jumptable[0xF][0xF]) {
 
   cb_jumptable[0xB][0x6] = RES_6_HL;
   cb_jumptable[0xB][0xE] = RES_7_HL;
+
+  cb_jumptable[0xE][0x4] = SET_4_H;
 
   cb_jumptable[0xF][0xE] = SET_7_INDRHL;
 }
