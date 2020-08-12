@@ -59,6 +59,18 @@ void set(CPU *cpu, uint8_t b, uint16_t r) {
   write_r16(cpu, r, reg);
 }
 
+// Pop two bytes off of stack & jump to that address
+void returnCC(CPU *cpu, Op_info *info, bool condition) {
+  if (condition) {
+    uint16_t addr = readNN(cpu, cpu->sp);
+    cpu->pc = addr;
+    cpu->sp += 2;
+    info->cycles = 20;
+  } else {
+    info->cycles = 8;
+  }
+}
+
 // Returns flag status
 bool check_flag(CPU *cpu, uint8_t flag) {
   uint8_t flag_status = *getRegister(cpu, F);
@@ -1795,10 +1807,35 @@ void CALL_a16(void *cpu, Op_info *info) {
 // Pop two bytes off of stack & jump to that address
 void RET(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu;
-  uint16_t addr = readNN(cpu_ptr, cpu_ptr->sp);
-  cpu_ptr->pc = addr;
-  cpu_ptr->sp += 2;
-  info->cycles = 8;
+  returnCC(cpu_ptr, info, true);
+  info->cycles = 16;
+}
+
+void RETI(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  returnCC(cpu_ptr, info, true);
+  printf("Interrupts not yet enabled!\n");
+  info->cycles = 16;
+}
+
+void RETNZ(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  returnCC(cpu_ptr, info, !check_flag(cpu_ptr, ZF));
+}
+
+void RETZ(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  returnCC(cpu_ptr, info, check_flag(cpu_ptr, ZF));
+}
+
+void RETNC(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  returnCC(cpu_ptr, info, !check_flag(cpu_ptr, CF));
+}
+
+void RETC(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  returnCC(cpu_ptr, info, check_flag(cpu_ptr, CF));
 }
 
 // Push BC on the stack
@@ -1807,9 +1844,29 @@ void PUSH_BC(void *cpu, Op_info *info) {
   push_r16(cpu_ptr, info, BC);
 } 
 
+void PUSH_DE(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  push_r16(cpu_ptr, info, DE);
+} 
+
+void PUSH_HL(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  push_r16(cpu_ptr, info, HL);
+} 
+
 void POP_BC(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu;
   pop_r16(cpu_ptr, info, BC);
+}  
+
+void POP_DE(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  pop_r16(cpu_ptr, info, DE);
+}  
+
+void POP_HL(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  pop_r16(cpu_ptr, info, HL);
 }  
 
 void DI(void *cpu, Op_info *info) {
@@ -2204,18 +2261,27 @@ void init_jmp (func_ptr jumptable[0xF][0xF], func_ptr cb_jumptable[0xF][0xF]) {
   jumptable[0xB][0xE] = CP_HL;
   jumptable[0xB][0xF] = CP_A;
   
+  jumptable[0xC][0x0] = RETNZ;
   jumptable[0xC][0x1] = POP_BC;
   jumptable[0xC][0x3] = JP_a16;
   jumptable[0xC][0x5] = PUSH_BC;
+  jumptable[0xC][0x8] = RETZ;
   jumptable[0xC][0x9] = RET;
   jumptable[0xC][0xD] = CALL_a16;
   jumptable[0xC][0xF] = RST_08H;
 
+  jumptable[0xD][0x0] = RETNC;
+  jumptable[0xD][0x1] = POP_DE;
+  jumptable[0xD][0x5] = PUSH_DE;
   jumptable[0xD][0x6] = SUB_d8;
+  jumptable[0xD][0x8] = RETC;
+  jumptable[0xD][0x9] = RETI;
   jumptable[0xD][0xF] = RST_18H;
   
   jumptable[0xE][0x0] = LDH_a8_A;
+  jumptable[0xE][0x1] = POP_HL;
   jumptable[0xE][0x2] = LDINDR_C_A;
+  jumptable[0xE][0x5] = PUSH_HL;
   jumptable[0xE][0x6] = AND_d8;
   jumptable[0xE][0x9] = JP_INDRHL;
   jumptable[0xE][0xA] = LDINDR_a16_A;
