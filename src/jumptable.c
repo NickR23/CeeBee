@@ -1587,6 +1587,71 @@ void LDINDR_a16_A(void *cpu, Op_info *info) {
   info->size = 3;
 }
 
+void CP_B(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  uint8_t d8 = *getRegister(cpu_ptr, B);
+  comp(cpu_ptr, d8);
+  info->cycles = 4;
+  info->size = 1;
+}
+
+void CP_C(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  uint8_t d8 = *getRegister(cpu_ptr, C);
+  comp(cpu_ptr, d8);
+  info->cycles = 4;
+  info->size = 1;
+}
+
+void CP_D(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  uint8_t d8 = *getRegister(cpu_ptr, D);
+  comp(cpu_ptr, d8);
+  info->cycles = 4;
+  info->size = 1;
+}
+
+void CP_E(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  uint8_t d8 = *getRegister(cpu_ptr, E);
+  comp(cpu_ptr, d8);
+  info->cycles = 4;
+  info->size = 1;
+}
+
+void CP_H(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  uint8_t d8 = *getRegister(cpu_ptr, H);
+  comp(cpu_ptr, d8);
+  info->cycles = 4;
+  info->size = 1;
+}
+
+void CP_L(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  uint8_t d8 = *getRegister(cpu_ptr, L);
+  comp(cpu_ptr, d8);
+  info->cycles = 4;
+  info->size = 1;
+}
+
+void CP_A(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  uint8_t d8 = *getRegister(cpu_ptr, A);
+  comp(cpu_ptr, d8);
+  info->cycles = 4;
+  info->size = 1;
+}
+
+void CP_HL(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  uint16_t addr = read_r16(cpu_ptr, HL);
+  uint8_t d8 = readN(cpu_ptr, addr);
+  comp(cpu_ptr, d8);
+  info->cycles = 8;
+  info->size = 1;
+}
+
 void CP_d8(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu;
   uint8_t d8 = readN(cpu_ptr, cpu_ptr->pc + 1);
@@ -2130,6 +2195,14 @@ void init_jmp (func_ptr jumptable[0xF][0xF], func_ptr cb_jumptable[0xF][0xF]) {
   jumptable[0xB][0x5] = OR_L;
   jumptable[0xB][0x6] = OR_HL;
   jumptable[0xB][0x7] = OR_A;
+  jumptable[0xB][0x8] = CP_B;
+  jumptable[0xB][0x9] = CP_C;
+  jumptable[0xB][0xA] = CP_D;
+  jumptable[0xB][0xB] = CP_E;
+  jumptable[0xB][0xC] = CP_H;
+  jumptable[0xB][0xD] = CP_L;
+  jumptable[0xB][0xE] = CP_HL;
+  jumptable[0xB][0xF] = CP_A;
   
   jumptable[0xC][0x1] = POP_BC;
   jumptable[0xC][0x3] = JP_a16;
