@@ -545,6 +545,15 @@ void LD_B_INDRHL(void *cpu, Op_info *info) {
   info->size = 1;
 }
 
+void LD_C_INDRHL(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  uint16_t addr = read_r16(cpu_ptr, HL);
+  cpu_ptr->c = readN(cpu_ptr, addr);
+
+  info->cycles = 8;
+  info->size = 1;
+}
+
 void LD_A_INDRHL(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu;
   uint16_t addr = read_r16(cpu_ptr, HL);
@@ -1301,9 +1310,54 @@ void LD_A_H(void *cpu, Op_info *info) {
   move(cpu_ptr, info, A, H);
 }
 
+void LD_B_B(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  move(cpu_ptr, info, B, B);
+}
+
 void LD_B_C(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu;
   move(cpu_ptr, info, B, C);
+}
+
+void LD_B_D(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  move(cpu_ptr, info, B, D);
+}
+
+void LD_B_E(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  move(cpu_ptr, info, B, E);
+}
+
+void LD_B_H(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  move(cpu_ptr, info, B, H);
+}
+
+void LD_B_L(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  move(cpu_ptr, info, B, L);
+}
+
+void LD_B_A(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  move(cpu_ptr, info, B, A);
+}
+
+void LD_C_B(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  move(cpu_ptr, info, C, B);
+}
+
+void LD_C_C(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  move(cpu_ptr, info, C, C);
+}
+
+void LD_C_D(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  move(cpu_ptr, info, C, D);
 }
 
 void LD_C_E(void *cpu, Op_info *info) {
@@ -1314,6 +1368,16 @@ void LD_C_E(void *cpu, Op_info *info) {
 void LD_C_A(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu;
   move(cpu_ptr, info, C, A);
+}
+
+void LD_C_H(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  move(cpu_ptr, info, C, H);
+}
+
+void LD_C_L(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  move(cpu_ptr, info, C, L);
 }
 
 void LD_A_E(void *cpu, Op_info *info) {
@@ -1744,9 +1808,23 @@ void init_jmp (func_ptr jumptable[0xF][0xF], func_ptr cb_jumptable[0xF][0xF]) {
   jumptable[0x3][0xE] = LD_A_d8;
   jumptable[0x3][0xF] = CCF;
 
+  jumptable[0x4][0x0] = LD_B_B;
   jumptable[0x4][0x1] = LD_B_C;
+  jumptable[0x4][0x2] = LD_B_D;
+  jumptable[0x4][0x3] = LD_B_E;
+  jumptable[0x4][0x4] = LD_B_H;
+  jumptable[0x4][0x5] = LD_B_L;
   jumptable[0x4][0x6] = LD_B_INDRHL;
+  jumptable[0x4][0x7] = LD_B_A;
+  jumptable[0x4][0x8] = LD_C_B;
+  jumptable[0x4][0x9] = LD_C_C;
+  jumptable[0x4][0xA] = LD_C_D;
   jumptable[0x4][0xB] = LD_C_E;
+
+  jumptable[0x4][0xC] = LD_C_H;
+  jumptable[0x4][0xD] = LD_C_L;
+  jumptable[0x4][0xE] = LD_C_INDRHL;
+
   jumptable[0x4][0xF] = LD_C_A;
 
 
