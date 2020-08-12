@@ -1482,6 +1482,41 @@ void LDINDR_HL_A(void *cpu, Op_info *info) {
  info->cycles = 8;
  info->size = 1;
 }
+
+void LD_SP_HL(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  uint16_t hlVal = read_r16(cpu_ptr, HL);
+  write_r16(cpu_ptr, SP, hlVal);
+  info->cycles = 8;
+  info->size = 1;
+}
+
+void LD_A_INDRNN(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  uint16_t addr = readNN(cpu_ptr, cpu_ptr->pc + 1);
+  uint8_t val = readN(cpu_ptr, addr);
+  cpu_ptr->a = val;
+  info->cycles = 16;
+  info->size = 3;
+}
+
+// This may have a problem with the carry flag
+void LDHL_SP_N(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+
+  uint16_t val = read_r16(cpu_ptr, SP);
+  val += (int16_t) readN(cpu_ptr, cpu_ptr->pc + 1);
+  uint16_t spVal = read_r16(cpu_ptr, SP);
+  
+  setZF(cpu_ptr, false);
+  setNF(cpu_ptr, false);
+  setHF(cpu_ptr, ((spVal & 0xf) + (val & 0xf)) & 0x10);
+
+  write_r16(cpu_ptr, HL, val);
+
+  info->cycles = 12;
+  info->size = 2;
+}
   
 /* This LD puts (c + 0xFF00) into a*/
 void LD_A_INDR_C(void *cpu, Op_info *info) {
@@ -2159,6 +2194,12 @@ void HALT(void *cpu, Op_info *info) {
   info->size = 1;
 }
 
+void EI(void *cpu, Op_info *info) {
+    printf("Interrupt enabling not implemented!\n");
+    info->cycles = 4;
+    info->size = 1;
+}
+
 void ADC_A_HL(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu;
   uint16_t addr = read_r16(cpu_ptr, HL);
@@ -2502,6 +2543,10 @@ void init_jmp (func_ptr jumptable[0xF][0xF], func_ptr cb_jumptable[0xF][0xF]) {
   jumptable[0xF][0x5] = PUSH_AF;
   jumptable[0xF][0x6] = OR_d8;
   jumptable[0xF][0x7] = RST_30H;
+  jumptable[0xF][0x8] = LDHL_SP_N;
+  jumptable[0xF][0x9] = LD_SP_HL;
+  jumptable[0xF][0xA] = LD_A_INDRNN;
+  jumptable[0xF][0xB] = EI;
   jumptable[0xF][0xE] = CP_d8;
   jumptable[0xF][0xF] = RST_38H;
  
