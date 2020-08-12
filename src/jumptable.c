@@ -59,6 +59,17 @@ void set(CPU *cpu, uint8_t b, uint16_t r) {
   write_r16(cpu, r, reg);
 }
 
+void jumpCC(CPU *cpu, Op_info *info, uint16_t offset, bool condition) {
+  // Explicitly leaving info->size as zero
+  // We do not want to advance past the address we jumped to
+  if (condition) {
+    cpu->sp += offset; 
+    info->cycles = 16;
+  } else {
+    info->cycles = 12;
+  }
+}
+
 // Pop two bytes off of stack & jump to that address
 void returnCC(CPU *cpu, Op_info *info, bool condition) {
   if (condition) {
@@ -1059,7 +1070,30 @@ void JP_a16(void *cpu, Op_info *info) {
 
   // Provide the info for the instruction
   info->cycles = 16;
-  info->size = 3;
+}
+
+void JP_NZ_a16(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  uint16_t offset = readNN(cpu_ptr, cpu_ptr->pc + 1);
+  jumpCC(cpu_ptr, info, offset, !check_flag(cpu_ptr, ZF)); 
+}
+
+void JP_NC_a16(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  uint16_t offset = readNN(cpu_ptr, cpu_ptr->pc + 1);
+  jumpCC(cpu_ptr, info, offset, !check_flag(cpu_ptr, CF)); 
+}
+
+void JP_Z_a16(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  uint16_t offset = readNN(cpu_ptr, cpu_ptr->pc + 1);
+  jumpCC(cpu_ptr, info, offset, check_flag(cpu_ptr, ZF)); 
+}
+
+void JP_C_a16(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  uint16_t offset = readNN(cpu_ptr, cpu_ptr->pc + 1);
+  jumpCC(cpu_ptr, info, offset, check_flag(cpu_ptr, CF)); 
 }
 
 void JP_INDRHL(void *cpu, Op_info *info) {
@@ -2263,19 +2297,23 @@ void init_jmp (func_ptr jumptable[0xF][0xF], func_ptr cb_jumptable[0xF][0xF]) {
   
   jumptable[0xC][0x0] = RETNZ;
   jumptable[0xC][0x1] = POP_BC;
+  jumptable[0xC][0x2] = JP_NZ_a16;
   jumptable[0xC][0x3] = JP_a16;
   jumptable[0xC][0x5] = PUSH_BC;
   jumptable[0xC][0x8] = RETZ;
   jumptable[0xC][0x9] = RET;
+  jumptable[0xC][0xA] = JP_Z_a16;
   jumptable[0xC][0xD] = CALL_a16;
   jumptable[0xC][0xF] = RST_08H;
 
   jumptable[0xD][0x0] = RETNC;
   jumptable[0xD][0x1] = POP_DE;
+  jumptable[0xD][0x2] = JP_NC_a16;
   jumptable[0xD][0x5] = PUSH_DE;
   jumptable[0xD][0x6] = SUB_d8;
   jumptable[0xD][0x8] = RETC;
   jumptable[0xD][0x9] = RETI;
+  jumptable[0xD][0xA] = JP_C_a16;
   jumptable[0xD][0xF] = RST_18H;
   
   jumptable[0xE][0x0] = LDH_a8_A;
