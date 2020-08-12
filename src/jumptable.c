@@ -59,6 +59,20 @@ void set(CPU *cpu, uint8_t b, uint16_t r) {
   write_r16(cpu, r, reg);
 }
 
+void callCC(CPU *cpu, Op_info *info, bool condition) {
+  if (condition) {
+    cpu->sp -= 2;
+    writeNN(cpu, cpu->sp, cpu->pc + 3);
+  
+    // Get addr to jump to
+    cpu->pc = readNN(cpu, cpu->pc + 1);
+    info->cycles = 24;
+  } else {
+    info->cycles = 12;
+  }
+}
+
+
 void jumpCC(CPU *cpu, Op_info *info, uint16_t offset, bool condition) {
   // Explicitly leaving info->size as zero
   // We do not want to advance past the address we jumped to
@@ -218,7 +232,6 @@ void loadindr_n_from_reg(CPU *cpu, Op_info *info, uint16_t dest_reg, uint16_t sr
 
 // Conditional jump to addr
 void cond_jmp_r8(CPU *cpu, Op_info *info, bool condition) {
-  
   if (condition){
     // Get the next 8 bytes after pc
     signed char r8 = readN(cpu, cpu->pc + 1);
@@ -289,11 +302,40 @@ void add_8_reg(CPU *cpu, Op_info *info, uint16_t dest_reg, uint16_t src_reg) {
   info->size = 1;
 }  
 
+void add_8_n(CPU *cpu, Op_info *info, uint16_t dest_reg, uint8_t val) {
+  uint8_t *dest = getRegister(cpu, dest_reg);
+  setZF(cpu, ((*dest + val) & 0xff) == 0x00);
+  setNF(cpu, false);
+  setHF(cpu, ((*dest & 0xf) + (val & 0xf)) & 0x10);
+  setCF(cpu, *dest + val < *dest);
+
+  *dest = *dest + val;
+  
+  info->cycles = 8;
+  info->size = 2;
+}  
+
+
 void load_indir_hl_n(CPU *cpu, Op_info *info, uint8_t n) {
   uint16_t addr = read_r16(cpu, HL);
   writeN(cpu, addr, n);
   info->cycles = 8;
   info->size = 1;
+}
+
+void adc_n_reg(CPU *cpu, Op_info *info, uint16_t dest_reg, uint8_t val) {
+  uint8_t *dest = getRegister(cpu, dest_reg);
+  uint8_t carry = ((*getRegister(cpu, F) > 4) & 0x01);
+  uint8_t newVal = *dest + val + carry;
+  setZF(cpu, newVal == 0x00);
+  setNF(cpu, false);
+  setHF(cpu, ((*dest & 0xf) + (val & 0xf) + (carry & 0xf)) & 0x10);
+  setCF(cpu, newVal < *dest);
+
+  *dest = newVal;
+  
+  info->cycles = 8;
+  info->size = 2;
 }
 
 
@@ -1243,6 +1285,24 @@ void XOR_D(void *cpu, Op_info *info) {
   xor_reg(cpu_ptr, info, A, D);
 }
 
+void XOR_d8(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  uint8_t *dest = getRegister(cpu_ptr, A); 
+  uint8_t val = readN(cpu_ptr, cpu_ptr->pc + 1);
+  uint8_t result = val ^ *dest;
+
+  setZF(cpu, result == 0);
+  setNF(cpu, false);
+  setHF(cpu, false);
+  setCF(cpu, false);
+  
+  *dest = result;  
+  
+  // Provide the info for the instruction
+  info->cycles = 8;
+  info->size = 2;
+}
+
 void XOR_E(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu;
   xor_reg(cpu_ptr, info, A, E);
@@ -1806,6 +1866,36 @@ void AND_d8(void *cpu, Op_info *info) {
   info->size = 2;
 }
 
+void ADD_SP_r8(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  uint8_t val = readN(cpu_ptr, cpu_ptr->pc + 1);
+  add_8_n(cpu_ptr, info, SP, val); 
+  setZF(cpu_ptr, false);
+  setNF(cpu_ptr, false);
+  info->cycles = 16;
+  info->size = 2;
+}
+
+void RST_20H(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  restarts(cpu_ptr, info, 0x20);
+}
+
+void RST_30H(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  restarts(cpu_ptr, info, 0x20);
+}
+
+void RST_10H(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  restarts(cpu_ptr, info, 0x10);
+}
+
+void RST_00H(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  restarts(cpu_ptr, info, 0x00);
+}
+
 void RST_38H(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu;
   restarts(cpu_ptr, info, 0x38);
@@ -1826,16 +1916,59 @@ void RST_08H(void *cpu, Op_info *info) {
   restarts(cpu_ptr, info, 0x08);
 }
 
+void ADD_A_d8(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  uint8_t val = readN(cpu_ptr, cpu_ptr->pc + 1);
+  add_8_n(cpu_ptr, info, A, val);
+}
+
+void ADC_A_d8(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  uint8_t val = readN(cpu_ptr, cpu_ptr->pc + 1);
+  adc_n_reg(cpu_ptr, info, A, val);
+}
+
+void SUB_A_d8(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  uint8_t val = readN(cpu_ptr, cpu_ptr->pc + 1);
+  sub_n(cpu_ptr, info, val);
+  info->cycles = 8;
+  info->size = 2;
+}
+
+void SBC_A_d8(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  uint8_t val = readN(cpu_ptr, cpu_ptr->pc + 1);
+  val += check_flag(cpu_ptr, CF);
+  sub_n(cpu_ptr, info, val);
+  info->cycles = 8;
+  info->size = 2;
+}
+
 // Push next instruction onto stack and jump to nn
 void CALL_a16(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu;
-  
-  cpu_ptr->sp -= 2;
-  writeNN(cpu_ptr, cpu_ptr->sp, cpu_ptr->pc + 3);
-  
-  // Get addr to jump to
-  cpu_ptr->pc = readNN(cpu_ptr, cpu_ptr->pc + 1);
-  info->cycles = 24;
+  callCC(cpu_ptr, info, true);
+}
+
+void CALL_NZ_a16(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  callCC(cpu_ptr, info, !check_flag(cpu_ptr, ZF));
+}
+
+void CALL_Z_a16(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  callCC(cpu_ptr, info, check_flag(cpu_ptr, ZF));
+}
+
+void CALL_NC_a16(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  callCC(cpu_ptr, info, !check_flag(cpu_ptr, CF));
+}
+
+void CALL_C_a16(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  callCC(cpu_ptr, info, check_flag(cpu_ptr, CF));
 }
 
 // Pop two bytes off of stack & jump to that address
@@ -2299,21 +2432,30 @@ void init_jmp (func_ptr jumptable[0xF][0xF], func_ptr cb_jumptable[0xF][0xF]) {
   jumptable[0xC][0x1] = POP_BC;
   jumptable[0xC][0x2] = JP_NZ_a16;
   jumptable[0xC][0x3] = JP_a16;
+  jumptable[0xC][0x4] = CALL_NZ_a16;
   jumptable[0xC][0x5] = PUSH_BC;
+  jumptable[0xC][0x6] = ADD_A_d8;
+  jumptable[0xC][0x7] = RST_00H;
   jumptable[0xC][0x8] = RETZ;
   jumptable[0xC][0x9] = RET;
   jumptable[0xC][0xA] = JP_Z_a16;
+  jumptable[0xC][0xC] = CALL_Z_a16;
   jumptable[0xC][0xD] = CALL_a16;
+  jumptable[0xC][0xE] = ADC_A_d8;
   jumptable[0xC][0xF] = RST_08H;
 
   jumptable[0xD][0x0] = RETNC;
   jumptable[0xD][0x1] = POP_DE;
   jumptable[0xD][0x2] = JP_NC_a16;
+  jumptable[0xD][0x4] = CALL_NC_a16;
   jumptable[0xD][0x5] = PUSH_DE;
   jumptable[0xD][0x6] = SUB_d8;
+  jumptable[0xD][0x7] = RST_10H;
   jumptable[0xD][0x8] = RETC;
   jumptable[0xD][0x9] = RETI;
   jumptable[0xD][0xA] = JP_C_a16;
+  jumptable[0xD][0xC] = CALL_C_a16;
+  jumptable[0xD][0xE] = SBC_A_d8;
   jumptable[0xD][0xF] = RST_18H;
   
   jumptable[0xE][0x0] = LDH_a8_A;
@@ -2321,13 +2463,17 @@ void init_jmp (func_ptr jumptable[0xF][0xF], func_ptr cb_jumptable[0xF][0xF]) {
   jumptable[0xE][0x2] = LDINDR_C_A;
   jumptable[0xE][0x5] = PUSH_HL;
   jumptable[0xE][0x6] = AND_d8;
+  jumptable[0xE][0x7] = RST_20H;
+  jumptable[0xE][0x8] = ADD_SP_r8;
   jumptable[0xE][0x9] = JP_INDRHL;
   jumptable[0xE][0xA] = LDINDR_a16_A;
+  jumptable[0xE][0xE] = XOR_d8;
   jumptable[0xE][0xF] = RST_28H;
 
   jumptable[0xF][0x0] = LDH_A_a8;
   jumptable[0xF][0x2] = LD_A_INDR_C;
   jumptable[0xF][0x3] = DI;
+  jumptable[0xF][0x7] = RST_30H;
   jumptable[0xF][0xE] = CP_d8;
   jumptable[0xF][0xF] = RST_38H;
  
