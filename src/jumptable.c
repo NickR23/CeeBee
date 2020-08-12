@@ -77,10 +77,11 @@ void jumpCC(CPU *cpu, Op_info *info, uint16_t offset, bool condition) {
   // Explicitly leaving info->size as zero
   // We do not want to advance past the address we jumped to
   if (condition) {
-    cpu->sp += offset; 
+    cpu->pc = offset; 
     info->cycles = 16;
   } else {
     info->cycles = 12;
+    info->size = 3;
   }
 }
 
@@ -1824,6 +1825,8 @@ void AND_C(void *cpu, Op_info *info) {
   setHF(cpu_ptr, true); 
   setCF(cpu_ptr, false); 
   cpu_ptr->a = res;
+  info->cycles = 4;
+  info->size = 1;
 }
 
 void AND_D(void *cpu, Op_info *info) {
@@ -2233,6 +2236,26 @@ void bit_n(CPU *cpu, Op_info *info, uint8_t n, uint16_t reg) {
   info->size = 1;
 }
 
+// Set bit b in reg
+void set_bit(CPU *cpu, Op_info *info, uint8_t b, uint16_t reg) {
+  uint8_t *dst = getRegister(cpu, reg);
+  uint8_t mask = 0x01;
+  mask = mask << b;
+  *dst = *dst | mask;
+  info->cycles = 8;
+  info->size = 1;
+}
+
+void swap(CPU *cpu, Op_info *info, uint16_t reg) {
+  uint8_t *dst = getRegister(cpu, reg);
+  uint8_t upper = *dst & 0xF0;
+  *dst = *dst << 4;
+  *dst &= upper >> 4;
+  setZF(cpu, *dst == 0x00);
+  info->cycles = 8;
+  info->size = 1;
+}
+
 void RL(CPU *cpu, Op_info *info, uint16_t reg) {
   uint8_t *dest = getRegister(cpu, reg);
   uint8_t *f = getRegister(cpu, F);
@@ -2252,6 +2275,85 @@ void RL_C(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu;
   RL(cpu_ptr, info, C);
 }
+
+void RES_6_HL(void *cpu, Op_info *info ) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  uint16_t addr = read_r16(cpu_ptr, HL);
+  uint8_t val = readN(cpu_ptr, addr);
+  uint8_t mask = 0x01;
+  mask = mask << 6;
+  val = val | mask;
+  writeN(cpu_ptr, addr, val);
+  
+  info->cycles = 16;
+  info->size = 1;
+}
+
+void RES_7_HL(void *cpu, Op_info *info ) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  uint16_t addr = read_r16(cpu_ptr, HL);
+  uint8_t val = readN(cpu_ptr, addr);
+  uint8_t mask = 0x01;
+  mask = mask << 7;
+  val = val | mask;
+  writeN(cpu_ptr, addr, val);
+  
+  info->cycles = 16;
+  info->size = 1;
+}
+
+
+
+void SWAP_A(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  swap(cpu_ptr, info, A);
+}
+
+void SWAP_B(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  swap(cpu_ptr, info, B);
+}
+
+void SWAP_C(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  swap(cpu_ptr, info, C);
+}
+
+void SWAP_D(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  swap(cpu_ptr, info, D);
+}
+
+void SWAP_E(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  swap(cpu_ptr, info, E);
+}
+
+void SWAP_H(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  swap(cpu_ptr, info, H);
+}
+
+void SWAP_L(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  swap(cpu_ptr, info, L);
+}
+
+void SWAP_HL(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  uint16_t addr = read_r16(cpu_ptr, HL);
+  uint8_t val = readN(cpu_ptr, addr);
+  uint8_t upper = val & 0xF0;
+  val = val << 4;
+  val &= upper >> 4;
+  writeN(cpu_ptr, addr, val);
+  
+  setZF(cpu_ptr, val == 0x00);
+
+  info->cycles = 16;
+  info->size = 2;
+}
+
 
 void BIT_7_H(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu;
@@ -2555,8 +2657,14 @@ void init_jmp (func_ptr jumptable[0xF][0xF], func_ptr cb_jumptable[0xF][0xF]) {
 
   cb_jumptable[0x7][0xC] = BIT_7_H;
 
+  cb_jumptable[0x3][0x7] = SWAP_A;
   cb_jumptable[0x3][0xF] = SRL_A;
 
+
   cb_jumptable[0x5][0xF] = BIT_3_A;
+
+  cb_jumptable[0xB][0x6] = RES_6_HL;
+  cb_jumptable[0xB][0xE] = RES_7_HL;
+
   cb_jumptable[0xF][0xE] = SET_7_INDRHL;
 }
