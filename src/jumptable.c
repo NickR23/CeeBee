@@ -1182,6 +1182,55 @@ void XOR_A(void *cpu, Op_info *info) {
   xor_reg(cpu_ptr, info, A, A);
 }
 
+void XOR_B(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  xor_reg(cpu_ptr, info, A, B);
+}
+
+void XOR_C(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  xor_reg(cpu_ptr, info, A, C);
+}
+
+void XOR_D(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  xor_reg(cpu_ptr, info, A, D);
+}
+
+void XOR_E(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  xor_reg(cpu_ptr, info, A, E);
+}
+
+void XOR_H(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  xor_reg(cpu_ptr, info, A, H);
+}
+
+void XOR_L(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  xor_reg(cpu_ptr, info, A, L);
+}
+
+void XOR_HL(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  uint8_t *dest = getRegister(cpu_ptr, A); 
+  uint16_t addr = read_r16(cpu_ptr, HL);
+  uint8_t val = readN(cpu_ptr, addr);
+  uint8_t result = val ^ *dest;
+
+  setZF(cpu, result == 0);
+  setNF(cpu, false);
+  setHF(cpu, false);
+  setCF(cpu, false);
+  
+  *dest = result;  
+  
+  // Provide the info for the instruction
+  info->cycles = 8;
+  info->size = 1;
+}
+
 void OR_B(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu;
   or_reg(cpu_ptr, info, A, B);
@@ -1546,30 +1595,102 @@ void CP_d8(void *cpu, Op_info *info) {
   info->size = 2;
 }
 
+void AND_C(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  uint8_t res = cpu_ptr->a & cpu_ptr->c;
+  setZF(cpu_ptr, res == 0);
+  setNF(cpu_ptr, false); 
+  setHF(cpu_ptr, true); 
+  setCF(cpu_ptr, false); 
+  cpu_ptr->a = res;
+}
+
+void AND_D(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  uint8_t res = cpu_ptr->a & cpu_ptr->d;
+  setZF(cpu_ptr, res == 0);
+  setNF(cpu_ptr, false); 
+  setHF(cpu_ptr, true); 
+  setCF(cpu_ptr, false); 
+  cpu_ptr->a = res;
+}
+
+void AND_E(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  uint8_t res = cpu_ptr->a & cpu_ptr->e;
+  setZF(cpu_ptr, res == 0);
+  setNF(cpu_ptr, false); 
+  setHF(cpu_ptr, true); 
+  setCF(cpu_ptr, false); 
+  cpu_ptr->a = res;
+}
+
+void AND_H(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  uint8_t res = cpu_ptr->a & cpu_ptr->h;
+  setZF(cpu_ptr, res == 0);
+  setNF(cpu_ptr, false); 
+  setHF(cpu_ptr, true); 
+  setCF(cpu_ptr, false); 
+  cpu_ptr->a = res;
+}
+
+void AND_L(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  uint8_t res = cpu_ptr->a & cpu_ptr->l;
+  setZF(cpu_ptr, res == 0);
+  setNF(cpu_ptr, false); 
+  setHF(cpu_ptr, true); 
+  setCF(cpu_ptr, false); 
+  cpu_ptr->a = res;
+}
+
+void AND_A(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  uint8_t res = cpu_ptr->a & cpu_ptr->a;
+  setZF(cpu_ptr, res == 0);
+  setNF(cpu_ptr, false); 
+  setHF(cpu_ptr, true); 
+  setCF(cpu_ptr, false); 
+  cpu_ptr->a = res;
+}
+
 void AND_B(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu;
-  bool res = cpu_ptr->a & cpu_ptr->b;
+  uint8_t res = cpu_ptr->a & cpu_ptr->b;
   setZF(cpu_ptr, res == 0);
   setNF(cpu_ptr, false); 
   setHF(cpu_ptr, true); 
   setCF(cpu_ptr, false); 
   
+  cpu_ptr->a = res;
   info->cycles = 4;
   info->size = 1;
 }
 
-void AND_d8(void *cpu, Op_info *info) {
+void AND_HL(void *cpu, Op_info *info) {
   CPU *cpu_ptr = (CPU*) cpu;
-  
-  uint8_t d8 = readN(cpu_ptr, cpu_ptr->pc + 1);
-  
-  bool res = cpu_ptr->a & d8;
-
+  uint16_t addr = read_r16(cpu_ptr, HL);
+  uint8_t d8 = readN(cpu_ptr, addr);
+  uint8_t res = cpu_ptr->a & d8;
   setZF(cpu_ptr, res == 0);
   setNF(cpu_ptr, false); 
   setHF(cpu_ptr, true); 
   setCF(cpu_ptr, false); 
+  cpu_ptr->a = res;
+  info->cycles = 8;
+  info->size = 2;
+}
 
+void AND_d8(void *cpu, Op_info *info) {
+  CPU *cpu_ptr = (CPU*) cpu;
+  uint8_t d8 = readN(cpu_ptr, cpu_ptr->pc + 1);
+  uint8_t res = cpu_ptr->a & d8;
+  setZF(cpu_ptr, res == 0);
+  setNF(cpu_ptr, false); 
+  setHF(cpu_ptr, true); 
+  setCF(cpu_ptr, false); 
+  cpu_ptr->a = res;
   info->cycles = 8;
   info->size = 2;
 }
@@ -1985,6 +2106,20 @@ void init_jmp (func_ptr jumptable[0xF][0xF], func_ptr cb_jumptable[0xF][0xF]) {
   jumptable[0x9][0xF] = SBC_A_A;
 
   jumptable[0xA][0x0] = AND_B;
+  jumptable[0xA][0x1] = AND_C;
+  jumptable[0xA][0x2] = AND_D;
+  jumptable[0xA][0x3] = AND_E;
+  jumptable[0xA][0x4] = AND_H;
+  jumptable[0xA][0x5] = AND_L;
+  jumptable[0xA][0x6] = AND_HL;
+  jumptable[0xA][0x7] = AND_A;
+  jumptable[0xA][0x8] = XOR_B;
+  jumptable[0xA][0x9] = XOR_C;
+  jumptable[0xA][0xA] = XOR_D;
+  jumptable[0xA][0xB] = XOR_E;
+  jumptable[0xA][0xC] = XOR_H;
+  jumptable[0xA][0xD] = XOR_L;
+  jumptable[0xA][0xE] = XOR_HL;
   jumptable[0xA][0xF] = XOR_A;
 
   jumptable[0xB][0x0] = OR_B;
