@@ -56,6 +56,13 @@ mmu_test.o: $(TESTPATH)mmu_test.c mmu.c
 debug: CFLAGS += -DDEBUG
 debug: default
 
+.PHONY: headless
+headless: CFLAGS += -D HEADLESS
+
+.PHONY: dheadless
+dheadless: headless
+dheadless: debug
+
 .PHONY: teardown
 teardown:
 	rm -f *.o

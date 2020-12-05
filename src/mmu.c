@@ -48,6 +48,7 @@ uint8_t readN(CPU *cpu, uint16_t addr) {
   if (!BIOS_finished && addr < 0x0100) {
     return *((uint8_t*)(cpu->mmu->BIOS + addr)); 
   }
+
   return *((uint8_t*)(cpu->mmu->ram + addr)); 
 }
 

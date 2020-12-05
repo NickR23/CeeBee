@@ -15,6 +15,9 @@ void dump_mem(CPU *cpu) {
       printf("Could not write memory dump to file!\n");
       exit(1);
     }
+    for (int i = 0; i < 0x00100; i++) {
+      fputc(cpu->mmu->BIOS[i], fp);
+    }
     for (int i = 0; i < 0x10000; i++) {
       fputc(cpu->mmu->ram[i], fp);
     }

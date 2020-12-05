@@ -194,7 +194,8 @@ void or_reg(CPU *cpu, Op_info *info, uint16_t dest_reg, uint16_t src_reg) {
   uint8_t *src = getRegister(cpu, src_reg); 
   uint8_t result = *src | *dest;
 
-  setZF(cpu, result == 0);
+  bool isZero = result == 0;
+  setZF(cpu, isZero);
   setNF(cpu, false);
   setHF(cpu, false);
   setCF(cpu, false);

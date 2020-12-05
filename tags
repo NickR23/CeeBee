@@ -1,0 +1,540 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_OUTPUT_FILESEP	slash	/slash or backslash/
+!_TAG_OUTPUT_MODE	u-ctags	/u-ctags or e-ctags/
+!_TAG_PROGRAM_AUTHOR	Universal Ctags Team	//
+!_TAG_PROGRAM_NAME	Universal Ctags	/Derived from Exuberant Ctags/
+!_TAG_PROGRAM_URL	https://ctags.io/	/official site/
+!_TAG_PROGRAM_VERSION	0.0.0	/a3c87ab5/
+A	include/ceebee/cpu.h	/^#define A /;"	d
+ADC_A_A	src/jumptable.c	/^void ADC_A_A(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+ADC_A_B	src/jumptable.c	/^void ADC_A_B(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+ADC_A_C	src/jumptable.c	/^void ADC_A_C(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+ADC_A_D	src/jumptable.c	/^void ADC_A_D(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+ADC_A_E	src/jumptable.c	/^void ADC_A_E(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+ADC_A_H	src/jumptable.c	/^void ADC_A_H(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+ADC_A_HL	src/jumptable.c	/^void ADC_A_HL(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+ADC_A_L	src/jumptable.c	/^void ADC_A_L(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+ADC_A_d8	src/jumptable.c	/^void ADC_A_d8(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+ADD_A_A	src/jumptable.c	/^void ADD_A_A(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+ADD_A_B	src/jumptable.c	/^void ADD_A_B(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+ADD_A_C	src/jumptable.c	/^void ADD_A_C(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+ADD_A_D	src/jumptable.c	/^void ADD_A_D(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+ADD_A_E	src/jumptable.c	/^void ADD_A_E(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+ADD_A_H	src/jumptable.c	/^void ADD_A_H(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+ADD_A_HL	src/jumptable.c	/^void ADD_A_HL(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+ADD_A_L	src/jumptable.c	/^void ADD_A_L(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+ADD_A_d8	src/jumptable.c	/^void ADD_A_d8(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+ADD_HL_BC	src/jumptable.c	/^void ADD_HL_BC(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+ADD_HL_DE	src/jumptable.c	/^void ADD_HL_DE(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+ADD_HL_HL	src/jumptable.c	/^void ADD_HL_HL(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+ADD_HL_SP	src/jumptable.c	/^void ADD_HL_SP(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+ADD_SP_r8	src/jumptable.c	/^void ADD_SP_r8(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+AF	include/ceebee/cpu.h	/^#define AF /;"	d
+AND_A	src/jumptable.c	/^void AND_A(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+AND_B	src/jumptable.c	/^void AND_B(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+AND_C	src/jumptable.c	/^void AND_C(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+AND_D	src/jumptable.c	/^void AND_D(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+AND_E	src/jumptable.c	/^void AND_E(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+AND_H	src/jumptable.c	/^void AND_H(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+AND_HL	src/jumptable.c	/^void AND_HL(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+AND_L	src/jumptable.c	/^void AND_L(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+AND_d8	src/jumptable.c	/^void AND_d8(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+B	include/ceebee/cpu.h	/^#define B /;"	d
+BC	include/ceebee/cpu.h	/^#define BC /;"	d
+BGRDPAL	include/ceebee/ppu.h	/^      uint8_t *BGRDPAL;$/;"	m	struct:PPU	typeref:typename:uint8_t *
+BIOS	include/ceebee/cpu.h	/^  uint8_t BIOS[0x0100]; $/;"	m	struct:MMU	typeref:typename:uint8_t[0x0100]
+BIOS	src/mmu.c	/^static uint8_t BIOS[0x100] = {$/;"	v	typeref:typename:uint8_t[0x100]	file:
+BIT_3_A	src/jumptable.c	/^void BIT_3_A(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+BIT_7_H	src/jumptable.c	/^void BIT_7_H(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+BLACK	src/ppu.c	/^enum COLOR {WHITE, LIGHT_GREY, DARK_GREY, BLACK};$/;"	e	enum:COLOR	file:
+BLU	include/ceebee/termColors.h	/^#define BLU /;"	d
+C	include/ceebee/cpu.h	/^#define C /;"	d
+CALL_C_a16	src/jumptable.c	/^void CALL_C_a16(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+CALL_NC_a16	src/jumptable.c	/^void CALL_NC_a16(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+CALL_NZ_a16	src/jumptable.c	/^void CALL_NZ_a16(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+CALL_Z_a16	src/jumptable.c	/^void CALL_Z_a16(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+CALL_a16	src/jumptable.c	/^void CALL_a16(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+CC	Makefile	/^CC := gcc$/;"	m
+CCF	src/jumptable.c	/^void CCF(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+CF	include/ceebee/cpu.h	/^#define CF /;"	d
+CFLAGS	Makefile	/^CFLAGS =-I.\/include -I.\/cmocka-1.1.2\/include -I\/usr\/includeSDL2 -Wall -std=c99 -g -D_REENTR/;"	m
+CMPLINE	include/ceebee/ppu.h	/^      uint8_t *CMPLINE;$/;"	m	struct:PPU	typeref:typename:uint8_t *
+COLOR	src/ppu.c	/^enum COLOR {WHITE, LIGHT_GREY, DARK_GREY, BLACK};$/;"	g	file:
+COMMON_H	include/ceebee/common.h	/^#define COMMON_H$/;"	d
+CPL	src/jumptable.c	/^void CPL(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+CPU	include/ceebee/cpu.h	/^typedef struct CPU {$/;"	s
+CPU	include/ceebee/cpu.h	/^} CPU;$/;"	t	typeref:struct:CPU
+CPU_H	include/ceebee/cpu.h	/^#define CPU_H$/;"	d
+CP_A	src/jumptable.c	/^void CP_A(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+CP_B	src/jumptable.c	/^void CP_B(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+CP_C	src/jumptable.c	/^void CP_C(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+CP_D	src/jumptable.c	/^void CP_D(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+CP_E	src/jumptable.c	/^void CP_E(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+CP_H	src/jumptable.c	/^void CP_H(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+CP_HL	src/jumptable.c	/^void CP_HL(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+CP_L	src/jumptable.c	/^void CP_L(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+CP_d8	src/jumptable.c	/^void CP_d8(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+CURLINE	include/ceebee/ppu.h	/^      uint8_t *CURLINE;$/;"	m	struct:PPU	typeref:typename:uint8_t *
+CYN	include/ceebee/termColors.h	/^#define CYN /;"	d
+CeeBee	README.md	/^# CeeBee$/;"	c
+D	include/ceebee/cpu.h	/^#define D /;"	d
+DAA	src/jumptable.c	/^void DAA(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+DARK_GREY	src/ppu.c	/^enum COLOR {WHITE, LIGHT_GREY, DARK_GREY, BLACK};$/;"	e	enum:COLOR	file:
+DE	include/ceebee/cpu.h	/^#define DE /;"	d
+DECINDR_HL	src/jumptable.c	/^void DECINDR_HL(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+DEC_A	src/jumptable.c	/^void DEC_A(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+DEC_B	src/jumptable.c	/^void DEC_B(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+DEC_BC	src/jumptable.c	/^void DEC_BC(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+DEC_C	src/jumptable.c	/^void DEC_C(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+DEC_D	src/jumptable.c	/^void DEC_D(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+DEC_DE	src/jumptable.c	/^void DEC_DE(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+DEC_E	src/jumptable.c	/^void DEC_E(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+DEC_H	src/jumptable.c	/^void DEC_H(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+DEC_HL	src/jumptable.c	/^void DEC_HL(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+DEC_L	src/jumptable.c	/^void DEC_L(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+DEC_SP	src/jumptable.c	/^void DEC_SP(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+DI	src/jumptable.c	/^void DI(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+DMACONT	include/ceebee/ppu.h	/^      uint8_t *DMACONT;$/;"	m	struct:PPU	typeref:typename:uint8_t *
+E	include/ceebee/cpu.h	/^#define E /;"	d
+EI	src/jumptable.c	/^void EI(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+EXITPATH	include/ceebee/common.h	/^  #define EXITPATH /;"	d
+F	include/ceebee/cpu.h	/^#define F /;"	d
+FRAM_T	src/ppu.c	/^#define FRAM_T /;"	d	file:
+GPU	include/ceebee/gpu.h	/^   typedef struct GPU {$/;"	s
+GPU	include/ceebee/gpu.h	/^   } GPU;$/;"	t	typeref:struct:GPU
+GPU_H	include/ceebee/gpu.h	/^   #define GPU_H$/;"	d
+GRN	include/ceebee/termColors.h	/^#define GRN /;"	d
+H	include/ceebee/cpu.h	/^#define H /;"	d
+HALT	src/jumptable.c	/^void HALT(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+HBLANK	src/ppu.c	/^#define HBLANK /;"	d	file:
+HBLANK_T	src/ppu.c	/^#define HBLANK_T /;"	d	file:
+HF	include/ceebee/cpu.h	/^#define HF /;"	d
+HL	include/ceebee/cpu.h	/^#define HL /;"	d
+INCINDR_HL	src/jumptable.c	/^void INCINDR_HL(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+INC_A	src/jumptable.c	/^void INC_A(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+INC_B	src/jumptable.c	/^void INC_B(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+INC_BC	src/jumptable.c	/^void INC_BC(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+INC_C	src/jumptable.c	/^void INC_C(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+INC_D	src/jumptable.c	/^void INC_D(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+INC_DE	src/jumptable.c	/^void INC_DE(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+INC_E	src/jumptable.c	/^void INC_E(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+INC_H	src/jumptable.c	/^void INC_H(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+INC_HL	src/jumptable.c	/^void INC_HL(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+INC_L	src/jumptable.c	/^void INC_L(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+INC_SP	src/jumptable.c	/^void INC_SP(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+JMPTBL_H	include/ceebee/jumptable.h	/^#define JMPTBL_H$/;"	d
+JMPTBL_TEST	include/ceebee/jumptable_test.h	/^#define JMPTBL_TEST$/;"	d
+JP_C_a16	src/jumptable.c	/^void JP_C_a16(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+JP_INDRHL	src/jumptable.c	/^void JP_INDRHL(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+JP_NC_a16	src/jumptable.c	/^void JP_NC_a16(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+JP_NZ_a16	src/jumptable.c	/^void JP_NZ_a16(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+JP_Z_a16	src/jumptable.c	/^void JP_Z_a16(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+JP_a16	src/jumptable.c	/^void JP_a16(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+JR_C_r8	src/jumptable.c	/^void JR_C_r8(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+JR_NZ_r8	src/jumptable.c	/^void JR_NZ_r8(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+JR_Z_r8	src/jumptable.c	/^void JR_Z_r8(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+JR_r8	src/jumptable.c	/^void JR_r8(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+L	include/ceebee/cpu.h	/^#define L /;"	d
+LCDCONT	include/ceebee/ppu.h	/^      uint8_t *LCDCONT;$/;"	m	struct:PPU	typeref:typename:uint8_t *
+LCDSTAT	include/ceebee/ppu.h	/^      uint8_t *LCDSTAT;$/;"	m	struct:PPU	typeref:typename:uint8_t *
+LDDEC_A_INDR_HL	src/jumptable.c	/^void LDDEC_A_INDR_HL(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+LDDEC_HL_A	src/jumptable.c	/^void LDDEC_HL_A(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+LDHL_SP_N	src/jumptable.c	/^void LDHL_SP_N(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+LDH_A_a8	src/jumptable.c	/^void LDH_A_a8(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+LDH_a8_A	src/jumptable.c	/^void LDH_a8_A(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+LDINC_A_INDR_HL	src/jumptable.c	/^void LDINC_A_INDR_HL(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+LDINC_HL_A	src/jumptable.c	/^void LDINC_HL_A(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+LDINDR_BC_A	src/jumptable.c	/^void LDINDR_BC_A(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+LDINDR_C_A	src/jumptable.c	/^void LDINDR_C_A(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+LDINDR_DE_A	src/jumptable.c	/^void LDINDR_DE_A(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+LDINDR_HL_A	src/jumptable.c	/^void LDINDR_HL_A(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+LDINDR_HL_d8	src/jumptable.c	/^void LDINDR_HL_d8(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+LDINDR_INDRHL_B	src/jumptable.c	/^void LDINDR_INDRHL_B(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+LDINDR_INDRHL_C	src/jumptable.c	/^void LDINDR_INDRHL_C(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+LDINDR_INDRHL_D	src/jumptable.c	/^void LDINDR_INDRHL_D(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+LDINDR_INDRHL_E	src/jumptable.c	/^void LDINDR_INDRHL_E(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+LDINDR_INDRHL_H	src/jumptable.c	/^void LDINDR_INDRHL_H(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+LDINDR_INDRHL_L	src/jumptable.c	/^void LDINDR_INDRHL_L(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+LDINDR_a16_A	src/jumptable.c	/^void LDINDR_a16_A(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+LD_A_A	src/jumptable.c	/^void LD_A_A(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+LD_A_B	src/jumptable.c	/^void LD_A_B(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+LD_A_C	src/jumptable.c	/^void LD_A_C(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+LD_A_D	src/jumptable.c	/^void LD_A_D(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+LD_A_E	src/jumptable.c	/^void LD_A_E(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+LD_A_H	src/jumptable.c	/^void LD_A_H(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+LD_A_INDIR_BC	src/jumptable.c	/^void LD_A_INDIR_BC(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+LD_A_INDRHL	src/jumptable.c	/^void LD_A_INDRHL(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+LD_A_INDRNN	src/jumptable.c	/^void LD_A_INDRNN(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+LD_A_INDR_C	src/jumptable.c	/^void LD_A_INDR_C(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+LD_A_INDR_DE	src/jumptable.c	/^void LD_A_INDR_DE(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+LD_A_L	src/jumptable.c	/^void LD_A_L(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+LD_A_d8	src/jumptable.c	/^void LD_A_d8(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+LD_BC_d16	src/jumptable.c	/^void LD_BC_d16(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+LD_B_A	src/jumptable.c	/^void LD_B_A(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+LD_B_B	src/jumptable.c	/^void LD_B_B(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+LD_B_C	src/jumptable.c	/^void LD_B_C(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+LD_B_D	src/jumptable.c	/^void LD_B_D(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+LD_B_E	src/jumptable.c	/^void LD_B_E(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+LD_B_H	src/jumptable.c	/^void LD_B_H(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+LD_B_INDRHL	src/jumptable.c	/^void LD_B_INDRHL(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+LD_B_L	src/jumptable.c	/^void LD_B_L(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+LD_B_d8	src/jumptable.c	/^void LD_B_d8(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+LD_C_A	src/jumptable.c	/^void LD_C_A(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+LD_C_B	src/jumptable.c	/^void LD_C_B(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+LD_C_C	src/jumptable.c	/^void LD_C_C(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+LD_C_D	src/jumptable.c	/^void LD_C_D(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+LD_C_E	src/jumptable.c	/^void LD_C_E(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+LD_C_H	src/jumptable.c	/^void LD_C_H(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+LD_C_INDRHL	src/jumptable.c	/^void LD_C_INDRHL(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+LD_C_L	src/jumptable.c	/^void LD_C_L(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+LD_C_d8	src/jumptable.c	/^void LD_C_d8(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+LD_DE_d16	src/jumptable.c	/^void LD_DE_d16(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+LD_D_A	src/jumptable.c	/^void LD_D_A(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+LD_D_B	src/jumptable.c	/^void LD_D_B(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+LD_D_C	src/jumptable.c	/^void LD_D_C(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+LD_D_D	src/jumptable.c	/^void LD_D_D(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+LD_D_E	src/jumptable.c	/^void LD_D_E(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+LD_D_H	src/jumptable.c	/^void LD_D_H(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+LD_D_HL	src/jumptable.c	/^void LD_D_HL(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+LD_D_L	src/jumptable.c	/^void LD_D_L(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+LD_D_d8	src/jumptable.c	/^void LD_D_d8(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+LD_E_A	src/jumptable.c	/^void LD_E_A(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+LD_E_D	src/jumptable.c	/^void LD_E_D(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+LD_E_E	src/jumptable.c	/^void LD_E_E(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+LD_E_H	src/jumptable.c	/^void LD_E_H(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+LD_E_HL	src/jumptable.c	/^void LD_E_HL(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+LD_E_L	src/jumptable.c	/^void LD_E_L(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+LD_E_d8	src/jumptable.c	/^void LD_E_d8(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+LD_HL_d16	src/jumptable.c	/^void LD_HL_d16(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+LD_H_A	src/jumptable.c	/^void LD_H_A(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+LD_H_B	src/jumptable.c	/^void LD_H_B(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+LD_H_C	src/jumptable.c	/^void LD_H_C(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+LD_H_D	src/jumptable.c	/^void LD_H_D(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+LD_H_E	src/jumptable.c	/^void LD_H_E(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+LD_H_H	src/jumptable.c	/^void LD_H_H(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+LD_H_INDRHL	src/jumptable.c	/^void LD_H_INDRHL(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+LD_H_L	src/jumptable.c	/^void LD_H_L(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+LD_H_d8	src/jumptable.c	/^void LD_H_d8(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+LD_L_A	src/jumptable.c	/^void LD_L_A(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+LD_L_B	src/jumptable.c	/^void LD_L_B(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+LD_L_C	src/jumptable.c	/^void LD_L_C(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+LD_L_D	src/jumptable.c	/^void LD_L_D(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+LD_L_E	src/jumptable.c	/^void LD_L_E(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+LD_L_H	src/jumptable.c	/^void LD_L_H(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+LD_L_INDRHL	src/jumptable.c	/^void LD_L_INDRHL(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+LD_L_L	src/jumptable.c	/^void LD_L_L(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+LD_L_d8	src/jumptable.c	/^void LD_L_d8(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+LD_SP_HL	src/jumptable.c	/^void LD_SP_HL(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+LD_SP_d16	src/jumptable.c	/^void LD_SP_d16(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+LD_a16_SP	src/jumptable.c	/^void LD_a16_SP(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+LIGHT_GREY	src/ppu.c	/^enum COLOR {WHITE, LIGHT_GREY, DARK_GREY, BLACK};$/;"	e	enum:COLOR	file:
+LINE_T	src/ppu.c	/^#define LINE_T /;"	d	file:
+MAG	include/ceebee/termColors.h	/^#define MAG /;"	d
+MEMDUMPLOC	src/common.c	/^#define MEMDUMPLOC /;"	d	file:
+MMU	include/ceebee/cpu.h	/^typedef struct MMU {$/;"	s
+MMU	include/ceebee/cpu.h	/^} MMU;$/;"	t	typeref:struct:MMU
+MMU_H	include/ceebee/mmu.h	/^#define MMU_H$/;"	d
+NF	include/ceebee/cpu.h	/^#define NF /;"	d
+NOP	src/jumptable.c	/^void NOP(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+NOT_IMPL	src/jumptable.c	/^void NOT_IMPL(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+OAM	src/ppu.c	/^#define OAM /;"	d	file:
+OAM_T	src/ppu.c	/^#define OAM_T /;"	d	file:
+OBJ0PAL	include/ceebee/ppu.h	/^      uint8_t *OBJ0PAL;$/;"	m	struct:PPU	typeref:typename:uint8_t *
+OBJ1PAL	include/ceebee/ppu.h	/^      uint8_t *OBJ1PAL;$/;"	m	struct:PPU	typeref:typename:uint8_t *
+OBJECTS	Makefile	/^OBJECTS =cpu.o common.o jumptable.o mmu.o ppu.o gpu.o$/;"	m
+OR_A	src/jumptable.c	/^void OR_A(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+OR_B	src/jumptable.c	/^void OR_B(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+OR_C	src/jumptable.c	/^void OR_C(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+OR_D	src/jumptable.c	/^void OR_D(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+OR_E	src/jumptable.c	/^void OR_E(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+OR_H	src/jumptable.c	/^void OR_H(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+OR_HL	src/jumptable.c	/^void OR_HL(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+OR_L	src/jumptable.c	/^void OR_L(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+OR_d8	src/jumptable.c	/^void OR_d8(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+Op_info	include/ceebee/cpu.h	/^typedef struct Op_info {$/;"	s
+Op_info	include/ceebee/cpu.h	/^} Op_info;$/;"	t	typeref:struct:Op_info
+PC	include/ceebee/cpu.h	/^#define PC /;"	d
+PIXELS_H	include/ceebee/gpu.h	/^   #define PIXELS_H /;"	d
+PIXELS_W	include/ceebee/gpu.h	/^   #define PIXELS_W /;"	d
+POP_AF	src/jumptable.c	/^void POP_AF(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+POP_BC	src/jumptable.c	/^void POP_BC(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+POP_DE	src/jumptable.c	/^void POP_DE(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+POP_HL	src/jumptable.c	/^void POP_HL(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+PPU	include/ceebee/ppu.h	/^   typedef struct PPU {$/;"	s
+PPU	include/ceebee/ppu.h	/^   } PPU;$/;"	t	typeref:struct:PPU
+PPU_H	include/ceebee/ppu.h	/^   #define PPU_H$/;"	d
+PUSH_AF	src/jumptable.c	/^void PUSH_AF(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+PUSH_BC	src/jumptable.c	/^void PUSH_BC(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+PUSH_DE	src/jumptable.c	/^void PUSH_DE(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+PUSH_HL	src/jumptable.c	/^void PUSH_HL(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+RED	include/ceebee/termColors.h	/^#define RED /;"	d
+RESET	include/ceebee/termColors.h	/^#define RESET /;"	d
+RES_6_HL	src/jumptable.c	/^void RES_6_HL(void *cpu, Op_info *info ) {$/;"	f	typeref:typename:void
+RES_7_HL	src/jumptable.c	/^void RES_7_HL(void *cpu, Op_info *info ) {$/;"	f	typeref:typename:void
+RET	src/jumptable.c	/^void RET(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+RETC	src/jumptable.c	/^void RETC(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+RETI	src/jumptable.c	/^void RETI(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+RETNC	src/jumptable.c	/^void RETNC(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+RETNZ	src/jumptable.c	/^void RETNZ(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+RETZ	src/jumptable.c	/^void RETZ(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+RL	src/jumptable.c	/^void RL(CPU *cpu, Op_info *info, uint16_t reg) {$/;"	f	typeref:typename:void
+RLA	src/jumptable.c	/^void RLA(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+RLCA	src/jumptable.c	/^void RLCA(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+RL_C	src/jumptable.c	/^void RL_C(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+RRA	src/jumptable.c	/^void RRA(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+RRCA	src/jumptable.c	/^void RRCA(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+RST_00H	src/jumptable.c	/^void RST_00H(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+RST_08H	src/jumptable.c	/^void RST_08H(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+RST_10H	src/jumptable.c	/^void RST_10H(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+RST_18H	src/jumptable.c	/^void RST_18H(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+RST_20H	src/jumptable.c	/^void RST_20H(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+RST_28H	src/jumptable.c	/^void RST_28H(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+RST_30H	src/jumptable.c	/^void RST_30H(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+RST_38H	src/jumptable.c	/^void RST_38H(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+References	README.md	/^## References$/;"	s
+Running tests	README.md	/^## Running tests$/;"	s
+SBC_A_A	src/jumptable.c	/^void SBC_A_A(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+SBC_A_B	src/jumptable.c	/^void SBC_A_B(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+SBC_A_C	src/jumptable.c	/^void SBC_A_C(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+SBC_A_D	src/jumptable.c	/^void SBC_A_D(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+SBC_A_E	src/jumptable.c	/^void SBC_A_E(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+SBC_A_H	src/jumptable.c	/^void SBC_A_H(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+SBC_A_HL	src/jumptable.c	/^void SBC_A_HL(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+SBC_A_L	src/jumptable.c	/^void SBC_A_L(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+SBC_A_d8	src/jumptable.c	/^void SBC_A_d8(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+SCF	src/jumptable.c	/^void SCF(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+SCROLLX	include/ceebee/ppu.h	/^      uint8_t *SCROLLX;$/;"	m	struct:PPU	typeref:typename:uint8_t *
+SCROLLY	include/ceebee/ppu.h	/^      uint8_t *SCROLLY;$/;"	m	struct:PPU	typeref:typename:uint8_t *
+SDL_MAIN_HANDLED	src/gpu.c	/^#define SDL_MAIN_HANDLED$/;"	d	file:
+SET_4_H	src/jumptable.c	/^void SET_4_H(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+SET_7_INDRHL	src/jumptable.c	/^void SET_7_INDRHL(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+SP	include/ceebee/cpu.h	/^#define SP /;"	d
+SRCPATH	Makefile	/^SRCPATH :=.\/src\/$/;"	m
+SRL_A	src/jumptable.c	/^void SRL_A(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+SUB_A	src/jumptable.c	/^void SUB_A(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+SUB_A_d8	src/jumptable.c	/^void SUB_A_d8(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+SUB_B	src/jumptable.c	/^void SUB_B(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+SUB_C	src/jumptable.c	/^void SUB_C(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+SUB_D	src/jumptable.c	/^void SUB_D(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+SUB_E	src/jumptable.c	/^void SUB_E(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+SUB_H	src/jumptable.c	/^void SUB_H(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+SUB_HL	src/jumptable.c	/^void SUB_HL(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+SUB_L	src/jumptable.c	/^void SUB_L(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+SUB_d8	src/jumptable.c	/^void SUB_d8(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+SWAP_A	src/jumptable.c	/^void SWAP_A(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+SWAP_B	src/jumptable.c	/^void SWAP_B(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+SWAP_C	src/jumptable.c	/^void SWAP_C(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+SWAP_D	src/jumptable.c	/^void SWAP_D(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+SWAP_E	src/jumptable.c	/^void SWAP_E(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+SWAP_H	src/jumptable.c	/^void SWAP_H(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+SWAP_HL	src/jumptable.c	/^void SWAP_HL(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+SWAP_L	src/jumptable.c	/^void SWAP_L(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+TESTCART	test/mmu_test.c	/^#define TESTCART /;"	d	file:
+TESTOBJECTS	Makefile	/^TESTOBJECTS =mmu_test.o cpu_test.o jumptable_test.o$/;"	m
+TESTPATH	Makefile	/^TESTPATH :=.\/test\/$/;"	m
+TITLEPATH	include/ceebee/common.h	/^  #define TITLEPATH /;"	d
+Usage	README.md	/^## Usage$/;"	s
+VBLANK	src/ppu.c	/^#define VBLANK /;"	d	file:
+VBLANK_T	src/ppu.c	/^#define VBLANK_T /;"	d	file:
+VRAM	src/ppu.c	/^#define VRAM /;"	d	file:
+VRAM_T	src/ppu.c	/^#define VRAM_T /;"	d	file:
+WHITE	src/ppu.c	/^enum COLOR {WHITE, LIGHT_GREY, DARK_GREY, BLACK};$/;"	e	enum:COLOR	file:
+WHT	include/ceebee/termColors.h	/^#define WHT /;"	d
+WNDPOSX	include/ceebee/ppu.h	/^      uint8_t *WNDPOSX;$/;"	m	struct:PPU	typeref:typename:uint8_t *
+WNDPOSY	include/ceebee/ppu.h	/^      uint8_t *WNDPOSY;$/;"	m	struct:PPU	typeref:typename:uint8_t *
+XOR_A	src/jumptable.c	/^void XOR_A(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+XOR_B	src/jumptable.c	/^void XOR_B(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+XOR_C	src/jumptable.c	/^void XOR_C(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+XOR_D	src/jumptable.c	/^void XOR_D(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+XOR_E	src/jumptable.c	/^void XOR_E(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+XOR_H	src/jumptable.c	/^void XOR_H(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+XOR_HL	src/jumptable.c	/^void XOR_HL(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+XOR_L	src/jumptable.c	/^void XOR_L(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+XOR_d8	src/jumptable.c	/^void XOR_d8(void *cpu, Op_info *info) {$/;"	f	typeref:typename:void
+YEL	include/ceebee/termColors.h	/^#define YEL /;"	d
+ZF	include/ceebee/cpu.h	/^#define ZF /;"	d
+a	include/ceebee/cpu.h	/^  uint8_t a;$/;"	m	struct:CPU	typeref:typename:uint8_t
+adc_8_reg	src/jumptable.c	/^void adc_8_reg(CPU *cpu, Op_info *info, uint16_t dest_reg, uint16_t src_reg) {$/;"	f	typeref:typename:void
+adc_n_reg	src/jumptable.c	/^void adc_n_reg(CPU *cpu, Op_info *info, uint16_t dest_reg, uint8_t val) {$/;"	f	typeref:typename:void
+add_16_reg	src/jumptable.c	/^void add_16_reg(CPU *cpu, Op_info *info, uint16_t dest_reg, uint16_t src_reg) {$/;"	f	typeref:typename:void
+add_8_n	src/jumptable.c	/^void add_8_n(CPU *cpu, Op_info *info, uint16_t dest_reg, uint8_t val) {$/;"	f	typeref:typename:void
+add_8_reg	src/jumptable.c	/^void add_8_reg(CPU *cpu, Op_info *info, uint16_t dest_reg, uint16_t src_reg) {$/;"	f	typeref:typename:void
+b	include/ceebee/cpu.h	/^  uint8_t b;$/;"	m	struct:CPU	typeref:typename:uint8_t
+background_enabled	src/ppu.c	/^bool background_enabled(PPU *ppu) {$/;"	f	typeref:typename:bool
+background_map_addr	src/ppu.c	/^uint16_t background_map_addr(PPU *ppu) {$/;"	f	typeref:typename:uint16_t
+bit_n	src/jumptable.c	/^void bit_n(CPU *cpu, Op_info *info, uint8_t n, uint16_t reg) {$/;"	f	typeref:typename:void
+c	include/ceebee/cpu.h	/^  uint8_t c;$/;"	m	struct:CPU	typeref:typename:uint8_t
+callCC	src/jumptable.c	/^void callCC(CPU *cpu, Op_info *info, bool condition) {$/;"	f	typeref:typename:void
+cb_jumptable	include/ceebee/cpu.h	/^  func_ptr cb_jumptable[0xF][0xF];$/;"	m	struct:CPU	typeref:typename:func_ptr[0xF][0xF]
+ceebee	Makefile	/^ceebee: main.o $(OBJECTS)$/;"	t
+check_flag	src/jumptable.c	/^bool check_flag(CPU *cpu, uint8_t flag) {$/;"	f	typeref:typename:bool
+clean	Makefile	/^clean: teardown$/;"	t
+comp	src/jumptable.c	/^void comp(CPU *cpu, uint8_t val) {$/;"	f	typeref:typename:void
+comp_n	src/jumptable.c	/^void comp_n(CPU *cpu, Op_info *info, uint8_t n) {$/;"	f	typeref:typename:void
+cond_jmp_r8	src/jumptable.c	/^void cond_jmp_r8(CPU *cpu, Op_info *info, bool condition) {$/;"	f	typeref:typename:void
+continue_running	src/main.c	/^bool continue_running = true;$/;"	v	typeref:typename:bool
+cpu	test/cpu_test.c	/^CPU cpu;$/;"	v	typeref:typename:CPU
+cpu	test/jumptable_test.c	/^CPU cpu;$/;"	v	typeref:typename:CPU
+cpu	test/mmu_test.c	/^CPU cpu;$/;"	v	typeref:typename:CPU
+cpu_test.o	Makefile	/^cpu_test.o: $(TESTPATH)cpu_test.c cpu.c$/;"	t
+cycle_count	include/ceebee/cpu.h	/^  uint16_t *cycle_count;$/;"	m	struct:CPU	typeref:typename:uint16_t *
+cycle_cpu	src/cpu.c	/^void cycle_cpu(CPU *cpu) {$/;"	f	typeref:typename:void
+cycle_ppu	src/ppu.c	/^void cycle_ppu(CPU *cpu, GPU *gpu, PPU *ppu) {$/;"	f	typeref:typename:void
+cycles	include/ceebee/cpu.h	/^  int cycles;$/;"	m	struct:Op_info	typeref:typename:int
+d	include/ceebee/cpu.h	/^  uint8_t d;$/;"	m	struct:CPU	typeref:typename:uint8_t
+debug	Makefile	/^debug: CFLAGS += -DDEBUG$/;"	t
+debug	Makefile	/^debug: default$/;"	t
+dec_16_reg	src/jumptable.c	/^void dec_16_reg(CPU *cpu, Op_info *info, uint16_t reg) {$/;"	f	typeref:typename:void
+dec_8_reg	src/jumptable.c	/^void dec_8_reg(CPU *cpu, Op_info *info, uint16_t reg) {$/;"	f	typeref:typename:void
+default	Makefile	/^default: teardown ceebee$/;"	t
+destroy_gpu	src/gpu.c	/^void destroy_gpu(GPU *gpu) {$/;"	f	typeref:typename:void
+dump_mem	src/common.c	/^void dump_mem(CPU *cpu) {$/;"	f	typeref:typename:void
+e	include/ceebee/cpu.h	/^  uint8_t e;$/;"	m	struct:CPU	typeref:typename:uint8_t
+f	include/ceebee/cpu.h	/^  uint8_t f;$/;"	m	struct:CPU	typeref:typename:uint8_t
+finishedBIOS	include/ceebee/cpu.h	/^  uint8_t *finishedBIOS;$/;"	m	struct:MMU	typeref:typename:uint8_t *
+framebuffer	include/ceebee/gpu.h	/^      SDL_Texture* framebuffer;$/;"	m	struct:GPU	typeref:typename:SDL_Texture *
+freeCPU	src/cpu.c	/^void freeCPU(CPU *cpu)	{$/;"	f	typeref:typename:void
+func_ptr	include/ceebee/cpu.h	/^typedef void (*func_ptr)(void *, Op_info *);$/;"	t	typeref:typename:void (*)(void *,Op_info *)
+getCF	src/jumptable.c	/^bool getCF(CPU *cpu) {$/;"	f	typeref:typename:bool
+getColor	src/ppu.c	/^enum COLOR getColor(uint8_t colorNum, CPU *cpu, PPU *ppu) {$/;"	f	typeref:enum:COLOR
+getRegister	src/cpu.c	/^uint8_t* getRegister(CPU *cpu, int index) {$/;"	f	typeref:typename:uint8_t *
+h	include/ceebee/cpu.h	/^  uint8_t h;$/;"	m	struct:CPU	typeref:typename:uint8_t
+inc_16_reg	src/jumptable.c	/^void inc_16_reg(CPU *cpu, Op_info *info, uint16_t reg) {$/;"	f	typeref:typename:void
+inc_8_reg	src/jumptable.c	/^void inc_8_reg(CPU *cpu, Op_info *info, uint16_t reg) {$/;"	f	typeref:typename:void
+indir_n_load	src/jumptable.c	/^void indir_n_load(CPU *cpu, Op_info *info, uint16_t dest_reg, uint16_t src_reg) {$/;"	f	typeref:typename:void
+initCPU	src/cpu.c	/^CPU initCPU() {$/;"	f	typeref:typename:CPU
+init_gpu	src/gpu.c	/^GPU init_gpu() {$/;"	f	typeref:typename:GPU
+init_jmp	src/jumptable.c	/^void init_jmp (func_ptr jumptable[0xF][0xF], func_ptr cb_jumptable[0xF][0xF]) {$/;"	f	typeref:typename:void
+init_ppu	src/ppu.c	/^PPU init_ppu(CPU *cpu) {$/;"	f	typeref:typename:PPU
+intHandler	src/main.c	/^void intHandler(int dummy) {$/;"	f	typeref:typename:void
+jumpCC	src/jumptable.c	/^void jumpCC(CPU *cpu, Op_info *info, uint16_t offset, bool condition) {$/;"	f	typeref:typename:void
+jumptable	include/ceebee/cpu.h	/^  func_ptr jumptable[0xF][0xF];$/;"	m	struct:CPU	typeref:typename:func_ptr[0xF][0xF]
+jumptable_test.o	Makefile	/^jumptable_test.o: $(TESTPATH)jumptable_test.c jumptable.c$/;"	t
+l	include/ceebee/cpu.h	/^  uint8_t l;$/;"	m	struct:CPU	typeref:typename:uint8_t
+lcd_enabled	src/ppu.c	/^bool lcd_enabled(PPU *ppu) {$/;"	f	typeref:typename:bool
+loadCart	src/mmu.c	/^void loadCart(CPU *cpu, char const *cartPath, unsigned int* cartSize) {$/;"	f	typeref:typename:void
+load_indir_hl_n	src/jumptable.c	/^void load_indir_hl_n(CPU *cpu, Op_info *info, uint8_t n) {$/;"	f	typeref:typename:void
+load_n_to_reg	src/jumptable.c	/^void load_n_to_reg(CPU *cpu, Op_info *info, uint16_t reg) {$/;"	f	typeref:typename:void
+load_nn_to_reg	src/jumptable.c	/^void load_nn_to_reg(CPU *cpu, Op_info *info, uint16_t reg) {$/;"	f	typeref:typename:void
+loadindr_n_from_reg	src/jumptable.c	/^void loadindr_n_from_reg(CPU *cpu, Op_info *info, uint16_t dest_reg, uint16_t src_reg) {$/;"	f	typeref:typename:void
+main	src/main.c	/^int main(int argc, char** argv) {$/;"	f	typeref:typename:int
+main	test/cpu_test.c	/^int main (void) {$/;"	f	typeref:typename:int
+main	test/jumptable_test.c	/^int main (void) {$/;"	f	typeref:typename:int
+main	test/mmu_test.c	/^int main (void) {$/;"	f	typeref:typename:int
+mmu	include/ceebee/cpu.h	/^  MMU *mmu;$/;"	m	struct:CPU	typeref:typename:MMU *
+mmu_load_boot_rom	src/mmu.c	/^void mmu_load_boot_rom(MMU *mmu) {$/;"	f	typeref:typename:void
+mmu_test.o	Makefile	/^mmu_test.o: $(TESTPATH)mmu_test.c mmu.c$/;"	t
+mode	include/ceebee/ppu.h	/^      uint8_t mode;$/;"	m	struct:PPU	typeref:typename:uint8_t
+modeclock	include/ceebee/ppu.h	/^      uint16_t modeclock;$/;"	m	struct:PPU	typeref:typename:uint16_t
+move	src/jumptable.c	/^void move(CPU *cpu, Op_info *info, uint16_t dest_reg, uint16_t src_reg) {$/;"	f	typeref:typename:void
+msleep	src/common.c	/^void msleep(long msec) {$/;"	f	typeref:typename:void
+or_reg	src/jumptable.c	/^void or_reg(CPU *cpu, Op_info *info, uint16_t dest_reg, uint16_t src_reg) {$/;"	f	typeref:typename:void
+panic	src/common.c	/^void panic(void *cpu_ptr, char const *message) {$/;"	f	typeref:typename:void
+pc	include/ceebee/cpu.h	/^  uint16_t pc;$/;"	m	struct:CPU	typeref:typename:uint16_t
+pixels	include/ceebee/gpu.h	/^      uint32_t *pixels;$/;"	m	struct:GPU	typeref:typename:uint32_t *
+pop_r16	src/jumptable.c	/^void pop_r16(CPU *cpu, Op_info *info, uint16_t dest_reg) {$/;"	f	typeref:typename:void
+printCard	src/main.c	/^void printCard(char* messagePath) {$/;"	f	typeref:typename:void
+printCart	src/cpu.c	/^void printCart(int start, uint8_t const *cart) {$/;"	f	typeref:typename:void
+printCpu	src/cpu.c	/^void printCpu(CPU cpu) {$/;"	f	typeref:typename:void
+print_code_info	src/cpu.c	/^void print_code_info(Op_info info) {$/;"	f	typeref:typename:void
+push_r16	src/jumptable.c	/^void push_r16(CPU *cpu, Op_info *info, uint16_t dest_reg) {$/;"	f	typeref:typename:void
+ram	include/ceebee/cpu.h	/^  uint8_t ram[0xFFFF];$/;"	m	struct:MMU	typeref:typename:uint8_t[0xFFFF]
+readN	src/mmu.c	/^uint8_t readN(CPU *cpu, uint16_t addr) {$/;"	f	typeref:typename:uint8_t
+readNN	src/mmu.c	/^uint16_t readNN(CPU *cpu, uint16_t addr) {$/;"	f	typeref:typename:uint16_t
+read_r16	src/cpu.c	/^uint16_t read_r16(CPU *cpu, int index) {$/;"	f	typeref:typename:uint16_t
+rend	include/ceebee/gpu.h	/^      SDL_Renderer* rend;$/;"	m	struct:GPU	typeref:typename:SDL_Renderer *
+renderScan	src/ppu.c	/^void renderScan(CPU *cpu, GPU *gpu, PPU *ppu) {$/;"	f	typeref:typename:void
+restarts	src/jumptable.c	/^void restarts(CPU *cpu, Op_info *info, uint8_t n) {$/;"	f	typeref:typename:void
+returnCC	src/jumptable.c	/^void returnCC(CPU *cpu, Op_info *info, bool condition) {$/;"	f	typeref:typename:void
+run_emulator	src/main.c	/^void run_emulator(CPU *cpu, GPU *gpu, PPU *ppu) {$/;"	f	typeref:typename:void
+set16	src/jumptable.c	/^void set16(CPU *cpu, uint8_t b, uint16_t dst) {$/;"	f	typeref:typename:void
+set8	src/jumptable.c	/^void set8(CPU *cpu, Op_info *info, uint8_t b, uint16_t r) {$/;"	f	typeref:typename:void
+setCF	src/jumptable.c	/^void setCF(CPU *cpu, bool state) {$/;"	f	typeref:typename:void
+setHF	src/jumptable.c	/^void setHF(CPU *cpu, bool state) {$/;"	f	typeref:typename:void
+setNF	src/jumptable.c	/^void setNF(CPU *cpu, bool state) {$/;"	f	typeref:typename:void
+setZF	src/jumptable.c	/^void setZF(CPU *cpu, bool state) {$/;"	f	typeref:typename:void
+set_bit	src/jumptable.c	/^void set_bit(CPU *cpu, Op_info *info, uint8_t b, uint16_t reg) {$/;"	f	typeref:typename:void
+setup	test/cpu_test.c	/^int setup(void ** state) {$/;"	f	typeref:typename:int
+setup	test/jumptable_test.c	/^int setup(void ** state) {$/;"	f	typeref:typename:int
+setup	test/mmu_test.c	/^int setup(void ** state) {$/;"	f	typeref:typename:int
+size	include/ceebee/cpu.h	/^  int size;$/;"	m	struct:Op_info	typeref:typename:int
+sp	include/ceebee/cpu.h	/^  uint16_t sp;$/;"	m	struct:CPU	typeref:typename:uint16_t
+sub_n	src/jumptable.c	/^void sub_n(CPU *cpu, Op_info *info, uint8_t n) {$/;"	f	typeref:typename:void
+swap	src/jumptable.c	/^void swap(CPU *cpu, Op_info *info, uint16_t reg) {$/;"	f	typeref:typename:void
+t	include/ceebee/cpu.h	/^  uint16_t t;$/;"	m	struct:CPU	typeref:typename:uint16_t
+teardown	Makefile	/^teardown:$/;"	t
+teardown	test/cpu_test.c	/^int teardown(void ** state) {$/;"	f	typeref:typename:int
+teardown	test/jumptable_test.c	/^int teardown(void ** state) {$/;"	f	typeref:typename:int
+teardown	test/mmu_test.c	/^int teardown(void ** state) {$/;"	f	typeref:typename:int
+test_ADD_A_B	test/jumptable_test.c	/^void test_ADD_A_B(void ** state) {$/;"	f	typeref:typename:void
+test_ADD_HL_BC	test/jumptable_test.c	/^void test_ADD_HL_BC(void ** state) {$/;"	f	typeref:typename:void
+test_CCF	test/jumptable_test.c	/^void test_CCF(void ** state) { $/;"	f	typeref:typename:void
+test_CPL	test/jumptable_test.c	/^void test_CPL(void ** state) { $/;"	f	typeref:typename:void
+test_DECINDR_HL	test/jumptable_test.c	/^void test_DECINDR_HL(void ** state) {$/;"	f	typeref:typename:void
+test_DEC_B	test/jumptable_test.c	/^void test_DEC_B(void ** state) {$/;"	f	typeref:typename:void
+test_DEC_BC	test/jumptable_test.c	/^void test_DEC_BC(void ** state) {$/;"	f	typeref:typename:void
+test_DEC_C	test/jumptable_test.c	/^void test_DEC_C(void ** state) {$/;"	f	typeref:typename:void
+test_DEC_D	test/jumptable_test.c	/^void test_DEC_D(void ** state) {$/;"	f	typeref:typename:void
+test_DEC_H	test/jumptable_test.c	/^void test_DEC_H(void ** state) {$/;"	f	typeref:typename:void
+test_INCINDR_HL	test/jumptable_test.c	/^void test_INCINDR_HL(void ** state) {$/;"	f	typeref:typename:void
+test_INC_B	test/jumptable_test.c	/^void test_INC_B(void ** state) {$/;"	f	typeref:typename:void
+test_INC_BC	test/jumptable_test.c	/^void test_INC_BC(void ** state) {$/;"	f	typeref:typename:void
+test_INC_C	test/jumptable_test.c	/^void test_INC_C(void ** state) {$/;"	f	typeref:typename:void
+test_INC_D	test/jumptable_test.c	/^void test_INC_D(void ** state) {$/;"	f	typeref:typename:void
+test_INC_DE	test/jumptable_test.c	/^void test_INC_DE(void ** state) {$/;"	f	typeref:typename:void
+test_INC_H	test/jumptable_test.c	/^void test_INC_H(void ** state) {$/;"	f	typeref:typename:void
+test_INC_HL	test/jumptable_test.c	/^void test_INC_HL(void ** state) {$/;"	f	typeref:typename:void
+test_INC_SP	test/jumptable_test.c	/^void test_INC_SP(void ** state) {$/;"	f	typeref:typename:void
+test_JR_C_r8	test/jumptable_test.c	/^void test_JR_C_r8(void ** state) {$/;"	f	typeref:typename:void
+test_JR_Z_r8	test/jumptable_test.c	/^void test_JR_Z_r8(void ** state) {$/;"	f	typeref:typename:void
+test_JR_r8	test/jumptable_test.c	/^void test_JR_r8(void ** state) {$/;"	f	typeref:typename:void
+test_LDDEC_HL_A	test/jumptable_test.c	/^void test_LDDEC_HL_A(void ** state) {$/;"	f	typeref:typename:void
+test_LDINC_HL_A	test/jumptable_test.c	/^void test_LDINC_HL_A(void ** state) {$/;"	f	typeref:typename:void
+test_LDINDR_BC_A	test/jumptable_test.c	/^void test_LDINDR_BC_A(void ** state) {$/;"	f	typeref:typename:void
+test_LDINDR_DE_A	test/jumptable_test.c	/^void test_LDINDR_DE_A(void ** state) {$/;"	f	typeref:typename:void
+test_LDINDR_HL_d8	test/jumptable_test.c	/^void test_LDINDR_HL_d8(void ** state) {$/;"	f	typeref:typename:void
+test_LD_A_INDIR_BC	test/jumptable_test.c	/^void test_LD_A_INDIR_BC(void ** state) {$/;"	f	typeref:typename:void
+test_LD_BC_d16	test/jumptable_test.c	/^void test_LD_BC_d16(void ** state) {$/;"	f	typeref:typename:void
+test_LD_B_d8	test/jumptable_test.c	/^void test_LD_B_d8(void ** state) {$/;"	f	typeref:typename:void
+test_LD_C_d8	test/jumptable_test.c	/^void test_LD_C_d8(void ** state) {$/;"	f	typeref:typename:void
+test_LD_DE_d16	test/jumptable_test.c	/^void test_LD_DE_d16(void ** state) {$/;"	f	typeref:typename:void
+test_LD_D_d8	test/jumptable_test.c	/^void test_LD_D_d8(void ** state) {$/;"	f	typeref:typename:void
+test_LD_HL_d16	test/jumptable_test.c	/^void test_LD_HL_d16(void ** state) {$/;"	f	typeref:typename:void
+test_LD_H_d8	test/jumptable_test.c	/^void test_LD_H_d8(void ** state) {$/;"	f	typeref:typename:void
+test_LD_SP_d16	test/jumptable_test.c	/^void test_LD_SP_d16(void ** state) {$/;"	f	typeref:typename:void
+test_NOP	test/jumptable_test.c	/^void test_NOP(void ** state) {$/;"	f	typeref:typename:void
+test_RL	test/jumptable_test.c	/^void test_RL(void ** state) {$/;"	f	typeref:typename:void
+test_RLA	test/jumptable_test.c	/^void test_RLA(void ** state) {$/;"	f	typeref:typename:void
+test_RLCA	test/jumptable_test.c	/^void test_RLCA(void ** state) {$/;"	f	typeref:typename:void
+test_RRA	test/jumptable_test.c	/^void test_RRA(void ** state) {$/;"	f	typeref:typename:void
+test_RRCA	test/jumptable_test.c	/^void test_RRCA(void ** state) {$/;"	f	typeref:typename:void
+test_SCF	test/jumptable_test.c	/^void test_SCF(void ** state) {$/;"	f	typeref:typename:void
+test_XOR_A	test/jumptable_test.c	/^void test_XOR_A(void ** state) {$/;"	f	typeref:typename:void
+test_a16_SP	test/jumptable_test.c	/^void test_a16_SP(void ** state) {$/;"	f	typeref:typename:void
+test_getRegister	test/cpu_test.c	/^void test_getRegister(void ** state) {$/;"	f	typeref:typename:void
+test_initCPU	test/cpu_test.c	/^void test_initCPU(void ** state) {$/;"	f	typeref:typename:void
+test_loadCart	test/mmu_test.c	/^void test_loadCart(void ** state) {$/;"	f	typeref:typename:void
+test_mmu_load_boot_rom	test/mmu_test.c	/^void test_mmu_load_boot_rom(void ** state) {$/;"	f	typeref:typename:void
+test_readNN	test/mmu_test.c	/^void test_readNN(void ** state) {$/;"	f	typeref:typename:void
+test_read_r16	test/cpu_test.c	/^void test_read_r16(void ** state) {$/;"	f	typeref:typename:void
+test_runCycle	test/cpu_test.c	/^void test_runCycle(void ** state) {$/;"	f	typeref:typename:void
+test_setCF	test/jumptable_test.c	/^void test_setCF(void ** state) {$/;"	f	typeref:typename:void
+test_setHF	test/jumptable_test.c	/^void test_setHF(void ** state) {$/;"	f	typeref:typename:void
+test_setNF	test/jumptable_test.c	/^void test_setNF(void ** state) {$/;"	f	typeref:typename:void
+test_setZF	test/jumptable_test.c	/^void test_setZF(void ** state) {$/;"	f	typeref:typename:void
+test_write_r16	test/cpu_test.c	/^void test_write_r16(void ** state) {$/;"	f	typeref:typename:void
+testing	Makefile	/^testing: CFLAGS += -DTESTING$/;"	t
+testing	Makefile	/^testing: teardown $(OBJECTS) $(TESTOBJECTS)$/;"	t
+tile_pattern_table_addr	src/ppu.c	/^uint16_t tile_pattern_table_addr(PPU *ppu) {$/;"	f	typeref:typename:uint16_t
+update_window	src/gpu.c	/^void update_window(GPU *gpu) {$/;"	f	typeref:typename:void
+usage	src/main.c	/^void usage() {$/;"	f	typeref:typename:void
+window	include/ceebee/gpu.h	/^      SDL_Window*  window;$/;"	m	struct:GPU	typeref:typename:SDL_Window *
+window_enabled	src/ppu.c	/^bool window_enabled(PPU *ppu) {$/;"	f	typeref:typename:bool
+window_height	include/ceebee/gpu.h	/^      int window_height;$/;"	m	struct:GPU	typeref:typename:int
+window_map_addr	src/ppu.c	/^uint16_t window_map_addr(PPU *ppu) {$/;"	f	typeref:typename:uint16_t
+window_width	include/ceebee/gpu.h	/^      int window_width;$/;"	m	struct:GPU	typeref:typename:int
+writeN	src/mmu.c	/^void writeN(CPU *cpu, uint16_t addr, uint8_t val) {$/;"	f	typeref:typename:void
+writeNN	src/mmu.c	/^void writeNN(CPU *cpu, uint16_t addr, uint16_t val) {$/;"	f	typeref:typename:void
+write_r16	src/cpu.c	/^void write_r16(CPU *cpu, int index, uint16_t val) {$/;"	f	typeref:typename:void
+xor_reg	src/jumptable.c	/^void xor_reg(CPU *cpu, Op_info *info, uint16_t dest_reg, uint16_t src_reg) {$/;"	f	typeref:typename:void

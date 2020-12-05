@@ -43,7 +43,9 @@ void printCard(char* messagePath) {
 void run_emulator(CPU *cpu, GPU *gpu, PPU *ppu) {
   while (continue_running) {
     cycle_cpu(cpu);
-    cycle_ppu(cpu, gpu, ppu);
+    #ifndef HEADLESS
+    	cycle_ppu(cpu, gpu, ppu);
+    #endif
   }
 }
 
@@ -58,7 +60,9 @@ int main(int argc, char** argv) {
   #endif
 
   // Make gpu
-  GPU gpu = init_gpu(); 
+  #ifndef HEADLESS
+    GPU gpu = init_gpu(); 
+  #endif
   
 
   //Make CPU

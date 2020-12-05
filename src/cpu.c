@@ -9,6 +9,7 @@
 #include "ceebee/termColors.h"
 #include "ceebee/jumptable.h"
 
+
 CPU initCPU() {
   CPU cpu;
 
@@ -23,7 +24,7 @@ CPU initCPU() {
   cpu.cycle_count = (uint16_t*) cpu.mmu->ram + 0xFF05;
   *cpu.cycle_count = 0;
   // Initialize into boot mode
-  cpu.mmu->finishedBIOS = (uint8_t*) cpu.mmu->ram + 0xFF50;
+  cpu.mmu->finishedBIOS = (uint8_t*) cpu.mmu->BIOS + 0xFF50;
   *cpu.mmu->finishedBIOS = 0;
  
   cpu.t = 0;
