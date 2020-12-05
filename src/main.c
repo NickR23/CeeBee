@@ -63,6 +63,9 @@ int main(int argc, char** argv) {
   #ifndef HEADLESS
     GPU gpu = init_gpu(); 
   #endif
+  #ifdef HEADLESS
+    GPU gpu;
+  #endif
   
 
   //Make CPU

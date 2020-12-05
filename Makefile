@@ -60,7 +60,7 @@ debug: default
 headless: CFLAGS += -D HEADLESS
 
 .PHONY: dheadless
-dheadless: headless
+dheadless: CFLAGS += -D HEADLESS
 dheadless: debug
 
 .PHONY: teardown
