@@ -259,7 +259,9 @@ void cycle_ppu(CPU *cpu, GPU *gpu, PPU *ppu) {
       if (ppu->modeclock >= VRAM_T) {
         ppu->mode = HBLANK;
         ppu->modeclock = 0;
-        renderScan(cpu, gpu, ppu);
+	#ifndef HEADLESS
+          renderScan(cpu, gpu, ppu);
+        #endif
       }
       break;
     

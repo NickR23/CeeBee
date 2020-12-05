@@ -2,7 +2,7 @@
 #define JMPTBL_H
 
 #include "cpu.h"
-void init_jmp(func_ptr jumptable[0xF][0xF],func_ptr cb_jumptable[0xF][0xF]); 
+void init_jmp(func_ptr jumptable[0x10][0x10],func_ptr cb_jumptable[0x10][0x10]); 
 
 #ifdef JMPTBL_TEST
 bool check_flag(CPU *cpu, uint8_t flag);

@@ -58,6 +58,7 @@ debug: default
 
 .PHONY: headless
 headless: CFLAGS += -D HEADLESS
+headless: default
 
 .PHONY: dheadless
 dheadless: CFLAGS += -D HEADLESS

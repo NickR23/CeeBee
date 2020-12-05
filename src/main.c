@@ -43,9 +43,7 @@ void printCard(char* messagePath) {
 void run_emulator(CPU *cpu, GPU *gpu, PPU *ppu) {
   while (continue_running) {
     cycle_cpu(cpu);
-    #ifndef HEADLESS
-    	cycle_ppu(cpu, gpu, ppu);
-    #endif
+    cycle_ppu(cpu, gpu, ppu);
   }
 }
 

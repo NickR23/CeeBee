@@ -2400,7 +2400,7 @@ void NOT_IMPL(void *cpu, Op_info *info) {
   panic(cpu, GRN "This instruction is not yet implemented ... Exiting :)\n" RESET);
 }
 
-void init_jmp (func_ptr jumptable[0xF][0xF], func_ptr cb_jumptable[0xF][0xF]) {
+void init_jmp (func_ptr jumptable[0x10][0x10], func_ptr cb_jumptable[0x10][0x10]) {
   // Init tables to NOT_IMPL
   for (int i = 0; i < 0xF; i++) {
     for (int j = 0; j < 0xF; j++) {

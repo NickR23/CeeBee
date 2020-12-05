@@ -70,9 +70,9 @@ typedef struct CPU {
   //Memory
   MMU *mmu;
   // Opcode jumptable
-  func_ptr jumptable[0xF][0xF];
+  func_ptr jumptable[0x10][0x10];
   // Extended opcode jumptable (CB prefix)
-  func_ptr cb_jumptable[0xF][0xF];
+  func_ptr cb_jumptable[0x10][0x10];
   /* Number of cycles of the last instruction */
   uint16_t t;
 } CPU;

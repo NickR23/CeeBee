@@ -160,6 +160,9 @@ void cycle_cpu(CPU *cpu) {
     printf("Skipping boot checksum\n");
     cpu->pc = 0x00FC;
   } 
+  if (cpu->pc == 0x0100) {
+    printf("Entered rom\n");
+  }
 
   uint8_t code = readN(cpu, cpu->pc);
   struct Op_info info;
